@@ -1,0 +1,4 @@
+[submodule "backend-config"]
+	path = backend-config
+	url = git@github.com:CloneCommerce/backend-config.git
+	branch = master
