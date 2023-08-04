@@ -1,11 +1,16 @@
 plugins {
 	id 'java'
+	id 'jacoco'
 	id 'org.springframework.boot' version '2.7.14'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 group = 'com.commerce'
 version = '0.0.1-SNAPSHOT'
+
+jacoco {
+	toolVersion = "0.8.10"
+}
 
 java {
 	sourceCompatibility = '17'
@@ -27,20 +32,59 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok' // 테스트 의존성 추가
+	testAnnotationProcessor 'org.projectlombok:lombok' // 테스트 의존성 추가
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
-task copyPrivate(type: Copy) {
-	copy {
-		from './backend-config'
-		include "*.yml"
-		into 'src/main/resources/'
-	}
-}
-
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.withType(Test) {
+	jacoco.includeNoLocationClasses = true
+	jacoco.excludes = ['jdk.internal.*']
+}
+
+tasks.create(name: "testCoverage", type: JacocoReport, dependsOn: "test") {
+
+	group = "Reporting"
+	description = "Generate Jacoco coverage reports for the test build."
+
+	reports {
+		html.required.set(true)
+		xml.required.set(true)
+	}
+
+	def excludes = [
+			'**/*Test*.*',
+			'**/actions/*.*',
+			'**/core/*.*',
+			'**/markers/*.*',
+			'**/services/**/*.*',
+			'**/toolwindow/*.*',
+			'**/utils/*.*'
+	]
+
+	def javaClasses = fileTree(dir: "${buildDir}/classes/java/main", excludes: excludes)
+	def kotlinClasses = fileTree(dir: "${buildDir}/classes/kotlin/main", excludes: excludes)
+	classDirectories.from = files([javaClasses, kotlinClasses])
+
+	sourceDirectories.from = files([
+			"$project.projectDir/src/main/java",
+			"$project.projectDir/src/main/kotlin",
+			"$buildDir/generated/source/kapt/test"
+	])
+
+	executionData.from = files("${project.buildDir}/jacoco/test.exec")
+}
+
+task copyGitSubmodule(type: Copy) {
+	from './backend-config'
+	include '*.yml'
+	into './src/main/resources'
 }
