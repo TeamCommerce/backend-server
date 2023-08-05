@@ -1,0 +1,17 @@
+name: 'CI'
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+jobs:
+  assign:
+    name: Assign Reviewer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hkusu/review-assign-action@v1
+        with:
+          assignees: ${{ github.actor }}
+          reviewers: EunChanNam, h-beeen
+          ready-comment: '코드리뷰 대기 중 입니다 🙆 <reviewers>'
+          merged-comment: '성공적으로 Merge 되었습니다. Shout out to <reviewers> :wink:'
