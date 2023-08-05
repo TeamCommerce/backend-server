@@ -20,7 +20,9 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<Member> createMember(@RequestBody String memberName) {
+
         Member savedMember = memberRepository.save(of(memberName));
+
         return ResponseEntity
                 .ok()
                 .body(savedMember);
