@@ -12,6 +12,13 @@
 
 - 실제 [레퍼런스 사이트](https://fittingnote.com/)의 클론 코딩을 바탕으로, 실제 이커머스 비즈니스 서비스 로직 구현
 - PR간 테스트 자동화, 테스트 커버리지 100% 목표, API 명세 포함 신뢰성 높은 비즈니스 코드 제공
+- `Release`, `Issue`, `PR`, `Label`, `Project`, `MileStone` 등 Github 버전 관리 기능 최대 활용
+
+## 📔&nbsp;&nbsp;Project Overview
+
+- [Github Project](https://github.com/orgs/CloneCommerce/projects/1) Summary of the overall project progress
+- Release
+
 
 <br/>
 
