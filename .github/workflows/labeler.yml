@@ -1,0 +1,15 @@
+name: CI / Labeler
+
+labels:
+  "feat":
+    - '\bfeat\b'
+  "fix":
+    - '\bfix\b'
+  "refactor":
+    - '\brefactor\b'
+  "chore":
+    - '\bchore\b'
+  "docs":
+    - '\bdocs\b'
+  "release":
+    - '\brelease\b'
