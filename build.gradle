@@ -1,90 +1,62 @@
 plugins {
-	id 'java'
-	id 'jacoco'
-	id 'org.springframework.boot' version '3.1.2'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+    id 'jacoco'
+    id 'org.springframework.boot' version '3.1.2'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 group = 'com.commerce'
 version = '0.0.1-SNAPSHOT'
 
 jacoco {
-	toolVersion = "0.8.10"
+    toolVersion = "0.8.10"
+    reportsDirectory = layout.buildDirectory.dir('JacocoReportDir')
 }
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
-	testCompileOnly 'org.projectlombok:lombok' // 테스트 의존성 추가
-	testAnnotationProcessor 'org.projectlombok:lombok' // 테스트 의존성 추가
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok' // 테스트 의존성 추가
+    testAnnotationProcessor 'org.projectlombok:lombok' // 테스트 의존성 추가
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
 
-tasks.withType(Test) {
-	jacoco.includeNoLocationClasses = true
-	jacoco.excludes = ['jdk.internal.*']
-}
-
-tasks.create(name: "testCoverage", type: JacocoReport, dependsOn: "test") {
-
-	group = "Reporting"
-	description = "Generate Jacoco coverage reports for the test build."
-
-	reports {
-		html.required.set(true)
-		xml.required.set(true)
-	}
-
-	def excludes = [
-			'**/*Test*.*',
-			'**/actions/*.*',
-			'**/core/*.*',
-			'**/markers/*.*',
-			'**/services/**/*.*',
-			'**/toolwindow/*.*',
-			'**/utils/*.*'
-	]
-
-	def javaClasses = fileTree(dir: "${buildDir}/classes/java/main", excludes: excludes)
-	def kotlinClasses = fileTree(dir: "${buildDir}/classes/kotlin/main", excludes: excludes)
-	classDirectories.from = files([javaClasses, kotlinClasses])
-
-	sourceDirectories.from = files([
-			"$project.projectDir/src/main/java",
-			"$project.projectDir/src/main/kotlin",
-			"$buildDir/generated/source/kapt/test"
-	])
-
-	executionData.from = files("${project.buildDir}/jacoco/test.exec")
+jacocoTestReport {
+    reports {
+        xml.required = true
+        csv.required = false
+        html.required = true
+    }
 }
 
 task copyGitSubmodule(type: Copy) {
-	from './backend-config'
-	include '*.yml'
-	into './src/main/resources'
+    from './backend-config'
+    include '*.yml'
+    into './src/main/resources'
 }
