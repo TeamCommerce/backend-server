@@ -5,6 +5,10 @@ on:
     branches:
       - 'master'
       - 'develop'
+  push:
+    branches:
+      - 'master'
+      - 'develop'
 
 jobs:
   build:
@@ -40,6 +44,7 @@ jobs:
         with:
           files: '**/build/test-results/test/TEST-*.xml'
 
+
       - name: (Test) Test Failure Occurred Documentation.
         uses: mikepenz/action-junit-report@v3
         if: always()
@@ -47,11 +52,16 @@ jobs:
           report_paths: '**/build/test-results/test/TEST-*.xml'
           token: ${{ github.token }}
 
-      - name: (Test) Jacoco Coverage Report to PR
+      - name: (Test) Run Test Coverage Measurement
+        run: |
+          chmod +x gradlew
+          ./gradlew testCoverage
+
+      - name: (Test) Test Coverage Report to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
         with:
-          paths: ${{ github.workspace }}/build/JacocoReportDir/test/jacocoTestReport.xml
+          paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 40
           min-coverage-changed-files: 60
@@ -59,9 +69,3 @@ jobs:
           update-comment: true
           pass-emoji: ':o:'
           fail-emoji: ':x:'
-
-      - name: (Test) Coveralls Coverage Badge
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ github.token }}
-
