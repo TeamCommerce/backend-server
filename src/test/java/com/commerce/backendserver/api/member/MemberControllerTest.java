@@ -43,4 +43,14 @@ class MemberControllerTest {
         //then
         assertThat(savedMember.getNickName()).isEqualTo(foundMember.getNickName());
     }
+
+    @Test
+    void success4() throws Exception {
+        //given
+        Member savedMember = memberRepository.save(Member.of("h-beeen"));
+        //when
+        Member foundMember = memberRepository.findById(savedMember.getId()).get();
+        //then
+        assertThat(savedMember.getNickName()).isEqualTo(foundMember.getNickName());
+    }
 }
