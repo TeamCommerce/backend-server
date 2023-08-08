@@ -1,15 +1,13 @@
 name: Release Drafter
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
       - master
 
 jobs:
   update_release_draft:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && github.base_ref == 'master'
     steps:
       - name: (Test) Release Drafter
         uses: release-drafter/release-drafter@v5
