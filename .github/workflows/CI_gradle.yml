@@ -12,7 +12,6 @@ on:
 
 jobs:
   build:
-    job1:
     name: "Gradle Build / Run Unit Test"
     runs-on: ubuntu-latest
     steps:
