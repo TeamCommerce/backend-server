@@ -35,8 +35,8 @@ jobs:
       - name: (Build) Grant Execute permission for gradlew
         run: chmod 777 gradlew
 
-      - name: (Test) Test with Gradle
-        run: ./gradlew clean test -i
+      - name: (Test) Build with Gradle
+        run: ./gradlew clean build -i
 
       - name: (Test) Test Result
         uses: EnricoMi/publish-unit-test-result-action/composite@v2
