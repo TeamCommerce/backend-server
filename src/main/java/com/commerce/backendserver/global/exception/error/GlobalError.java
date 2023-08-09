@@ -1,4 +1,4 @@
-package com.commerce.backendserver.common.exception.error;
+package com.commerce.backendserver.global.exception.error;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

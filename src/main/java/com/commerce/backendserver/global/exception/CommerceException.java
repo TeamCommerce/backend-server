@@ -1,6 +1,6 @@
-package com.commerce.backendserver.common.exception;
+package com.commerce.backendserver.global.exception;
 
-import com.commerce.backendserver.common.exception.error.ErrorCode;
+import com.commerce.backendserver.global.exception.error.ErrorCode;
 import lombok.Getter;
 
 @Getter
