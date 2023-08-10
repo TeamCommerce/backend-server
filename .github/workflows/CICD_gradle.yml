@@ -40,19 +40,20 @@ jobs:
 
       - name: (Test) Test Result
         uses: EnricoMi/publish-unit-test-result-action/composite@v2
-        if: always()
+        if: github.event_name == 'pull_request'
         with:
           files: '**/build/test-results/test/TEST-*.xml'
 
       - name: (Test) Test Failure Occurred Documentation.
         uses: mikepenz/action-junit-report@v3
-        if: always()
+        if: github.event_name == 'pull_request'
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
           token: ${{ github.token }}
 
       - name: (Test) Jacoco Coverage Report to PR
         id: jacoco
+        if: github.event_name == 'pull_request'
         uses: madrapps/jacoco-report@v1.6.1
         with:
           paths: ${{ github.workspace }}/build/JacocoReportDir/test/jacocoTestReport.xml
@@ -69,14 +70,9 @@ jobs:
         with:
           github-token: ${{ github.token }}
 
-      - name: (Trigger) Check Conditions and Skip Deployment
-        if: |
-          github.ref != 'refs/heads/master' || github.event_name != 'push'
-        run: |
-          echo "The workflow is ending as the push has not been made to the master branch."
-          exit 0
-
-      - name: (Deploy) Deploy to NCP Server
+      - name: (Deploy) Copy the JAR file via the SSH server.
+        id: copyjar
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.DEPLOY_SSH_HOST }}
@@ -87,8 +83,9 @@ jobs:
           target: "source"
           rm: true
 
-      - name: (Deploy) Run Gradle After Build
-        if: steps.deploy.outcome == 'success'
+      - name: (Deploy) Automated deployment
+        id: deploy
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push' && steps.copyjar.outcome == 'success'
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEPLOY_SSH_HOST }}
@@ -112,6 +109,7 @@ jobs:
             
 
       - name: (Docs) Release Drafter
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push' && steps.deploy.outcome == 'success'
         uses: release-drafter/release-drafter@v5
         with:
           config-name: release-drafter-config.yml
