@@ -1,13 +1,9 @@
-name: 'CI'
+name: 'CD'
 
 on:
-  pull_request:
-    branches:
-      - 'master'
-      - 'develop'
   push:
     branches:
-      - 'develop'
+      - 'master'
 
 jobs:
   build:
@@ -67,3 +63,12 @@ jobs:
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ github.token }}
+
+      - name: (Deploy) Deploy to NCP Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_SSH_HOST }}
+          port: ${{ secrets.DEPLOY_SSH_PORT }}
+          username: ${{ secrets.DEPLOY_SSH_USERNAME }}
+          password: ${{ secrets.DEPLOY_SSH_PASSWORD }}
+          script: whoami
