@@ -7,7 +7,6 @@ on:
       - 'develop'
   push:
     branches:
-      - 'master'
       - 'develop'
 
 jobs:
@@ -35,7 +34,7 @@ jobs:
       - name: (Build) Grant Execute permission for gradlew
         run: chmod 777 gradlew
 
-      - name: (Test) Build with Gradle
+      - name: (Build) Build with Gradle
         run: ./gradlew clean build -i
 
       - name: (Test) Test Result
