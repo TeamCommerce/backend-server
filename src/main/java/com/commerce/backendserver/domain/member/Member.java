@@ -1,10 +1,7 @@
 package com.commerce.backendserver.domain.member;
 
 import com.commerce.backendserver.domain.common.entity.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import jakarta.persistence.*;
 
@@ -14,6 +11,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 @Table(name = "user_tb")
