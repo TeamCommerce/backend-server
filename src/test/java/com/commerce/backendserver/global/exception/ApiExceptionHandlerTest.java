@@ -1,8 +1,5 @@
 package com.commerce.backendserver.global.exception;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.commerce.backendserver.global.exception.ApiExceptionHandlerTest.TestController;
 import com.commerce.backendserver.global.exception.error.ErrorCode;
 import jakarta.validation.constraints.NotBlank;
@@ -23,85 +20,88 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @WebMvcTest(value = TestController.class)
 @DisplayName("ApiExceptionHandler Test")
 public class ApiExceptionHandlerTest {
 
-  private static final String BASE_URL = "/test";
+    private static final String BASE_URL = "/test";
 
-  @Autowired
-  private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-  @Nested
-  @DisplayName("Exception Handling Test")
-  @WithMockUser
-  class exceptionHandler {
+    @RestController
+    static class TestController {
 
-    @Test
-    @DisplayName("[MethodArgumentNotValidException]")
-    void handleMethodArgumentNotValidException() throws Exception {
-      //given
-      String emptyString = "";
-
-      //when
-      MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-          .get(BASE_URL + "/method-param-ex")
-          .queryParam("request", emptyString);
-
-      //then
-      mockMvc.perform(requestBuilder)
-          .andExpectAll(
-              status().isBadRequest(),
-              jsonPath("$.errorMessage").value("Not Blank")
-          );
-    }
-
-    @Test
-    @DisplayName("[CommerceException]")
-    void handleCommerceException() throws Exception {
-      //when
-      MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-          .get(BASE_URL + "/commerce-ex");
-
-      mockMvc.perform(requestBuilder)
-          .andExpectAll(
-              status().isBadRequest(),
-              jsonPath("$.errorMessage").value("error")
-          );
-    }
-  }
-
-  //Test Resource
-
-  @RestController
-  static class TestController {
-
-    @GetMapping("/test/method-param-ex")
-    public String test1(
-        @Validated @ModelAttribute RequestDto dto
-    ) {
-      return "ok";
-    }
-
-    @GetMapping("/test/commerce-ex")
-    public String test2() {
-      throw CommerceException.of(new ErrorCode() {
-        public String getMessage() {
-          return "error";
+        @GetMapping("/test/method-param-ex")
+        public String test1(
+                @Validated @ModelAttribute RequestDto dto
+        ) {
+            return "ok";
         }
 
-        public HttpStatus getStatus() {
-          return HttpStatus.BAD_REQUEST;
+        @GetMapping("/test/commerce-ex")
+        public String test2() {
+            throw CommerceException.of(new ErrorCode() {
+                public String getMessage() {
+                    return "error";
+                }
+
+                public HttpStatus getStatus() {
+                    return HttpStatus.BAD_REQUEST;
+                }
+            });
         }
-      });
     }
-  }
 
-  @Getter
-  @NoArgsConstructor
-  static class RequestDto {
+    //Test Resource
 
-    @NotBlank(message = "Not Blank")
-    private String request;
-  }
+    @Getter
+    @NoArgsConstructor
+    static class RequestDto {
+
+        @NotBlank(message = "Not Blank")
+        private String request;
+    }
+
+    @Nested
+    @DisplayName("Exception Handling Test")
+    @WithMockUser
+    class exceptionHandler {
+
+        @Test
+        @DisplayName("[MethodArgumentNotValidException]")
+        void handleMethodArgumentNotValidException() throws Exception {
+            //given
+            String emptyString = "";
+
+            //when
+            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                    .get(BASE_URL + "/method-param-ex")
+                    .queryParam("request", emptyString);
+
+            //then
+            mockMvc.perform(requestBuilder)
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.errorMessage").value("Not Blank")
+                    );
+        }
+
+        @Test
+        @DisplayName("[CommerceException]")
+        void handleCommerceException() throws Exception {
+            //when
+            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                    .get(BASE_URL + "/commerce-ex");
+
+            mockMvc.perform(requestBuilder)
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.errorMessage").value("error")
+                    );
+        }
+    }
 }

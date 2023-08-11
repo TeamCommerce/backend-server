@@ -1,7 +1,7 @@
 package com.commerce.backendserver.api.member;
 
-import com.commerce.backendserver.domain.member.Member;
-import com.commerce.backendserver.infrastructure.persistence.MemberRepository;
+import com.commerce.backendserver.member.domain.Member;
+import com.commerce.backendserver.member.domain.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +25,7 @@ class MemberControllerTest {
         //then
         assertThat(savedMember.getNickName()).isEqualTo(foundMember.getNickName());
     }
+
     @Test
     void success2() throws Exception {
         //given
@@ -34,6 +35,7 @@ class MemberControllerTest {
         //then
         assertThat(savedMember.getNickName()).isEqualTo(foundMember.getNickName());
     }
+
     @Test
     void success3() throws Exception {
         //given

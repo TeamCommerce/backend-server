@@ -1,9 +1,8 @@
-package com.commerce.backendserver.domain.member;
+package com.commerce.backendserver.member.domain;
 
-import com.commerce.backendserver.domain.common.entity.BaseEntity;
-import lombok.*;
-
+import com.commerce.backendserver.global.auditing.BaseEntity;
 import jakarta.persistence.*;
+import lombok.*;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
