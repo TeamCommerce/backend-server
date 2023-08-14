@@ -3,7 +3,6 @@ package com.commerce.backendserver.product.domain;
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,15 +22,12 @@ public class Product extends BaseEntity {
     private Long id;
 
     @Embedded
-    private ProductIntroductionInfo introductionInfo;
-
-    @Column(columnDefinition = "int unsigned")
-    private Integer originPrice;
-
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "promotion_id")
-    private Promotion promotion;
+    private ProductInfo info;
 
     @Embedded
-    private ProductOrderingInfo orderingInfo;
+    private ProductAttribute attribute;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "promotion_id")
+    private Promotion promotion;
 }
