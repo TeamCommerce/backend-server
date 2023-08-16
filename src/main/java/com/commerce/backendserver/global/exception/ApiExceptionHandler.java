@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-    log.error("", ex);
-    return ErrorResponse.of(HttpStatus.BAD_REQUEST, ex.getFieldError());
-  }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        log.error("", ex);
+        return ErrorResponse.of(HttpStatus.BAD_REQUEST, ex.getFieldError());
+    }
 
-  @ExceptionHandler(CommerceException.class)
-  public ResponseEntity<ErrorResponse> handleLearnchaException(CommerceException ex) throws JsonProcessingException {
-    log.error("", ex);
-    return convert(ex.getErrorCode());
-  }
+    @ExceptionHandler(CommerceException.class)
+    public ResponseEntity<ErrorResponse> handleLearnchaException(CommerceException ex) throws JsonProcessingException {
+        log.error("", ex);
+        return convert(ex.getErrorCode());
+    }
 
-  private ResponseEntity<ErrorResponse> convert(ErrorCode errorCode) {
-    return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.of(errorCode));
-  }
+    private ResponseEntity<ErrorResponse> convert(ErrorCode errorCode) {
+        return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.of(errorCode));
+    }
 }
