@@ -1,4 +1,4 @@
-package com.commerce.backendserver.global.config.security.filter;
+package com.commerce.backendserver.auth.application.filter;
 
 import com.commerce.backendserver.auth.exception.AuthError;
 import com.commerce.backendserver.auth.infra.jwt.JwtProvider;

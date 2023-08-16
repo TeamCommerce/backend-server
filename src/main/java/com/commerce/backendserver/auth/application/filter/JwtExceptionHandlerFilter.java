@@ -1,4 +1,4 @@
-package com.commerce.backendserver.global.config.security.filter;
+package com.commerce.backendserver.auth.application.filter;
 
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.global.exception.error.ErrorCode;

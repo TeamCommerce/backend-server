@@ -1,4 +1,4 @@
-package com.commerce.backendserver.auth.application;
+package com.commerce.backendserver.auth.application.handler;
 
 import com.commerce.backendserver.auth.infra.jwt.JwtProvider;
 import com.commerce.backendserver.auth.infra.oauth.CustomOAuth2User;
