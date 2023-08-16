@@ -27,7 +27,6 @@ public class Product extends BaseEntity {
     @Embedded
     private ProductAttribute attribute;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "promotion_id")
-    private Promotion promotion;
+    @Embedded
+    private ProductPriceAttribute priceAttribute;
 }
