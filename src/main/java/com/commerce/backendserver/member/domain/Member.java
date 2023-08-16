@@ -1,6 +1,5 @@
 package com.commerce.backendserver.member.domain;
 
-import com.commerce.backendserver.auth.infra.oauth.OAuthType;
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
