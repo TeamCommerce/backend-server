@@ -24,7 +24,9 @@ public abstract class BaseEntity {
             updatable = false,
             columnDefinition = "datetime default CURRENT_TIMESTAMP")
     @CreatedDate
-    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd a HH:mm")
+    @JsonFormat(
+            shape = STRING,
+            pattern = "yyyy-MM-dd a HH:mm")
     private LocalDateTime createdDate;
 
     @Column(
@@ -32,6 +34,8 @@ public abstract class BaseEntity {
             insertable = false,
             columnDefinition = "datetime default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
     @LastModifiedDate
-    @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd a HH:mm")
+    @JsonFormat(
+            shape = STRING,
+            pattern = "yyyy-MM-dd a HH:mm")
     private LocalDateTime updatedDate;
 }
