@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class OAuthLoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+public class CustomOAuth2LoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
     private final OAuthProfileFactory oauthProfileFactory;
