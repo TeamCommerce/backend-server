@@ -1,7 +1,10 @@
 package com.commerce.backendserver.auth.infra.oauth;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Map;
 
+@Component
 public class KakaoProfile implements OAuthProfile{
 
     private Map<String, Object> attributes;
@@ -18,7 +21,7 @@ public class KakaoProfile implements OAuthProfile{
 
     @Override
     public String getId() {
-        return (String) attributes.get("id");
+        return String.valueOf(attributes.get("id"));
     }
 
     @Override

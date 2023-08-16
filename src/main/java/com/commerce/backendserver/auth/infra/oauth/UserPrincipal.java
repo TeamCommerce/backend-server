@@ -29,7 +29,7 @@ public class UserPrincipal implements CustomOAuth2User {
 
     @Override
     public String getName() {
-        return member.getNickname();
+        return member.getOauthId();
     }
 
     @Override
