@@ -1,5 +1,6 @@
 package com.commerce.backendserver.member.domain;
 
+import com.commerce.backendserver.auth.infra.oauth.OAuthType;
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,18 +22,31 @@ public class Member extends BaseEntity {
     @Column(unique = true)
     private String oauthId;
 
+    private String oauthType;
+
     private String nickname;
 
     //생성 메소드
-    private Member(String nickName, String oauthId) {
+    private Member(
+            String nickName,
+            String oauthId,
+            String oauthType
+    ) {
         this.nickname = nickName;
         this.oauthId = oauthId;
+        this.oauthType = oauthType;
     }
 
     public static Member createMember(
             String nickName,
-            String oauthId
+            String oauthId,
+            String oauthType
     ) {
-        return new Member(nickName, oauthId);
+        return new Member(nickName, oauthId, oauthType);
+    }
+
+    //편의 메서드
+    public void updateFromOAuth(String nickname) {
+        this.nickname = nickname;
     }
 }
