@@ -1,14 +1,17 @@
-package com.commerce.backendserver.api.presentation.member;
+package com.commerce.backendserver.member.presentation;
 
-import com.commerce.backendserver.domain.member.Member;
-import com.commerce.backendserver.infrastructure.persistence.MemberRepository;
+import com.commerce.backendserver.member.domain.Member;
+import com.commerce.backendserver.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
-import static com.commerce.backendserver.domain.member.Member.of;
+import static com.commerce.backendserver.member.domain.Member.of;
 
 @RestController
 @RequiredArgsConstructor

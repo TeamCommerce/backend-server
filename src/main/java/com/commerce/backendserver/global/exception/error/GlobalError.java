@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum GlobalError implements ErrorCode{
-  ;
+public enum GlobalError implements ErrorCode {
+    ;
 
-  private final String message;
+    private final String message;
 
-  private final HttpStatus status;
+    private final HttpStatus status;
 }
