@@ -1,12 +1,10 @@
 package com.commerce.backendserver.product.domain;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
-import com.commerce.backendserver.product.domain.promotion.Promotion;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 

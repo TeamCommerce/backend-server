@@ -4,7 +4,6 @@ import com.commerce.backendserver.product.domain.constants.ProductStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +15,6 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class ProductAttribute {
 
-    @NotNull
     @Column(columnDefinition = "int unsigned")
     private Integer inventory;
 
