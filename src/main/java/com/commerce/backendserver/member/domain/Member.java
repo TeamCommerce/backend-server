@@ -7,13 +7,10 @@ import lombok.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-@Builder
 @Entity
 @Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-@Table(name = "t_user")
+@Table(name = "t_member")
 public class Member extends BaseEntity {
 
     @Id
@@ -21,13 +18,21 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
-    private String nickName;
+    @Column(unique = true)
+    private String oauthId;
 
-    public static Member of(
-            String nickName
+    private String nickname;
+
+    //생성 메소드
+    private Member(String nickName, String oauthId) {
+        this.nickname = nickName;
+        this.oauthId = oauthId;
+    }
+
+    public static Member createMember(
+            String nickName,
+            String oauthId
     ) {
-        return Member.builder()
-                .nickName(nickName)
-                .build();
+        return new Member(nickName, oauthId);
     }
 }
