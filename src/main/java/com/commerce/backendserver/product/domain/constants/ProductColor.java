@@ -9,7 +9,8 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public enum ProductColor {
 
-    BLACK("Black", "#000000");
+    MATT_BLACK("매트 블랙", "#000000"),
+    PURE_WHITE("퓨어 화이트", "#ffffff");
 
     private String colorName;
     private String colorCode;

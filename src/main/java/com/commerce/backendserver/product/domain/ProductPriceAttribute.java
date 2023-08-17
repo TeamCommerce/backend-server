@@ -16,10 +16,10 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class ProductPriceAttribute {
 
-    @Column(columnDefinition = "int unsigned")
-    private Integer originPrice;
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
+
+    @Column(columnDefinition = "int unsigned")
+    private Integer originPrice;
 }

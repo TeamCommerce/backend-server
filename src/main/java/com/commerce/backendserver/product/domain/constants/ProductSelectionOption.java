@@ -9,15 +9,12 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-public enum ProductSize {
+public enum ProductSelectionOption {
 
-    EXTRA_SMALL(85, "XS"),
-    SMALL(90, "S"),
-    MEDIUM(95, "M"),
-    LARGE(100, "L"),
-    EXTRA_LARGE(105, "XL"),
-    TWO_EXTRA_LARGE(110, "2XL");
+    FLEECE_TRUE("기모_O"),
+    FLEECE_FALSE("기모_X"),
+    ELASTIC_BAND_TRUE("쭈리_O"),
+    ELASTIC_BAND_FALSE("쭈리_X");
 
-    private Integer numberSize;
-    private String stringSize;
+    private String name;
 }
