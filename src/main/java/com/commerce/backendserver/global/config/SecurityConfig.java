@@ -18,7 +18,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
@@ -28,13 +28,10 @@ import java.util.Collections;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final String LOGOUT_URL = "/logout";
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtExceptionHandlerFilter jwtExceptionHandlerFilter;
     private final OAuth2UserService<OAuth2UserRequest, OAuth2User> oauthLoginService;
     private final SimpleUrlAuthenticationSuccessHandler loginSuccessHandler;
-    private final LogoutHandler logoutHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
     public SecurityConfig(
@@ -42,7 +39,6 @@ public class SecurityConfig {
             JwtProvider jwtProvider,
             OAuth2UserService<OAuth2UserRequest, OAuth2User> oauthLoginService,
             SimpleUrlAuthenticationSuccessHandler loginSuccessHandler,
-            LogoutHandler logoutHandler,
             AuthenticationEntryPoint authenticationEntryPoint,
             MemberRepository memberRepository
     ) {
@@ -50,7 +46,6 @@ public class SecurityConfig {
         this.jwtExceptionHandlerFilter = new JwtExceptionHandlerFilter(objectMapper);
         this.oauthLoginService = oauthLoginService;
         this.loginSuccessHandler = loginSuccessHandler;
-        this.logoutHandler = logoutHandler;
         this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
@@ -69,16 +64,12 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(configurer ->
                         configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 로그아웃
-                .logout(configurer -> configurer
-                        .logoutUrl(LOGOUT_URL)
-                        .addLogoutHandler(logoutHandler))
                 .authorizeHttpRequests(registry -> registry
                         //모든 요청에 대해 인증 요구
                         .requestMatchers("/api/**").authenticated())
                 //Jwt 필터
                 .addFilterAt(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtExceptionHandlerFilter, JwtAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionHandlerFilter, SecurityContextHolderFilter.class)
                 //oauth
                 .oauth2Login(configurer -> configurer
                         .userInfoEndpoint(userInfoEndpointConfig ->
