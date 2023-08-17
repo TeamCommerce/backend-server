@@ -1,15 +1,13 @@
-package com.commerce.backendserver.product.domain;
+package com.commerce.backendserver.product.domain.option;
 
-import com.commerce.backendserver.product.domain.constants.ProductColor;
-import com.commerce.backendserver.product.domain.constants.ProductSelectionOption;
-import com.commerce.backendserver.product.domain.constants.ProductSize;
-import com.commerce.backendserver.product.domain.constants.ProductStatus;
-import com.commerce.backendserver.product.domain.promotion.Promotion;
+import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.product.domain.option.constants.ProductColor;
+import com.commerce.backendserver.product.domain.option.constants.ProductSize;
+import com.commerce.backendserver.product.domain.option.constants.ProductStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -26,7 +24,7 @@ public class ProductOption {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = PERSIST)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -36,10 +34,11 @@ public class ProductOption {
     @Enumerated(value = STRING)
     private ProductSize size;
 
-    @Enumerated(value = STRING)
-    private ProductSelectionOption selectionOption;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "option_id")
+    private SelectionOption option;
 
-    @Column(name = "additional_fee")
+    @Column(columnDefinition = "int unsigned")
     private int additionalFee;
 
     @Column(columnDefinition = "int unsigned")

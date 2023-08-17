@@ -1,17 +1,14 @@
 package com.commerce.backendserver.product.domain.constants;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import static lombok.AccessLevel.PROTECTED;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor(access = PROTECTED)
+@RequiredArgsConstructor
 public enum ProductCategory {
 
-    TOP("상의");
+    TOP("상의"),
+    BOT("하의");
 
-    private String value;
+    private final String value;
 }

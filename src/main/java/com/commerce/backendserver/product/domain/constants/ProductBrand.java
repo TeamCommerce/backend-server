@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Brand {
+public enum ProductBrand {
 
     ADADIS("Adadis"),
     IUP_STUDIO("IUP Studio");

@@ -1,10 +1,11 @@
 package com.commerce.backendserver.product.domain;
 
-import com.commerce.backendserver.product.domain.constants.Brand;
+import com.commerce.backendserver.product.domain.constants.ProductBrand;
 import com.commerce.backendserver.product.domain.constants.ProductCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Enumerated;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +19,7 @@ public class ProductCommonInfo {
 
     @Enumerated(value = STRING)
     @Column(columnDefinition = "varchar(100)")
-    private Brand brand;
+    private ProductBrand brand;
 
     @Column(columnDefinition = "varchar(100)")
     private String name;
