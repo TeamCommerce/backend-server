@@ -1,12 +1,8 @@
 package com.commerce.backendserver.auth.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
+@Transactional
 public interface TokenRepository extends JpaRepository<Token, Long> {
-
-    void deleteByMemberId(Long memberId);
-
-    Optional<Token> findByMemberId(Long memberId);
 }

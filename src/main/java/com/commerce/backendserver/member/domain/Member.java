@@ -25,7 +25,8 @@ public class Member extends BaseEntity {
 
     private String nickname;
 
-    //생성 메소드
+    //== Constructor Method ==//
+    @Builder
     private Member(
             String nickName,
             String oauthId,
@@ -41,10 +42,14 @@ public class Member extends BaseEntity {
             String oauthId,
             String oauthType
     ) {
-        return new Member(nickName, oauthId, oauthType);
+        return Member.builder()
+                .nickName(nickName)
+                .oauthId(oauthId)
+                .oauthType(oauthType)
+                .build();
     }
 
-    //편의 메서드
+    ////== Business Method ==//
     public void updateFromOAuth(String nickname) {
         this.nickname = nickname;
     }

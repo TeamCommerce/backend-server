@@ -3,8 +3,9 @@ package com.commerce.backendserver.global.config;
 import com.commerce.backendserver.auth.application.filter.JwtAuthenticationFilter;
 import com.commerce.backendserver.auth.application.filter.JwtExceptionHandlerFilter;
 import com.commerce.backendserver.auth.infra.jwt.JwtProvider;
-import com.commerce.backendserver.member.domain.MemberRepository;
+import com.commerce.backendserver.member.domain.MemberQueryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,6 +34,7 @@ public class SecurityConfig {
     private final OAuth2UserService<OAuth2UserRequest, OAuth2User> oauthLoginService;
     private final SimpleUrlAuthenticationSuccessHandler loginSuccessHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final String serverDomain;
 
     public SecurityConfig(
             ObjectMapper objectMapper,
@@ -40,13 +42,15 @@ public class SecurityConfig {
             OAuth2UserService<OAuth2UserRequest, OAuth2User> oauthLoginService,
             SimpleUrlAuthenticationSuccessHandler loginSuccessHandler,
             AuthenticationEntryPoint authenticationEntryPoint,
-            MemberRepository memberRepository
+            MemberQueryRepository memberQueryRepository,
+            @Value("${server.domain}") String serverDomain
     ) {
-        this.jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtProvider, memberRepository);
+        this.jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtProvider, memberQueryRepository);
         this.jwtExceptionHandlerFilter = new JwtExceptionHandlerFilter(objectMapper);
         this.oauthLoginService = oauthLoginService;
         this.loginSuccessHandler = loginSuccessHandler;
         this.authenticationEntryPoint = authenticationEntryPoint;
+        this.serverDomain = serverDomain;
     }
 
     @Bean
@@ -54,7 +58,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(configurer -> configurer.configurationSource(request -> {
                             CorsConfiguration cors = new CorsConfiguration();
-                            cors.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://106.10.59.143:8080"));
+                            cors.setAllowedOrigins(Arrays.asList("http://localhost:8080", serverDomain));
                             cors.setAllowedMethods(Collections.singletonList("*"));
                             cors.setAllowedHeaders(Collections.singletonList("*"));
                             cors.setAllowCredentials(true);

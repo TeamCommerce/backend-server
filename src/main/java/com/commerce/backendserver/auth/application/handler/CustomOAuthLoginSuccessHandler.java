@@ -1,6 +1,7 @@
 package com.commerce.backendserver.auth.application.handler;
 
 import com.commerce.backendserver.auth.domain.Token;
+import com.commerce.backendserver.auth.domain.TokenQueryRepository;
 import com.commerce.backendserver.auth.domain.TokenRepository;
 import com.commerce.backendserver.auth.infra.jwt.JwtProvider;
 import com.commerce.backendserver.auth.infra.oauth.CustomOAuth2User;
@@ -21,15 +22,18 @@ public class CustomOAuthLoginSuccessHandler extends SimpleUrlAuthenticationSucce
 
     private final JwtProvider tokenProvider;
     private final TokenRepository tokenRepository;
+    private final TokenQueryRepository tokenQueryRepository;
     private final String successRedirectUrl;
 
     public CustomOAuthLoginSuccessHandler(
             JwtProvider tokenProvider,
             TokenRepository tokenRepository,
+            TokenQueryRepository tokenQueryRepository,
             @Value("${oauth.success-redirect-url}") String successRedirectUrl
     ) {
         this.tokenProvider = tokenProvider;
         this.tokenRepository = tokenRepository;
+        this.tokenQueryRepository = tokenQueryRepository;
         this.successRedirectUrl = successRedirectUrl;
     }
 
@@ -55,7 +59,7 @@ public class CustomOAuthLoginSuccessHandler extends SimpleUrlAuthenticationSucce
     }
 
     private void saveOrUpdateToken(Long memberId, String refreshToken) {
-        tokenRepository.findByMemberId(memberId)
+        tokenQueryRepository.findByMemberId(memberId)
                 .ifPresentOrElse(token -> token.updateRefreshToken(refreshToken),
                         () -> tokenRepository.save(Token.of(refreshToken, memberId)));
     }

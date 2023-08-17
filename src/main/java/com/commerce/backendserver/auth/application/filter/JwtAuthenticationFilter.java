@@ -5,7 +5,7 @@ import com.commerce.backendserver.auth.infra.jwt.JwtProvider;
 import com.commerce.backendserver.auth.infra.oauth.UserPrincipal;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.member.domain.Member;
-import com.commerce.backendserver.member.domain.MemberRepository;
+import com.commerce.backendserver.member.domain.MemberQueryRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
-    private final MemberRepository memberRepository;
+    private final MemberQueryRepository memberRepository;
 
     @Override
     protected void doFilterInternal(
@@ -32,7 +32,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         String bearer = request.getHeader(HttpHeaders.AUTHORIZATION);
-
 
         if (hasBearer(bearer)) {
             chain.doFilter(request, response);

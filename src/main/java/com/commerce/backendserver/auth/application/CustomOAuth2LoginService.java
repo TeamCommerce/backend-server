@@ -4,6 +4,7 @@ import com.commerce.backendserver.auth.infra.oauth.OAuthProfile;
 import com.commerce.backendserver.auth.infra.oauth.OAuthProfileFactory;
 import com.commerce.backendserver.auth.infra.oauth.UserPrincipal;
 import com.commerce.backendserver.member.domain.Member;
+import com.commerce.backendserver.member.domain.MemberQueryRepository;
 import com.commerce.backendserver.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -20,6 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2LoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
+    private final MemberQueryRepository memberQueryRepository;
     private final MemberRepository memberRepository;
     private final OAuthProfileFactory oauthProfileFactory;
 
@@ -41,7 +43,7 @@ public class CustomOAuth2LoginService implements OAuth2UserService<OAuth2UserReq
     }
 
     private Member saveOrUpdateMember(OAuthProfile profile) {
-        Member member = memberRepository.findByOauthId(profile.getId())
+        Member member = memberQueryRepository.findByOauthId(profile.getId())
                 .orElseGet(() -> {
                     Member newMember = Member.createMember(
                             profile.getName(),

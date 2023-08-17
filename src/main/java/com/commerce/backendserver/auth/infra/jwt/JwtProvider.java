@@ -13,6 +13,8 @@ import java.security.Key;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
+import static com.commerce.backendserver.auth.exception.AuthError.TOKEN_EXPIRED;
+
 @Component
 public class JwtProvider {
     private static final int ACCESS_TOKEN_EXPIRATION_TIME = 60 * 15;
@@ -66,9 +68,9 @@ public class JwtProvider {
             Jws<Claims> claims = getClaims(token);
             Date expiration = claims.getBody().getExpiration();
             Date now = new Date();
-            if (!expiration.after(now)) throw CommerceException.of(AuthError.TOKEN_EXPIRED);
+            if (!expiration.after(now)) throw CommerceException.of(TOKEN_EXPIRED);
         } catch (ExpiredJwtException e) {
-            throw CommerceException.of(AuthError.TOKEN_EXPIRED);
+            throw CommerceException.of(TOKEN_EXPIRED);
         } catch (SignatureException | SecurityException | MalformedJwtException |
                  UnsupportedJwtException | IllegalArgumentException e) {
             throw CommerceException.of(AuthError.TOKEN_INVALID);
