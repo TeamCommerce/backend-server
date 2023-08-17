@@ -24,6 +24,7 @@ public class Token {
     @Column(nullable = false)
     private Long memberId;
 
+    //생성 메소드
     private Token(String refreshToken, Long memberId) {
         this.refreshToken = refreshToken;
         this.memberId = memberId;
@@ -31,5 +32,10 @@ public class Token {
 
     public static Token of(String refreshToken, Long memberId) {
         return new Token(refreshToken, memberId);
+    }
+
+    //편의 메소드
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

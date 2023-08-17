@@ -37,6 +37,11 @@ public class UserPrincipal implements CustomOAuth2User {
         return member.getId();
     }
 
+    @Override
+    public String getNickname() {
+        return member.getNickname();
+    }
+
     public static UserPrincipal of(Member member, Map<String, Object> attributes) {
         return new UserPrincipal(member, attributes);
     }
