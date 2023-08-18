@@ -24,7 +24,7 @@ public class MemberQueryRepositoryTest extends RepositoryTestBase {
     private Member memberA;
 
     @BeforeEach
-    void init() {
+    void setUp() {
         //given
         memberA = memberRepository.save(A.toEntity());
     }
