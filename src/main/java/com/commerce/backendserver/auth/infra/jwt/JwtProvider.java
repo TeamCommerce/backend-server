@@ -2,6 +2,7 @@ package com.commerce.backendserver.auth.infra.jwt;
 
 import com.commerce.backendserver.auth.exception.AuthError;
 import com.commerce.backendserver.global.exception.CommerceException;
+import com.google.gson.JsonSyntaxException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -19,7 +20,6 @@ import static com.commerce.backendserver.auth.exception.AuthError.TOKEN_EXPIRED;
 public class JwtProvider {
     private static final int ACCESS_TOKEN_EXPIRATION_TIME = 60 * 15;
     private static final int REFRESH_TOKEN_EXPIRATION_TIME = 60 * 60 * 24 * 14;
-    private static final String MEMBER_ID = "member_id";
 
     private final Key secretKey;
 
@@ -36,20 +36,18 @@ public class JwtProvider {
     }
 
     public Long getPayload(String token) {
-        return getClaims(token)
-                .getBody()
-                .get(MEMBER_ID, Long.class);
+        return Long.parseLong(
+                getClaims(token)
+                        .getBody()
+                        .getSubject());
     }
 
     private String createToken(Long id, long expireTime) {
-        Claims claims = Jwts.claims();
-        claims.put(MEMBER_ID, id);
-
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime expiration = now.plusSeconds(expireTime);
 
         return Jwts.builder()
-                .setClaims(claims)
+                .setSubject(String.valueOf(id))
                 .setIssuedAt(Date.from(now.toInstant()))
                 .setExpiration(Date.from(expiration.toInstant()))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -72,7 +70,7 @@ public class JwtProvider {
         } catch (ExpiredJwtException e) {
             throw CommerceException.of(TOKEN_EXPIRED);
         } catch (SignatureException | SecurityException | MalformedJwtException |
-                 UnsupportedJwtException | IllegalArgumentException e) {
+                 UnsupportedJwtException | IllegalArgumentException | JsonSyntaxException e) {
             throw CommerceException.of(AuthError.TOKEN_INVALID);
         }
     }
