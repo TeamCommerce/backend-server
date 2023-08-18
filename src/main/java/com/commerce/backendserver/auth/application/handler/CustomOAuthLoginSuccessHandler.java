@@ -61,7 +61,7 @@ public class CustomOAuthLoginSuccessHandler extends SimpleUrlAuthenticationSucce
     private void saveOrUpdateToken(Long memberId, String refreshToken) {
         tokenQueryRepository.findByMemberId(memberId)
                 .ifPresentOrElse(token -> token.updateRefreshToken(refreshToken),
-                        () -> tokenRepository.save(Token.of(refreshToken, memberId)));
+                        () -> tokenRepository.save(Token.issue(refreshToken, memberId)));
     }
 
     private String generateRedirectUrl(String accessToken, String refreshToken, String name) {
