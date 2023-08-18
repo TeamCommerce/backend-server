@@ -12,7 +12,7 @@ import static com.commerce.backendserver.common.fixture.MemberFixture.A;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("MemberQueryRepository Test (Domain layer)")
+@DisplayName("[MemberQueryRepository Test] (Domain layer)")
 public class MemberQueryRepositoryTest extends RepositoryTestBase {
 
     @Autowired

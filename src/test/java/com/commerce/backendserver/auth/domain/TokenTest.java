@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Token Test (Domain layer)")
+@DisplayName("[Token Test] (Domain layer)")
 public class TokenTest {
 
     @Test

@@ -12,7 +12,7 @@ import static com.commerce.backendserver.common.utils.TokenUtils.TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("TokenQueryRepository Test (Domain layer)")
+@DisplayName("[TokenQueryRepository Test] (Domain layer)")
 public class TokenQueryRepositoryTest extends RepositoryTestBase {
 
     @Autowired
