@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(value = TestController.class)
 @DisplayName("ApiExceptionHandler Test")
-public class ApiExceptionHandlerTest {
+class ApiExceptionHandlerTest {
 
     private static final String BASE_URL = "/test";
 

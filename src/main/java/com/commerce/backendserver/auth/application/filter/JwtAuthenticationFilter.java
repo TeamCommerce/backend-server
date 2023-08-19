@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String bearer = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (hasBearer(bearer)) {
+        if (notExistBearer(bearer)) {
             chain.doFilter(request, response);
             return;
         }
@@ -44,6 +44,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Long memberId = jwtProvider.getPayload(token);
 
         setAuthentication(findMember(memberId));
+
+        chain.doFilter(request, response);
     }
 
     private void setAuthentication(Member member) {
@@ -67,7 +69,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return bearer.substring("Bearer ".length());
     }
 
-    private boolean hasBearer(String bearer) {
+    private boolean notExistBearer(String bearer) {
         return bearer == null || !bearer.startsWith("Bearer ");
     }
 }
