@@ -1,5 +1,6 @@
 package com.commerce.backendserver.product.domain.option;
 
+import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.option.constants.ProductColor;
 import com.commerce.backendserver.product.domain.option.constants.ProductSize;
@@ -8,7 +9,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
@@ -20,7 +20,7 @@ import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 @Entity
 @Table(name = "t_product_option")
 @NoArgsConstructor(access = PROTECTED)
-public class ProductOption {
+public class ProductOption extends BaseEntity {
 
     @Id
     @Column(name = "product_option_id")

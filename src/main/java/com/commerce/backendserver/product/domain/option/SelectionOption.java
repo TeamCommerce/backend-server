@@ -1,5 +1,6 @@
 package com.commerce.backendserver.product.domain.option;
 
+import com.commerce.backendserver.global.auditing.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Table(name = "t_selction_option")
 @NoArgsConstructor(access = PROTECTED)
-public class SelectionOption {
+public class SelectionOption extends BaseEntity {
 
     @Id
     @Column(name = "selection_option_id")

@@ -1,7 +1,6 @@
 package com.commerce.backendserver.product.domain.constants;
 
 import com.commerce.backendserver.global.exception.CommerceException;
-import com.commerce.backendserver.product.exception.ProductError;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
