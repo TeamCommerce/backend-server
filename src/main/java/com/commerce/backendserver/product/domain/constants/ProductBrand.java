@@ -5,11 +5,10 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Category {
+public enum ProductBrand {
 
-    SHIRT("상의"),
-    PANTS("하의"),
-    SET("상의/하의 세트");
+    ADADIS("Adadis"),
+    IUP_STUDIO("IUP Studio");
 
-    private final String category;
+    private final String brand;
 }

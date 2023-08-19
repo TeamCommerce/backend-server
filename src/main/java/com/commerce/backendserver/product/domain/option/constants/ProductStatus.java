@@ -1,4 +1,4 @@
-package com.commerce.backendserver.product.domain.constants;
+package com.commerce.backendserver.product.domain.option.constants;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
