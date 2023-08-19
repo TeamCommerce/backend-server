@@ -6,12 +6,9 @@ import com.commerce.backendserver.product.domain.constants.ProductCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 import static com.commerce.backendserver.product.exception.ProductError.*;
 import static jakarta.persistence.EnumType.STRING;

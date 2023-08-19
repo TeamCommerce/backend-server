@@ -26,7 +26,7 @@ public class ProductImage extends BaseEntity {
     private Product product;
 
     @Embedded
-    @AttributeOverride(name = "url", column = @Column(name = "review_image", columnDefinition = "longtext"))
-    @AttributeOverride(name = "path", column = @Column(name = "review_image_path", columnDefinition = "varchar(200)"))
+    @AttributeOverride(name = "url", column = @Column(name = "product_image", columnDefinition = "longtext"))
+    @AttributeOverride(name = "path", column = @Column(name = "product_image_path", columnDefinition = "varchar(200)"))
     private Image image;
 }
