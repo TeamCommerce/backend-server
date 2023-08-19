@@ -7,11 +7,14 @@ import com.commerce.backendserver.product.domain.option.constants.ProductStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
+import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Getter
 @Entity
@@ -25,6 +28,7 @@ public class ProductOption {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
+    @OnDelete(action = CASCADE)
     @JoinColumn(name = "product_id")
     private Product product;
 
