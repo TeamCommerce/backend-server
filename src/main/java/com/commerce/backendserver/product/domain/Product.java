@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -29,6 +30,6 @@ public class Product extends BaseEntity {
     @Embedded
     private ProductPriceAttribute priceAttribute;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = PERSIST, orphanRemoval = true)
     private List<ProductOption> options = new ArrayList<>();
 }
