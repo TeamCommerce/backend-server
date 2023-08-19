@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.commerce.backendserver.product.exception.ProductError.*;
 import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.util.Objects.isNull;
 import static lombok.AccessLevel.PROTECTED;
@@ -28,8 +29,8 @@ public class Product extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "product")
-    private List<ProductImage> images;
+    @OneToMany(mappedBy = "product", cascade = REMOVE, orphanRemoval = true)
+    private List<ProductImage> images = new ArrayList<>();
 
     @Embedded
     private ProductCommonInfo info;
