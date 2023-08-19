@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("[GoogleUserProfile Test] (Infra layer)")
-public class GoogleUserProfileTest {
+class GoogleUserProfileTest {
 
     private GoogleProfile googleProfile;
     private Map<String, Object> attributes;

@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("[OAuthType Test] (Infra layer)")
-public class OAuthTypeTest {
+class OAuthTypeTest {
 
     @Test
     @DisplayName("[isGoogle method]")

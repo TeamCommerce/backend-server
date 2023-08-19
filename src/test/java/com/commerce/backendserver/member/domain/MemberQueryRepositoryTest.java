@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("[MemberQueryRepository Test] (Domain layer)")
-public class MemberQueryRepositoryTest extends RepositoryTestBase {
+class MemberQueryRepositoryTest extends RepositoryTestBase {
 
     @Autowired
     private MemberQueryRepository memberQueryRepository;

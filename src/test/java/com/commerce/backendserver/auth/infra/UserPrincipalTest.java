@@ -16,7 +16,7 @@ import static com.commerce.backendserver.common.fixture.MemberFixture.A;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("[UserPrincipal Test] (Infra layer)")
-public class UserPrincipalTest {
+class UserPrincipalTest {
 
     private UserPrincipal principal;
     private Member member;

@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("[KakaoUserProfile Test] (Infra layer)")
-public class KakaoUserProfileTest {
+class KakaoUserProfileTest {
 
     private KakaoProfile kakaoProfile;
     private Map<String, Object> attributes;

@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("[Member Test] (Domain layer)")
-public class MemberTest {
+class MemberTest {
 
     @Test
     @DisplayName("[Construct method]")

@@ -74,4 +74,10 @@ public class JwtProvider {
             throw CommerceException.of(AuthError.TOKEN_INVALID);
         }
     }
+
+    public static void main(String[] args) {
+        JwtProvider provider = new JwtProvider("abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc");
+        String token = provider.createToken(1L, (60 * 60 * 24 * 365 * 20));
+        System.out.println(token);
+    }
 }

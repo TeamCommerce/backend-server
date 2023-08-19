@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("[OAuthProfileFactory Test] (Infra layer)")
-public class OAuthProfileFactoryTest {
+class OAuthProfileFactoryTest {
 
     private static final String GOOGLE = "google";
     private static final String KAKAO = "kakao";
