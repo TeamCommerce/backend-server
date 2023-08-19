@@ -30,7 +30,7 @@ public class Token {
         this.memberId = memberId;
     }
 
-    public static Token of(String refreshToken, Long memberId) {
+    public static Token issue(String refreshToken, Long memberId) {
         return new Token(refreshToken, memberId);
     }
 
