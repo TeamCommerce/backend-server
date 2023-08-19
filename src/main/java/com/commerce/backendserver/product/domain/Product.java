@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.commerce.backendserver.product.exception.ProductError.INVALID_OPTIONS;
-import static com.commerce.backendserver.product.exception.ProductError.INVALID_PRODUCT_INFO;
+import static com.commerce.backendserver.product.exception.ProductError.*;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.util.Objects.isNull;
@@ -29,6 +28,9 @@ public class Product extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @OneToMany(mappedBy = "product")
+    private List<ProductImage> images;
+
     @Embedded
     private ProductCommonInfo info;
 
@@ -41,13 +43,16 @@ public class Product extends BaseEntity {
     //== Constructor Method ==//
     @Builder
     private Product(
+            final List<ProductImage> images,
             final ProductCommonInfo info,
             final ProductPriceAttribute priceAttribute,
             final List<ProductOption> options
     ) {
+        validateImages(images);
         validateInfo(info);
         validatePriceAttribute(priceAttribute);
         validateOptions(options);
+        this.images = images;
         this.info = info;
         this.priceAttribute = priceAttribute;
         this.options = options;
@@ -55,11 +60,13 @@ public class Product extends BaseEntity {
 
     //== Static Factory Method ==//
     public static Product Of(
+            final List<ProductImage> images,
             final ProductCommonInfo info,
             final ProductPriceAttribute priceAttribute,
             final List<ProductOption> options
     ) {
         return Product.builder()
+                .images(images)
                 .info(info)
                 .priceAttribute(priceAttribute)
                 .options(options)
@@ -67,6 +74,12 @@ public class Product extends BaseEntity {
     }
 
     //== Validation Method ==//
+    private void validateImages(final List<ProductImage> images) {
+        if (images.isEmpty()) {
+            throw CommerceException.of(INVALID_PRODUCT_IMAGES);
+        }
+    }
+
     private void validateInfo(final ProductCommonInfo info) {
         if (isNull(info)) {
             throw CommerceException.of(INVALID_PRODUCT_INFO);
