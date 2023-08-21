@@ -14,11 +14,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(value = TestController.class)
+@WebMvcTest(controllers = TestController.class)
 @DisplayName("ApiExceptionHandler Test")
 class ApiExceptionHandlerTest {
-
-    private static final String BASE_URL = "/test";
 
     @Autowired
     private MockMvc mockMvc;
@@ -27,6 +25,8 @@ class ApiExceptionHandlerTest {
     @DisplayName("Exception Handling Test")
     @WithMockUser
     class exceptionHandler {
+
+        private static final String BASE_URL = "/test";
 
         @Test
         @DisplayName("[MethodArgumentNotValidException]")
