@@ -65,7 +65,7 @@ class JwtProviderTest {
         }
 
         @Test
-        @DisplayName("fail by expired")
+        @DisplayName("fail by expired token")
         void failByExpired() {
             //given
             JwtProvider provider = new JwtProvider(SECRET_KEY, FAIL_VALIDITY, FAIL_VALIDITY);
@@ -78,7 +78,7 @@ class JwtProviderTest {
         }
 
         @Test
-        @DisplayName("fail by invalid")
+        @DisplayName("fail by invalid token")
         void failByInvalid() {
             //given
             final String invalidKey = "kkwqeqeewwekkkkklkkkkkkdskddfdfdfdfdkfkkkdfddfd";
