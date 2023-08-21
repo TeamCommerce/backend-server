@@ -18,21 +18,27 @@ import static com.commerce.backendserver.auth.exception.AuthError.TOKEN_EXPIRED;
 
 @Component
 public class JwtProvider {
-    private static final int ACCESS_TOKEN_EXPIRATION_TIME = 60 * 15;
-    private static final int REFRESH_TOKEN_EXPIRATION_TIME = 60 * 60 * 24 * 14;
 
     private final Key secretKey;
+    private final long accessTokenValidity;
+    private final long refreshTokenValidity;
 
-    public JwtProvider(@Value("${jwt.secret.key}") String secretKey) {
+    public JwtProvider(
+            @Value("${jwt.secret.key}") String secretKey,
+            @Value("${jwt.access-token-validity}") long accessTokenValidity,
+            @Value("${jwt.refresh-token-validity}") long refreshTokenValidity
+    ) {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+        this.accessTokenValidity = accessTokenValidity;
+        this.refreshTokenValidity = refreshTokenValidity;
     }
 
     public String createAccessToken(Long memberId) {
-        return createToken(memberId, ACCESS_TOKEN_EXPIRATION_TIME);
+        return createToken(memberId, accessTokenValidity);
     }
 
     public String createRefreshToken(Long memberId) {
-        return createToken(memberId, REFRESH_TOKEN_EXPIRATION_TIME);
+        return createToken(memberId, refreshTokenValidity);
     }
 
     public Long getPayload(String token) {
@@ -55,6 +61,8 @@ public class JwtProvider {
     }
 
     private Jws<Claims> getClaims(String token) {
+
+
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
@@ -73,11 +81,5 @@ public class JwtProvider {
                  UnsupportedJwtException | IllegalArgumentException | JsonSyntaxException e) {
             throw CommerceException.of(AuthError.TOKEN_INVALID);
         }
-    }
-
-    public static void main(String[] args) {
-        JwtProvider provider = new JwtProvider("abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc");
-        String token = provider.createToken(1L, (60 * 60 * 24 * 365 * 20));
-        System.out.println(token);
     }
 }
