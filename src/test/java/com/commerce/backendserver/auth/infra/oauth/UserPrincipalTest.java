@@ -1,6 +1,5 @@
-package com.commerce.backendserver.auth.infra;
+package com.commerce.backendserver.auth.infra.oauth;
 
-import com.commerce.backendserver.auth.infra.oauth.UserPrincipal;
 import com.commerce.backendserver.member.domain.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
