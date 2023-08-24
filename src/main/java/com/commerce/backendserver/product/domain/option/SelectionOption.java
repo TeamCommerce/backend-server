@@ -2,6 +2,7 @@ package com.commerce.backendserver.product.domain.option;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,9 +20,36 @@ public class SelectionOption extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(name = "type", columnDefinition = "varchar(30)")
+    @Column(
+            nullable = false,
+            name = "type",
+            columnDefinition = "varchar(30)")
     private String type;
 
-    @Column(name = "value", columnDefinition = "varchar(30)")
+    @Column(
+            nullable = false,
+            name = "value",
+            columnDefinition = "varchar(30)")
     private String value;
+
+    //== Constructor Method ==//
+    @Builder
+    private SelectionOption(
+            final String type,
+            final String value
+    ) {
+        this.type = type;
+        this.value = value;
+    }
+
+    //== Static Factory Method ==//
+    public static SelectionOption of(
+            final String type,
+            final String value
+    ) {
+        return SelectionOption.builder()
+                .type(type)
+                .value(value)
+                .build();
+    }
 }

@@ -10,9 +10,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.commerce.backendserver.product.exception.ProductError.*;
+import static com.commerce.backendserver.product.exception.ProductError.INVALID_PRICE_ATTRIBUTE;
 import static jakarta.persistence.FetchType.LAZY;
-import static java.util.Objects.isNull;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
@@ -24,7 +23,7 @@ public class ProductPriceAttribute {
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
 
-    @Column(columnDefinition = "int unsigned")
+    @Column(nullable = false, columnDefinition = "int unsigned")
     private Integer originPrice;
 
     //== Constructor Method ==//
@@ -33,8 +32,7 @@ public class ProductPriceAttribute {
             final Promotion promotion,
             final Integer originPrice
     ) {
-        validatePromotion(promotion);
-        validateOriginPrice(originPrice);
+        validatePrice(originPrice);
         this.promotion = promotion;
         this.originPrice = originPrice;
     }
@@ -50,18 +48,9 @@ public class ProductPriceAttribute {
                 .build();
     }
 
-    //== Validation Method ==//
-    private void validatePromotion(final Promotion promotion) {
-        if (isNull(promotion)) {
-            throw CommerceException.of(INVALID_PROMOTION);
-        }
-    }
-
-    private void validateOriginPrice(final Integer originPrice) {
-        if (isNull(originPrice)) {
-            throw CommerceException.of(INVALID_ORIGIN_PRICE);
-        } else if (originPrice < 0) {
-            throw CommerceException.of(MINUS_ORIGIN_PRICE);
+    private void validatePrice(Integer originPrice) {
+        if (originPrice < 0) {
+            throw CommerceException.of(INVALID_PRICE_ATTRIBUTE);
         }
     }
 }

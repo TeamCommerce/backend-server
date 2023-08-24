@@ -5,12 +5,10 @@ import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.ProductQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import static com.commerce.backendserver.product.exception.ProductError.NOT_FOUND_PRODUCT;
+import static com.commerce.backendserver.global.exception.error.GlobalError.GLOBAL_NOT_FOUND;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductFindService {
 
@@ -18,6 +16,6 @@ public class ProductFindService {
 
     public Product findProductById(Long productId) {
         return productQueryRepository.findById(productId)
-                .orElseThrow(() -> CommerceException.of(NOT_FOUND_PRODUCT));
+                .orElseThrow(() -> CommerceException.of(GLOBAL_NOT_FOUND));
     }
 }

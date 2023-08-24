@@ -15,5 +15,5 @@ public record ProductCreateRequest(
         @NotNull List<String> colors,
         @NotNull List<String> Sizes
 ) {
-    // todo 개발 예정
+
 }

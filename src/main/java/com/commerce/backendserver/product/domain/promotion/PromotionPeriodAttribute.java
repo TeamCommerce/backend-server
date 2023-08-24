@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class PromotionPeriodAttribute {
 
-    @Column(name = "start_date_time", columnDefinition = "datetime")
+    @Column(nullable = false, name = "start_date_time", columnDefinition = "datetime")
     @JsonFormat(
             shape = STRING,
             pattern = "yyyy-MM-dd a HH:mm")
