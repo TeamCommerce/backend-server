@@ -24,16 +24,17 @@ public class ProductCommonInfo {
     private static final int DESCRIPTION_MAX_LENGTH = 300;
 
     @Enumerated(value = STRING)
-    @Column(columnDefinition = "varchar(100)")
+    @Column(nullable = false)
     private ProductBrand brand;
 
-    @Column(columnDefinition = "varchar(100)")
+    @Column(nullable = false, columnDefinition = "varchar(100)")
     private String name;
 
     @Enumerated(value = STRING)
+    @Column(nullable = false)
     private ProductCategory category;
 
-    @Column(columnDefinition = "varchar(100)")
+    @Column(columnDefinition = "varchar(300)")
     private String description;
 
     //== Constructor Method ==//
@@ -44,9 +45,6 @@ public class ProductCommonInfo {
             final ProductCategory category,
             final String description
     ) {
-        validateBrand(brand);
-        validateName(name);
-        validateCategory(category);
         validateDescription(description);
         this.brand = brand;
         this.name = name;
@@ -70,24 +68,6 @@ public class ProductCommonInfo {
     }
 
     //== Validation Method ==//
-    private void validateBrand(final ProductBrand brand) {
-        if (isNull(brand)) {
-            throw CommerceException.of(INVALID_BRAND);
-        }
-    }
-
-    private void validateName(final String name) {
-        if (hasText(name)) {
-            throw CommerceException.of(INVALID_PRODUCT_NAME);
-        }
-    }
-
-    private void validateCategory(final ProductCategory category) {
-        if (isNull(category)) {
-            throw CommerceException.of(INVALID_PRODUCT_CATEGORY);
-        }
-    }
-
     private void validateDescription(final String description) {
         if (isNull(description)) {
             throw CommerceException.of(INVALID_PRODUCT_DESCRIPTION);

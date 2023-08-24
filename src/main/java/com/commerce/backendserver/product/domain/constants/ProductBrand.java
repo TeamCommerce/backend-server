@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 import static com.commerce.backendserver.product.exception.ProductError.UNKNOWN_BRAND;
 
@@ -19,13 +18,9 @@ public enum ProductBrand {
     private final String value;
 
     public static ProductBrand fromString(String input) {
-        Optional<ProductBrand> brand = Arrays.stream(values())
+        return Arrays.stream(values())
                 .filter(b -> b.getValue().equalsIgnoreCase(input))
-                .findFirst();
-
-        if (brand.isEmpty()) {
-            throw CommerceException.of(UNKNOWN_BRAND);
-        }
-        return brand.get();
+                .findFirst()
+                .orElseThrow(() -> CommerceException.of(UNKNOWN_BRAND));
     }
 }

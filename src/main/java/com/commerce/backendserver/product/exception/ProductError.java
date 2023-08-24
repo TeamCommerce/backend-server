@@ -13,8 +13,6 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public enum ProductError implements ErrorCode {
 
     // [Domain] Product
-    INVALID_PRODUCT_INFO("상품 기본 정보가 올바르지 않습니다.", BAD_REQUEST),
-    INVALID_PRODUCT_IMAGES("상품 이미지가 유효하지 않습니다.", BAD_REQUEST),
     INVALID_PRICE_ATTRIBUTE("상품 가격 정보가 올바르지 않습니다.", BAD_REQUEST),
     INVALID_OPTIONS("상품 옵션 정보가 올바르지 않습니다.", BAD_REQUEST),
 
@@ -29,10 +27,7 @@ public enum ProductError implements ErrorCode {
     // [Domain] ProductPriceAttribute
     INVALID_PROMOTION("상품 프로모션 정보가 올바르지 않습니다.", BAD_REQUEST),
     INVALID_ORIGIN_PRICE("상품 정가가 올바르지 않습니다.", BAD_REQUEST),
-    MINUS_ORIGIN_PRICE("상품 정가는 음수일 수 없습니다.", BAD_REQUEST),
-
-    // [Service] ProductFindService
-    NOT_FOUND_PRODUCT("존재하지 않는 상품입니다.", NOT_FOUND);
+    MINUS_ORIGIN_PRICE("상품 정가는 음수일 수 없습니다.", BAD_REQUEST);
 
 
     private final String message;

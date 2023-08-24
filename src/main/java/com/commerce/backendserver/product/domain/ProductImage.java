@@ -3,6 +3,7 @@ package com.commerce.backendserver.product.domain;
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.image.domain.Image;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +27,27 @@ public class ProductImage extends BaseEntity {
     private Product product;
 
     @Embedded
-    @AttributeOverride(name = "url", column = @Column(name = "product_image", columnDefinition = "longtext"))
-    @AttributeOverride(name = "path", column = @Column(name = "product_image_path", columnDefinition = "varchar(200)"))
+    @AttributeOverride(name = "url", column = @Column(name = "product_image_url", columnDefinition = "longtext"))
     private Image image;
+
+    //== Constructor Method ==//
+    @Builder
+    private ProductImage(
+            Product product,
+            Image image
+    ) {
+        this.product = product;
+        this.image = image;
+    }
+
+    //== Static Factory Method ==//
+    public ProductImage of(
+            Product product,
+            Image image
+    ) {
+        return ProductImage.builder()
+                .product(product)
+                .image(image)
+                .build();
+    }
 }
