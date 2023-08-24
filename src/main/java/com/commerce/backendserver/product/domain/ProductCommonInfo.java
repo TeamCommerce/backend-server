@@ -10,11 +10,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.commerce.backendserver.product.exception.ProductError.*;
+import static com.commerce.backendserver.product.exception.ProductError.INVALID_PRODUCT_DESCRIPTION;
+import static com.commerce.backendserver.product.exception.ProductError.TOO_LONG_PRODUCT_DESCRIPTION;
 import static jakarta.persistence.EnumType.STRING;
 import static java.util.Objects.isNull;
 import static lombok.AccessLevel.PROTECTED;
-import static org.springframework.util.StringUtils.hasText;
 
 @Getter
 @Embeddable
