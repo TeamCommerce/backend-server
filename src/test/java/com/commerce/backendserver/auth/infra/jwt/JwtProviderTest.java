@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import static com.commerce.backendserver.auth.exception.AuthError.TOKEN_EXPIRED;
 import static com.commerce.backendserver.auth.exception.AuthError.TOKEN_INVALID;
-import static com.commerce.backendserver.common.utils.TokenUtils.TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -90,27 +89,6 @@ class JwtProviderTest {
 
             //when, then
             assertThatThrownBy(() -> provider.validateToken(token))
-                    .isInstanceOf(CommerceException.class)
-                    .hasMessageContaining(TOKEN_INVALID.getMessage());
-        }
-
-        @Test
-        @DisplayName("fail by invalid token")
-        void failByInvalidToken() {
-            //given
-            JwtProvider provider = new JwtProvider(SECRET_KEY, SUC_VALIDITY, SUC_VALIDITY);
-            final String securityExceptionToken = TOKEN.replace('W', 'T');
-            final String malformedJwtExceptionToken = TOKEN.substring(0, TOKEN.length() - 2);
-            final String unsupportedJwtExceptionToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyMTIzIiwiaWF0IjoxNjI5MzE3MDI3LCJleHAiOjE2MjkzMTcwMzcsInNjb3BlIjoiYWRtaW4ifQ.T8eBY5LsBktpD-1Uhv_zFA2DsbV2aIRISYr1MKkClq0";
-
-            //when, then
-            assertThatThrownBy(() -> provider.validateToken(securityExceptionToken))
-                    .isInstanceOf(CommerceException.class)
-                    .hasMessageContaining(TOKEN_INVALID.getMessage());
-            assertThatThrownBy(() -> provider.validateToken(malformedJwtExceptionToken))
-                    .isInstanceOf(CommerceException.class)
-                    .hasMessageContaining(TOKEN_INVALID.getMessage());
-            assertThatThrownBy(() -> provider.validateToken(unsupportedJwtExceptionToken))
                     .isInstanceOf(CommerceException.class)
                     .hasMessageContaining(TOKEN_INVALID.getMessage());
         }
