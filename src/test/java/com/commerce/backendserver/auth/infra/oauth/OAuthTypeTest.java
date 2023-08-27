@@ -1,6 +1,5 @@
-package com.commerce.backendserver.auth.infra;
+package com.commerce.backendserver.auth.infra.oauth;
 
-import com.commerce.backendserver.auth.infra.oauth.OAuthType;
 import com.commerce.backendserver.global.exception.CommerceException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
