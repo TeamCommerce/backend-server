@@ -1,9 +1,5 @@
-package com.commerce.backendserver.auth.infra;
+package com.commerce.backendserver.auth.infra.oauth;
 
-import com.commerce.backendserver.auth.infra.oauth.GoogleProfile;
-import com.commerce.backendserver.auth.infra.oauth.KakaoProfile;
-import com.commerce.backendserver.auth.infra.oauth.OAuthProfile;
-import com.commerce.backendserver.auth.infra.oauth.OAuthProfileFactory;
 import com.commerce.backendserver.global.exception.CommerceException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
