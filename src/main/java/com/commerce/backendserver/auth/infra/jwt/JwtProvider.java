@@ -69,10 +69,7 @@ public class JwtProvider {
 
     public void validateToken(String token) {
         try {
-            Jws<Claims> claims = getClaims(token);
-            Date expiration = claims.getBody().getExpiration();
-            Date now = new Date();
-            if (!expiration.after(now)) throw CommerceException.of(TOKEN_EXPIRED);
+            getClaims(token);
         } catch (ExpiredJwtException e) {
             throw CommerceException.of(TOKEN_EXPIRED);
         } catch (SignatureException | SecurityException | MalformedJwtException |
