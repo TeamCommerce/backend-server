@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.commerce.backendserver.auth.exception.AuthError.NOT_EXIST_OAUTH_TYPE;
@@ -47,10 +48,22 @@ class OAuthProfileFactoryTest {
         }
 
         @Test
-        @DisplayName("Not supported type")
-        void fail() {
+        @DisplayName("Not supported type 1")
+        void failByNotSupportedType1() {
             //when, then
             assertThatThrownBy(() -> factory.loadOAuthProfile(NONE, null))
+                    .isInstanceOf(CommerceException.class)
+                    .hasMessageContaining(NOT_EXIST_OAUTH_TYPE.getMessage());
+        }
+
+        @Test
+        @DisplayName("Not supported type 2")
+        void failByNotSupportedType2() {
+            //given
+            OAuthProfileFactory factory = new OAuthProfileFactory(new ArrayList<>());
+
+            //when, then
+            assertThatThrownBy(() -> factory.loadOAuthProfile(GOOGLE, null))
                     .isInstanceOf(CommerceException.class)
                     .hasMessageContaining(NOT_EXIST_OAUTH_TYPE.getMessage());
         }
