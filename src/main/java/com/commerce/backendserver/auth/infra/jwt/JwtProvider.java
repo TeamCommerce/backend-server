@@ -76,7 +76,7 @@ public class JwtProvider {
         } catch (ExpiredJwtException e) {
             throw CommerceException.of(TOKEN_EXPIRED);
         } catch (SignatureException | SecurityException | MalformedJwtException |
-                 UnsupportedJwtException | IllegalArgumentException | JsonSyntaxException e) {
+                 UnsupportedJwtException | JsonSyntaxException e) {
             throw CommerceException.of(TOKEN_INVALID);
         }
     }
