@@ -1,6 +1,5 @@
 package com.commerce.backendserver.auth.infra.jwt;
 
-import com.commerce.backendserver.auth.exception.AuthError;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.google.gson.JsonSyntaxException;
 import io.jsonwebtoken.*;
@@ -15,6 +14,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 import static com.commerce.backendserver.auth.exception.AuthError.TOKEN_EXPIRED;
+import static com.commerce.backendserver.auth.exception.AuthError.TOKEN_INVALID;
 
 @Component
 public class JwtProvider {
@@ -77,7 +77,7 @@ public class JwtProvider {
             throw CommerceException.of(TOKEN_EXPIRED);
         } catch (SignatureException | SecurityException | MalformedJwtException |
                  UnsupportedJwtException | IllegalArgumentException | JsonSyntaxException e) {
-            throw CommerceException.of(AuthError.TOKEN_INVALID);
+            throw CommerceException.of(TOKEN_INVALID);
         }
     }
 }
