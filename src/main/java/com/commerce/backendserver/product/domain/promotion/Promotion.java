@@ -19,7 +19,7 @@ public class Promotion extends BaseEntity {
     @Column(name = "promotion_id")
     private Long id;
 
-    @Column(name = "name", columnDefinition = "varchar(200)")
+    @Column(nullable = false, name = "name", columnDefinition = "varchar(200)")
     private String name;
 
     @Embedded

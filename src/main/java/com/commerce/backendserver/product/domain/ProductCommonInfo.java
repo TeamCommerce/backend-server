@@ -1,15 +1,19 @@
 package com.commerce.backendserver.product.domain;
 
+import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.product.domain.constants.ProductBrand;
 import com.commerce.backendserver.product.domain.constants.ProductCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Enumerated;
-import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static com.commerce.backendserver.product.exception.ProductError.INVALID_PRODUCT_DESCRIPTION;
+import static com.commerce.backendserver.product.exception.ProductError.TOO_LONG_PRODUCT_DESCRIPTION;
 import static jakarta.persistence.EnumType.STRING;
+import static java.util.Objects.isNull;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
@@ -17,16 +21,58 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class ProductCommonInfo {
 
+    private static final int DESCRIPTION_MAX_LENGTH = 300;
+
     @Enumerated(value = STRING)
-    @Column(columnDefinition = "varchar(100)")
+    @Column(nullable = false)
     private ProductBrand brand;
 
-    @Column(columnDefinition = "varchar(100)")
+    @Column(nullable = false, columnDefinition = "varchar(100)")
     private String name;
 
     @Enumerated(value = STRING)
+    @Column(nullable = false)
     private ProductCategory category;
 
-    @Column(columnDefinition = "varchar(100)")
+    @Column(columnDefinition = "varchar(300)")
     private String description;
+
+    //== Constructor Method ==//
+    @Builder
+    private ProductCommonInfo(
+            final ProductBrand brand,
+            final String name,
+            final ProductCategory category,
+            final String description
+    ) {
+        validateDescription(description);
+        this.brand = brand;
+        this.name = name;
+        this.category = category;
+        this.description = description;
+    }
+
+    //== Static Factory Method ==//
+    public static ProductCommonInfo of(
+            final ProductBrand brand,
+            final String name,
+            final ProductCategory category,
+            final String description
+    ) {
+        return ProductCommonInfo.builder()
+                .brand(brand)
+                .name(name)
+                .category(category)
+                .description(description)
+                .build();
+    }
+
+    //== Validation Method ==//
+    private void validateDescription(final String description) {
+        if (isNull(description)) {
+            throw CommerceException.of(INVALID_PRODUCT_DESCRIPTION);
+        } else if (description.length() > DESCRIPTION_MAX_LENGTH) {
+            throw CommerceException.of(TOO_LONG_PRODUCT_DESCRIPTION);
+        }
+    }
 }
