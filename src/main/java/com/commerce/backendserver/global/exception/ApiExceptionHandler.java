@@ -2,6 +2,7 @@ package com.commerce.backendserver.global.exception;
 
 import com.commerce.backendserver.global.exception.error.ErrorCode;
 import com.commerce.backendserver.global.exception.error.ErrorResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(CommerceException.class)
-    public ResponseEntity<ErrorResponse> handleCommerceException(CommerceException ex) {
+    public ResponseEntity<ErrorResponse> handleLearnchaException(CommerceException ex) throws JsonProcessingException {
         log.error("", ex);
         return convert(ex.getErrorCode());
     }
