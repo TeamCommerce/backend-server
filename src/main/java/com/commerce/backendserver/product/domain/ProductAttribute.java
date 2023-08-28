@@ -1,27 +1,25 @@
 package com.commerce.backendserver.product.domain;
 
-import com.commerce.backendserver.product.domain.promotion.Promotion;
+import com.commerce.backendserver.product.domain.constants.ProductStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.EnumType.STRING;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Embeddable
 @NoArgsConstructor(access = PROTECTED)
-public class ProductPriceAttribute {
+public class ProductAttribute {
 
     @NotNull
     @Column(columnDefinition = "int unsigned")
-    private Integer originPrice;
+    private Integer inventory;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "promotion_id")
-    private Promotion promotion;
+    @Enumerated(value = STRING)
+    private ProductStatus productStatus;
 }

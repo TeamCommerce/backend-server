@@ -1,15 +1,12 @@
 package com.commerce.backendserver.product.domain;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
-import com.commerce.backendserver.product.domain.option.ProductOption;
+import com.commerce.backendserver.product.domain.promotion.Promotion;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -25,11 +22,11 @@ public class Product extends BaseEntity {
     private Long id;
 
     @Embedded
-    private ProductCommonInfo info;
+    private ProductInfo info;
+
+    @Embedded
+    private ProductAttribute attribute;
 
     @Embedded
     private ProductPriceAttribute priceAttribute;
-
-    @OneToMany(mappedBy = "product", cascade = PERSIST, orphanRemoval = true)
-    private List<ProductOption> options = new ArrayList<>();
 }
