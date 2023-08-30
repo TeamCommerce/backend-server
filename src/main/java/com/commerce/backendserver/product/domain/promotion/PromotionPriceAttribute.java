@@ -19,6 +19,6 @@ public class PromotionPriceAttribute {
     @Column(nullable = false, columnDefinition = "varchar(100)")
     private PromotionType type;
 
-    @Column(nullable = false, columnDefinition = "int unsigned")
+    @Column(nullable = false)
     private Integer discountAmount;
 }

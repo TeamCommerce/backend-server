@@ -97,7 +97,7 @@ jacocoTestReport {
                             '**/dto/**',        // Exclude Dto Class
                             '**/config/**',     // Exclude Config Class
                             '**/*Fixture*',     // Exclude Fixture Class
-                            "**/Q*.class"       // Exclude
+                            "**/Q*.class"       // Exclude QueryDsl Class
                     ])
                 })
         )
