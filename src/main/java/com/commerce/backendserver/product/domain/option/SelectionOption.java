@@ -22,34 +22,34 @@ public class SelectionOption extends BaseEntity {
 
     @Column(
             nullable = false,
-            name = "type",
+            name = "option_type",
             columnDefinition = "varchar(30)")
-    private String type;
+    private String optionType;
 
     @Column(
             nullable = false,
-            name = "val",
+            name = "option_value",
             columnDefinition = "varchar(30)")
-    private String val;
+    private String optionValue;
 
     //== Constructor Method ==//
     @Builder
     private SelectionOption(
-            final String type,
-            final String value
+            final String optionType,
+            final String optionValue
     ) {
-        this.type = type;
-        this.value = value;
+        this.optionType = optionType;
+        this.optionValue = optionValue;
     }
 
     //== Static Factory Method ==//
     public static SelectionOption of(
-            final String type,
-            final String value
+            final String optionType,
+            final String optionValue
     ) {
         return SelectionOption.builder()
-                .type(type)
-                .value(value)
+                .optionType(optionType)
+                .optionValue(optionValue)
                 .build();
     }
 }
