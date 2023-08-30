@@ -28,9 +28,9 @@ public class SelectionOption extends BaseEntity {
 
     @Column(
             nullable = false,
-            name = "value",
+            name = "val",
             columnDefinition = "varchar(30)")
-    private String value;
+    private String val;
 
     //== Constructor Method ==//
     @Builder
