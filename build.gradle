@@ -93,9 +93,6 @@ jacocoTestReport {
                 files(classDirectories.files.collect {
                     fileTree(dir: it, excludes: [
                             '**/*Application*', // Exclude SpringApplication
-                            '**/*Exception*',   // Exclude Global/Local Exception
-                            '**/dto/**',        // Exclude Dto Class
-                            '**/config/**',     // Exclude Config Class
                             '**/*Fixture*',     // Exclude Fixture Class
                             "**/Q*.class"       // Exclude QueryDsl Class
                     ])
