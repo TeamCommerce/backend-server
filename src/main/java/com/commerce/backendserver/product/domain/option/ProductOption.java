@@ -43,10 +43,9 @@ public class ProductOption extends BaseEntity {
     @JoinColumn(name = "option_id")
     private SelectionOption option;
 
-    @Column(columnDefinition = "int unsigned")
     private Integer additionalFee;
 
-    @Column(nullable = false, columnDefinition = "int unsigned")
+    @Column(nullable = false)
     private Integer inventory;
 
     @Enumerated(value = STRING)
