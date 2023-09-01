@@ -39,16 +39,4 @@ class MemberTest {
         //then
         assertThat(member.getNickname()).isEqualTo(newNickname);
     }
-
-    @Test
-    void jpa() throws Exception {
-        //given
-
-        //when
-
-
-        //then
-
-
-    }
 }
