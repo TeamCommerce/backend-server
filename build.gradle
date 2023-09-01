@@ -29,6 +29,20 @@ springBoot {
     mainClass = 'com/commerce/backendserver/BackendServerApplication'
 }
 
+def querydslDir = "src/main/generated"
+
+sourceSets {
+    main.java.srcDirs += [ querydslDir ]
+}
+
+tasks.withType(JavaCompile) {
+    options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
+}
+
+clean.doLast {
+    file(querydslDir).deleteDir()
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -81,6 +95,12 @@ dependencies {
     //SwaggerUI
     swaggerUI 'org.webjars:swagger-ui:5.4.2'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+    // queryDSL
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 test {
@@ -94,6 +114,18 @@ jacocoTestReport {
         xml.required = true
         csv.required = false
         html.required = true
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, excludes: [
+                            '**/*Application*', // Exclude SpringApplication
+                            '**/*Fixture*',     // Exclude Fixture Class
+                            "**/Q*.class"       // Exclude QueryDsl Class
+                    ])
+                })
+        )
     }
 }
 
