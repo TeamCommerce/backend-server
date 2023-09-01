@@ -23,7 +23,7 @@ public class ProductPriceAttribute {
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
 
-    @Column(nullable = false, columnDefinition = "int unsigned")
+    @Column(nullable = false)
     private Integer originPrice;
 
     //== Constructor Method ==//
