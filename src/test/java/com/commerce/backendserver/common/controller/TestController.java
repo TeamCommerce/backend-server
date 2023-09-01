@@ -4,14 +4,13 @@ import com.commerce.backendserver.auth.infra.oauth.CustomOAuth2User;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.global.exception.error.ErrorCode;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TestController {
@@ -46,6 +45,7 @@ public class TestController {
     //Test Resource
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     static class RequestDto {
 
         @NotBlank(message = "Not Blank")
