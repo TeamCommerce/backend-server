@@ -38,3 +38,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### RestDocs ###
+src/main/resources/static/**
