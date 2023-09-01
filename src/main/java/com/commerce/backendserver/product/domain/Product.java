@@ -37,11 +37,6 @@ public class Product extends BaseEntity {
             orphanRemoval = true)
     private List<ProductOption> options = new ArrayList<>();
 
-    @OneToMany(
-            mappedBy = "product",
-            cascade = PERSIST,
-            orphanRemoval = true)
-    private List<ProductImage> images = new ArrayList<>();
 
     //== Constructor Method ==//
     @Builder

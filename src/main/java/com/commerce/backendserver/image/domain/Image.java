@@ -1,15 +1,25 @@
 package com.commerce.backendserver.image.domain;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Getter
-@Embeddable
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Image {
+
+    @Id
+    @Column(name = "product_id")
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
 
     private String url;
 
