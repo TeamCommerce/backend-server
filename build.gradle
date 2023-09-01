@@ -25,6 +25,10 @@ java {
     sourceCompatibility = '17'
 }
 
+springBoot {
+    mainClass = 'com/commerce/backendserver/BackendServerApplication'
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -33,14 +37,6 @@ configurations {
 
 repositories {
     mavenCentral()
-}
-
-openapi3 {
-    setServer("http://localhost:8080")
-    title = "restdocs-swagger API Documentation"
-    description = "Spring REST Docs with SwaggerUI."
-    version = "0.0.1"
-    format = "yaml"
 }
 
 swaggerSources {
@@ -76,12 +72,15 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-gson:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 
-    //Rest Assured
+    //Rest Assured and RestDocs
+    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
     testImplementation "com.epages:restdocs-api-spec-restassured:${restdocsApiSpecVersion}"
-    testImplementation 'io.rest-assured:rest-assured'
+    testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+    testImplementation 'io.rest-assured:rest-assured:5.3.1'
 
     //SwaggerUI
     swaggerUI 'org.webjars:swagger-ui:5.4.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 }
 
 test {
@@ -108,22 +107,25 @@ processResources {
     dependsOn copyGitSubmodule
 }
 
-// GenerateSwaggerUI task 가, openapi3 task 를 의존하도록 설정
 tasks.withType(GenerateSwaggerUI).configureEach {
     dependsOn 'openapi3'
+
+    delete file('src/main/resources/static/docs/')
+    copy {
+        from "build/api-spec/openapi3.yaml"
+        into "src/main/resources/static/docs/"
+    }
 }
 
-// 생성된 SwaggerUI 를 jar 에 포함시키기 위해 build/resources 경로로 로 복사
- tasks.register('copySwaggerUI', Copy) {
-     dependsOn 'generateSwaggerUISample'
+//openAPI 작성 자동화를 위해 패키징 전에 openapi3 테스크 선실행을 유발
+bootJar{
+    dependsOn(':openapi3')
+}
 
-     def generateSwaggerUISampleTask = tasks.named('generateSwaggerUISample', GenerateSwaggerUI).get()
-
-     from("${generateSwaggerUISampleTask.outputDir}")
-     into("${project.buildDir}/resources/main/static/docs")
- }
-
-// bootJar 실행 전, copySwaggerUI 를 실행하도록 설정
-tasks.withType(BootJar).configureEach {
-    dependsOn 'copySwaggerUI'
+openapi3 {
+    server = "http://localhost:8080"
+    title = "API 문서"
+    description = "Spring REST Docs with SwaggerUI."
+    version = "0.0.1"
+    format = 'yaml'
 }
