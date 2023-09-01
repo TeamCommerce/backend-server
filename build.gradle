@@ -140,19 +140,18 @@ processResources {
     dependsOn copyGitSubmodule
 }
 
-tasks.withType(GenerateSwaggerUI).configureEach {
+tasks.register('copySwaggerUI', Copy) {
     dependsOn 'openapi3'
 
     delete file('src/main/resources/static/docs/')
-    copy {
-        from "build/api-spec/openapi3.yaml"
-        into "src/main/resources/static/docs/"
-    }
+
+    from "$buildDir/api-spec/openapi3.yaml"
+    into "src/main/resources/static/docs/"
 }
 
 //openAPI 작성 자동화를 위해 패키징 전에 openapi3 테스크 선실행을 유발
 bootJar{
-    dependsOn(':openapi3')
+    dependsOn('copySwaggerUI')
 }
 
 openapi3 {
