@@ -2,7 +2,9 @@ package com.commerce.backendserver.member.domain;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;

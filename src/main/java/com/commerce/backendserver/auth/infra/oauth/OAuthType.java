@@ -16,18 +16,18 @@ public enum OAuthType {
 
     private final String description;
 
+    public static OAuthType matchOAuthType(String registrationId) {
+        return Arrays.stream(values())
+                .filter(oauthType -> oauthType.getDescription().equals(registrationId))
+                .findFirst()
+                .orElseThrow(() -> CommerceException.of(AuthError.NOT_EXIST_OAUTH_TYPE));
+    }
+
     public boolean isGoogle() {
         return this.equals(GOOGLE);
     }
 
     public boolean isKakao() {
         return this.equals(KAKAO);
-    }
-
-    public static OAuthType matchOAuthType(String registrationId) {
-        return Arrays.stream(values())
-                .filter(oauthType -> oauthType.getDescription().equals(registrationId))
-                .findFirst()
-                .orElseThrow(() -> CommerceException.of(AuthError.NOT_EXIST_OAUTH_TYPE));
     }
 }

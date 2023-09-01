@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class GoogleProfile implements OAuthProfile{
+public class GoogleProfile implements OAuthProfile {
 
     private Map<String, Object> attributes;
 
