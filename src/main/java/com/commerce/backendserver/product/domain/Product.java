@@ -1,12 +1,16 @@
 package com.commerce.backendserver.product.domain;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
-import com.commerce.backendserver.product.domain.promotion.Promotion;
+import com.commerce.backendserver.product.domain.option.ProductOption;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.FetchType.LAZY;
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -22,11 +26,41 @@ public class Product extends BaseEntity {
     private Long id;
 
     @Embedded
-    private ProductInfo info;
-
-    @Embedded
-    private ProductAttribute attribute;
+    private ProductCommonInfo info;
 
     @Embedded
     private ProductPriceAttribute priceAttribute;
+
+    @OneToMany(
+            mappedBy = "product",
+            cascade = PERSIST,
+            orphanRemoval = true)
+    private List<ProductOption> options = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "product",
+            cascade = PERSIST,
+            orphanRemoval = true)
+    private List<ProductImage> images = new ArrayList<>();
+
+    //== Constructor Method ==//
+    @Builder
+    private Product(
+            final ProductCommonInfo info,
+            final ProductPriceAttribute priceAttribute
+    ) {
+        this.info = info;
+        this.priceAttribute = priceAttribute;
+    }
+
+    //== Static Factory Method ==//
+    public static Product toProduct(
+            final ProductCommonInfo info,
+            final ProductPriceAttribute priceAttribute
+    ) {
+        return Product.builder()
+                .info(info)
+                .priceAttribute(priceAttribute)
+                .build();
+    }
 }
