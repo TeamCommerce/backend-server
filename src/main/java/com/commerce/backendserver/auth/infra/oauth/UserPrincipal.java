@@ -17,6 +17,10 @@ public class UserPrincipal implements CustomOAuth2User {
     private final Member member;
     private final Map<String, Object> attributes;
 
+    public static UserPrincipal of(Member member, Map<String, Object> attributes) {
+        return new UserPrincipal(member, attributes);
+    }
+
     @Override
     public Map<String, Object> getAttributes() {
         return attributes;
@@ -40,9 +44,5 @@ public class UserPrincipal implements CustomOAuth2User {
     @Override
     public String getNickname() {
         return member.getNickname();
-    }
-
-    public static UserPrincipal of(Member member, Map<String, Object> attributes) {
-        return new UserPrincipal(member, attributes);
     }
 }
