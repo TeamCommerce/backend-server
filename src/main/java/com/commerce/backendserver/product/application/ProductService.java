@@ -1,6 +1,5 @@
 package com.commerce.backendserver.product.application;
 
-import com.commerce.backendserver.product.domain.ProductCommandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,5 +7,4 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private final ProductCommandRepository productCommandRepository;
 }

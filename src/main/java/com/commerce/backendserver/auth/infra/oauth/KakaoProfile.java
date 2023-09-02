@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class KakaoProfile implements OAuthProfile{
+public class KakaoProfile implements OAuthProfile {
 
     private Map<String, Object> attributes;
 
