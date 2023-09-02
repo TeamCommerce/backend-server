@@ -1,6 +1,7 @@
 package com.commerce.backendserver.product.domain;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
+import com.commerce.backendserver.image.domain.ProductImage;
 import com.commerce.backendserver.product.domain.option.ProductOption;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -30,6 +31,12 @@ public class Product extends BaseEntity {
 
     @Embedded
     private ProductPriceAttribute priceAttribute;
+
+    @OneToMany(
+            mappedBy = "product",
+            cascade = PERSIST,
+            orphanRemoval = true)
+    private List<ProductImage> images = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "product",
