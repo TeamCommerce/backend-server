@@ -18,7 +18,10 @@ import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 @NoArgsConstructor(access = PROTECTED)
 public class AdditionalInfoList {
 
-    @OneToMany(cascade = PERSIST, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "review",
+            cascade = PERSIST,
+            orphanRemoval = true)
     @OnDelete(action = CASCADE)
     private final List<AdditionalInfo> list = new ArrayList<>();
 }

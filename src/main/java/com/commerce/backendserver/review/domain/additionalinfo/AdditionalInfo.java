@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -20,14 +22,14 @@ public class AdditionalInfo {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = STRING)
     @Column(nullable = false)
-    private InfoName name;
+    private InfoName infoName;
 
     @Column(nullable = false)
-    private String value;
+    private String infoValue;
 
     @JoinColumn(name = "review_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     private Review review;
 }

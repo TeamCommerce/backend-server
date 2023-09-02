@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(name = "t_like_review")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LikeReview {
 
@@ -15,9 +16,9 @@ public class LikeReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private Long memberId;
 
-    @JoinColumn(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private Long reviewId;
 }
