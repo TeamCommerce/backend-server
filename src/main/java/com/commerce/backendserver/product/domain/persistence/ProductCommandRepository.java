@@ -1,10 +1,10 @@
-package com.commerce.backendserver.product.domain;
+package com.commerce.backendserver.product.domain.persistence;
 
+import com.commerce.backendserver.product.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
 @Transactional
-public interface ProductCommandRepository extends JpaRepository<Product, Long> {
+public interface ProductCommandRepository extends ProductJpaRepository {
 }
