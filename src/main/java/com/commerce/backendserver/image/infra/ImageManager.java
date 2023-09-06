@@ -23,14 +23,14 @@ import com.commerce.backendserver.global.exception.CommerceException;
 public class ImageManager {
 
 	private final AmazonS3Client amazonS3Client;
-	private final String buketName;
+	private final String bucketName;
 
 	public ImageManager(
 		AmazonS3Client amazonS3Client,
-		@Value("${cloud.aws.s3.bucket}") String buketName
+		@Value("${cloud.aws.s3.bucket}") String bucketName
 	) {
 		this.amazonS3Client = amazonS3Client;
-		this.buketName = buketName;
+		this.bucketName = bucketName;
 	}
 
 	public List<String> uploadFiles(List<MultipartFile> files, String type) {
@@ -51,7 +51,7 @@ public class ImageManager {
 
 		try (InputStream inputStream = file.getInputStream()) {
 			PutObjectRequest putObjectRequest = new PutObjectRequest(
-				buketName,
+				bucketName,
 				storeFilename,
 				inputStream,
 				metadata).withCannedAcl(CannedAccessControlList.PublicRead);
@@ -61,7 +61,7 @@ public class ImageManager {
 			throw CommerceException.of(UPLOAD_FAIL);
 		}
 
-		return amazonS3Client.getUrl(buketName, storeFilename).toString();
+		return amazonS3Client.getUrl(bucketName, storeFilename).toString();
 	}
 
 	private void validateFileExist(MultipartFile file) {
