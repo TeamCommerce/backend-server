@@ -3,10 +3,14 @@ package com.commerce.backendserver.review.domain;
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.image.domain.ReviewImage;
 import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
 import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfoList;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import org.hibernate.annotations.Check;
 import org.hibernate.annotations.OnDelete;
 
 import java.util.ArrayList;
@@ -29,9 +33,11 @@ public class Review extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String contents;
 
     @Column(nullable = false)
+    @Check(constraints = "score >= 1 AND score <= 5")
     private Integer score;
 
     @Embedded
@@ -48,5 +54,49 @@ public class Review extends BaseEntity {
             cascade = PERSIST,
             orphanRemoval = true)
     @OnDelete(action = CASCADE)
-    private List<ReviewImage> images = new ArrayList<>();
+    private final List<ReviewImage> images = new ArrayList<>();
+
+    //== Construct Method ==//
+    @Builder
+    private Review(
+        String contents,
+        Integer score,
+        List<AdditionalInfo> additionalInfoList,
+        Product product,
+        Long writerId,
+        List<String> imageUrls
+    ) {
+        this.contents = contents;
+        this.score = score;
+        this.additionalInfoList = AdditionalInfoList.of(additionalInfoList, this);
+        this.product = product;
+        this.writerId = writerId;
+        applyImages(imageUrls);
+    }
+
+    private void applyImages(List<String> imageUrls) {
+        this.images.addAll(
+            imageUrls.stream()
+            .map(imageUrl -> ReviewImage.of(imageUrl, this))
+            .toList()
+        );
+    }
+
+    public static Review createReview(
+        String contents,
+        Integer score,
+        List<AdditionalInfo> additionalInfoList,
+        Product product,
+        Long writerId,
+        List<String> imageUrls
+    ) {
+        return Review.builder()
+            .contents(contents)
+            .score(score)
+            .additionalInfoList(additionalInfoList)
+            .product(product)
+            .writerId(writerId)
+            .imageUrls(imageUrls)
+            .build();
+    }
 }
