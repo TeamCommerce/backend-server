@@ -4,7 +4,6 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 @NoArgsConstructor(access = PROTECTED)
 public class AdditionalInfoList {
 
-    @JsonIgnore
     @OneToMany(
             mappedBy = "review",
             cascade = PERSIST,
