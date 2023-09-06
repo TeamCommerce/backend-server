@@ -9,11 +9,9 @@ import com.commerce.backendserver.global.exception.CommerceException;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @RequiredArgsConstructor
-@Slf4j
 public enum BucketMetadata {
 	REVIEW(
 		"review",
@@ -32,9 +30,7 @@ public enum BucketMetadata {
 		return Arrays.stream(values())
 			.filter(metadata -> metadata.getType().equals(type))
 			.findAny()
-			.orElseThrow(() -> {
-				log.error("이미지 타입 매칭 오류입니다.");
-				throw CommerceException.of(INVALID_IMAGE_TYPE);
-			}).of.apply(filename);
+			.orElseThrow(() -> CommerceException.of(INVALID_IMAGE_TYPE))
+			.of.apply(filename);
 	}
 }

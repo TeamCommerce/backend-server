@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +19,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.commerce.backendserver.global.exception.CommerceException;
 
-@Slf4j
 @Component
 public class ImageManager {
 
@@ -60,7 +58,6 @@ public class ImageManager {
 
 			amazonS3Client.putObject(putObjectRequest);
 		} catch (IOException e) {
-			log.error("이미지 업로드에 실패했습니다. {}", e.getMessage());
 			throw CommerceException.of(UPLOAD_FAIL);
 		}
 
