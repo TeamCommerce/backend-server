@@ -1,24 +1,17 @@
 package com.commerce.backendserver.product.domain.option;
 
-import com.commerce.backendserver.global.auditing.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@Entity
-@Table(name = "t_selction_option")
+@Embeddable
 @NoArgsConstructor(access = PROTECTED)
-public class SelectionOption extends BaseEntity {
-
-    @Id
-    @Column(name = "selection_option_id")
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+public class SelectionOption {
 
     @Column(
             nullable = false,

@@ -1,6 +1,7 @@
 package com.commerce.backendserver.image.domain;
 
 import com.commerce.backendserver.product.domain.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -18,6 +19,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class ProductImage extends Image {
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_id")
     private Product product;

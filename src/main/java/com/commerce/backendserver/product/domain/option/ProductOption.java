@@ -9,13 +9,11 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
-import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Getter
 @Entity
@@ -28,8 +26,8 @@ public class ProductOption extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    //    @JsonManagedReference
     @ManyToOne(fetch = LAZY)
-    @OnDelete(action = CASCADE)
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -39,8 +37,7 @@ public class ProductOption extends BaseEntity {
     @Enumerated(value = STRING)
     private ProductSize size;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "option_id")
+    @Embedded
     private SelectionOption option;
 
     private Integer additionalFee;
