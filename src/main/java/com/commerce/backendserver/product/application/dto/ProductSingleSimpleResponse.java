@@ -1,9 +1,6 @@
 package com.commerce.backendserver.product.application.dto;
 
-import com.commerce.backendserver.image.domain.ProductImage;
-import com.commerce.backendserver.product.domain.ProductCommonInfo;
-import com.commerce.backendserver.product.domain.ProductPriceAttribute;
-import com.commerce.backendserver.product.domain.option.ProductOption;
+import com.commerce.backendserver.product.domain.promotion.constants.PromotionType;
 import lombok.Builder;
 
 import java.util.List;
@@ -11,10 +8,12 @@ import java.util.List;
 @Builder
 public record ProductSingleSimpleResponse(
         Long id,
-        List<ProductImage> images,
-        List<ProductOption> options,
-        ProductCommonInfo info,
-        ProductPriceAttribute attribute
+        List<ProductOptionResponse> options,
+        List<String> images,
+        Integer originPrice,
+        Integer discountedAmount,
+        PromotionType promotionType,
+        Integer finalPrice
 ) {
 
 }

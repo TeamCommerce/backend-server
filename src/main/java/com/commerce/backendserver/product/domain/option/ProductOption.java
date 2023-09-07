@@ -26,7 +26,6 @@ public class ProductOption extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    //    @JsonManagedReference
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_id")
     private Product product;

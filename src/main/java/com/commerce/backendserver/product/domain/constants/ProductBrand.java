@@ -13,9 +13,7 @@ import static com.commerce.backendserver.product.exception.ProductError.UNKNOWN_
 public enum ProductBrand {
 
     ADADIS("Adadis"),
-    IUP_STUDIO("IUP Studio"),
-    BE("Back-End"),
-    FE("Front-End");
+    IUP_STUDIO("IUP Studio");
 
     private final String value;
 

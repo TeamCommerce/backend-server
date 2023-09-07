@@ -3,7 +3,6 @@ package com.commerce.backendserver.product.domain;
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.image.domain.ProductImage;
 import com.commerce.backendserver.product.domain.option.ProductOption;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 import static org.hibernate.annotations.OnDeleteAction.CASCADE;
@@ -35,20 +35,20 @@ public class Product extends BaseEntity {
     @Embedded
     private ProductPriceAttribute priceAttribute;
 
-    @JsonIgnore
     @OneToMany(
+            fetch = LAZY,
             mappedBy = "product",
             cascade = PERSIST,
             orphanRemoval = true)
-    private List<ProductImage> images = new ArrayList<>();
+    private final List<ProductImage> images = new ArrayList<>();
 
-    @JsonIgnore
     @OneToMany(
+            fetch = LAZY,
             mappedBy = "product",
             cascade = PERSIST,
             orphanRemoval = true)
     @OnDelete(action = CASCADE)
-    private List<ProductOption> options = new ArrayList<>();
+    private final List<ProductOption> options = new ArrayList<>();
 
 
     //== Constructor Method ==//

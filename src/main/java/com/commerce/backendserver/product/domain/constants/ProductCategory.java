@@ -8,8 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum ProductCategory {
 
     TOP("상의"),
-    BOT("하의"),
-    DEV("개발자");
+    BOT("하의");
 
     private final String value;
 }

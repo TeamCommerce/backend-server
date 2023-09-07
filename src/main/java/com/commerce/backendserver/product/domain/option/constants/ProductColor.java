@@ -7,9 +7,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ProductColor {
 
-    MATT_BLACK("#000000", "매트 블랙"),
-    PURE_WHITE("#FFFFFF", "퓨어 화이트");
+    MATT_BLACK("#000000", "매트 블랙", "Matt Black"),
+    PURE_WHITE("#FFFFFF", "퓨어 화이트", "Pure White");
 
     private final String colorCode;
-    private final String colorName;
+    private final String korColorName;
+    private final String engColorName;
 }
