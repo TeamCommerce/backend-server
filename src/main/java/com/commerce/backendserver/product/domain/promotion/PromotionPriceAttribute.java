@@ -16,7 +16,9 @@ import static lombok.AccessLevel.PROTECTED;
 public class PromotionPriceAttribute {
 
     @Enumerated(value = STRING)
-    @Column(nullable = false, columnDefinition = "varchar(100)")
+    @Column(
+            nullable = false,
+            columnDefinition = "varchar(100)")
     private PromotionType type;
 
     @Column(nullable = false)

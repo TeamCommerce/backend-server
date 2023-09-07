@@ -19,12 +19,15 @@ public class Promotion extends BaseEntity {
     @Column(name = "promotion_id")
     private Long id;
 
-    @Column(nullable = false, name = "name", columnDefinition = "varchar(200)")
+    @Column(
+            name = "name",
+            nullable = false,
+            columnDefinition = "varchar(200)")
     private String name;
 
     @Embedded
-    private PromotionPriceAttribute priceAttribute;
+    private PromotionPriceAttribute promotionPriceAttribute;
 
     @Embedded
-    private PromotionPeriodAttribute periodAttribute;
+    private PromotionPeriodAttribute promotionPeriodAttribute;
 }

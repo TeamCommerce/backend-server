@@ -29,12 +29,6 @@ public class Product extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Embedded
-    private ProductCommonInfo info;
-
-    @Embedded
-    private ProductPriceAttribute priceAttribute;
-
     @OneToMany(
             fetch = LAZY,
             mappedBy = "product",
@@ -50,15 +44,21 @@ public class Product extends BaseEntity {
     @OnDelete(action = CASCADE)
     private final List<ProductOption> options = new ArrayList<>();
 
+    @Embedded
+    private ProductCommonInfo productInfo;
+
+    @Embedded
+    private ProductPriceAttribute productPriceAttribute;
+
 
     //== Constructor Method ==//
     @Builder
     private Product(
-            final ProductCommonInfo info,
-            final ProductPriceAttribute priceAttribute
+            final ProductCommonInfo productInfo,
+            final ProductPriceAttribute productPriceAttribute
     ) {
-        this.info = info;
-        this.priceAttribute = priceAttribute;
+        this.productInfo = productInfo;
+        this.productPriceAttribute = productPriceAttribute;
     }
 
     //== Static Factory Method ==//
@@ -67,8 +67,8 @@ public class Product extends BaseEntity {
             final ProductPriceAttribute priceAttribute
     ) {
         return Product.builder()
-                .info(info)
-                .priceAttribute(priceAttribute)
+                .productInfo(info)
+                .productPriceAttribute(priceAttribute)
                 .build();
     }
 }
