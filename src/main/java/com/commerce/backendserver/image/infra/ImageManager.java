@@ -35,7 +35,9 @@ public class ImageManager {
 
 	public List<String> uploadFiles(List<MultipartFile> files, String type) {
 		List<String> storeUrls = new ArrayList<>();
-		files.forEach(file -> storeUrls.add(uploadFile(file, type)));
+		if (files != null) {
+			files.forEach(file -> storeUrls.add(uploadFile(file, type)));
+		}
 		return storeUrls;
 	}
 

@@ -17,6 +17,13 @@ public class AdditionalInfoValidator implements
 
     @Override
     public boolean isValid(Set<String> value, ConstraintValidatorContext context) {
+        if (value != null) {
+            validateAdditionalInfo(value);
+        }
+        return true;
+    }
+
+    private void validateAdditionalInfo(Set<String> value) {
         value.forEach(target -> {
             String[] splitInfo = target.split("/");
 
@@ -29,7 +36,6 @@ public class AdditionalInfoValidator implements
                 validateIsInteger(infoValue);
             }
         });
-        return true;
     }
 
     private void validateInfoFormat(String[] splitInfo) {

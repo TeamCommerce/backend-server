@@ -1,7 +1,5 @@
 package com.commerce.backendserver.review.application.dto.request;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -25,23 +23,4 @@ public record CreateReviewRequest(
 
 	List<MultipartFile> files
 ) {
-	public CreateReviewRequest(
-		Integer score,
-		String contents,
-		Long productId,
-		Set<String> additionalInfo,
-		List<MultipartFile> files
-	) {
-		this.score = score;
-		this.contents = contents;
-		this.productId = productId;
-		this.additionalInfo = new HashSet<>();
-		this.files = new ArrayList<>();
-		if (additionalInfo != null) {
-			this.additionalInfo.addAll(additionalInfo);
-		}
-		if (files != null) {
-			this.files.addAll(files);
-		}
-	}
 }
