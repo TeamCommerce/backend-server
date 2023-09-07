@@ -1,16 +1,19 @@
 package com.commerce.backendserver.product.domain.option.constants;
 
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@RequiredArgsConstructor
-public enum ProductColor {
+@Embeddable
+@NoArgsConstructor(access = PROTECTED)
+public class ProductColor {
 
-    MATT_BLACK("#000000", "매트 블랙", "Matt Black"),
-    PURE_WHITE("#FFFFFF", "퓨어 화이트", "Pure White");
+    private String colorCode;
 
-    private final String colorCode;
-    private final String korColorName;
-    private final String engColorName;
+    private String korColorName;
+
+    private String engColorName;
 }

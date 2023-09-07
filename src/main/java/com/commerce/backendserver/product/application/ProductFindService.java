@@ -61,9 +61,9 @@ public class ProductFindService {
     // ProductOption을 ProductOptionResponse로 변환하는 메소드
     private ProductOptionResponse convertToResponse(ProductOption productOption) {
         return new ProductOptionResponse(
+                productOption.getColor().getColorCode(),
                 productOption.getColor().getKorColorName(),
                 productOption.getColor().getEngColorName(),
-                productOption.getColor().getColorCode(),
                 productOption.getSize(),
                 productOption.getOption().getOptionType(),
                 productOption.getOption().getOptionValue(),

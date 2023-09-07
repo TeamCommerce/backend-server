@@ -30,7 +30,7 @@ public class ProductOption extends BaseEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Enumerated(value = STRING)
+    @Embedded
     private ProductColor color;
 
     @Enumerated(value = STRING)
