@@ -9,7 +9,9 @@ import org.hibernate.annotations.OnDelete;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import static com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName.*;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static java.util.Comparator.*;
 import static lombok.AccessLevel.PROTECTED;
@@ -32,22 +34,36 @@ public class AdditionalInfoList {
     ////== Construct Method ==//
     @Builder
     private AdditionalInfoList(
-        List<AdditionalInfo> additionalInfoList,
+        Set<String> stringInfoSet,
         Review review
     ) {
+        List<AdditionalInfo> additionalInfoList = toAdditionalInfoList(stringInfoSet);
+
         applyAdditionalInfo(additionalInfoList, review);
         sortByInfoName();
+
         this.list.addAll(additionalInfoList);
     }
 
     public static AdditionalInfoList of(
-        List<AdditionalInfo> additionalInfoList,
+        Set<String> stringInfoSet,
         Review review
     ) {
         return AdditionalInfoList.builder()
-            .additionalInfoList(additionalInfoList)
+            .stringInfoSet(stringInfoSet)
             .review(review)
             .build();
+    }
+
+    private List<AdditionalInfo> toAdditionalInfoList(Set<String> stringInfoSet) {
+        return stringInfoSet.stream()
+            .map(info -> {
+                String[] splitInfo = info.split("/");
+
+                return AdditionalInfo.of(
+                    matchInfoName(splitInfo[0]),
+                    splitInfo[1]);
+            }).toList();
     }
 
     private void applyAdditionalInfo(

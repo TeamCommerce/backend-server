@@ -38,7 +38,7 @@ public class ReviewService {
 		Review review = Review.createReview(
 			request.contents(),
 			request.score(),
-			request.additionalInfoList(),
+			request.additionalInfo(),
 			product,
 			writerId,
 			imageUrls

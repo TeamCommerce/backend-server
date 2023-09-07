@@ -3,7 +3,6 @@ package com.commerce.backendserver.review.domain;
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.image.domain.ReviewImage;
 import com.commerce.backendserver.product.domain.Product;
-import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
 import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfoList;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -15,6 +14,7 @@ import org.hibernate.annotations.OnDelete;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.FetchType.LAZY;
@@ -61,14 +61,14 @@ public class Review extends BaseEntity {
     private Review(
         String contents,
         Integer score,
-        List<AdditionalInfo> additionalInfoList,
+        Set<String> stringInfoSet,
         Product product,
         Long writerId,
         List<String> imageUrls
     ) {
         this.contents = contents;
         this.score = score;
-        this.additionalInfoList = AdditionalInfoList.of(additionalInfoList, this);
+        this.additionalInfoList = AdditionalInfoList.of(stringInfoSet, this);
         this.product = product;
         this.writerId = writerId;
         applyImages(imageUrls);
@@ -85,7 +85,7 @@ public class Review extends BaseEntity {
     public static Review createReview(
         String contents,
         Integer score,
-        List<AdditionalInfo> additionalInfoList,
+        Set<String> stringInfoSet,
         Product product,
         Long writerId,
         List<String> imageUrls
@@ -93,7 +93,7 @@ public class Review extends BaseEntity {
         return Review.builder()
             .contents(contents)
             .score(score)
-            .additionalInfoList(additionalInfoList)
+            .stringInfoSet(stringInfoSet)
             .product(product)
             .writerId(writerId)
             .imageUrls(imageUrls)
