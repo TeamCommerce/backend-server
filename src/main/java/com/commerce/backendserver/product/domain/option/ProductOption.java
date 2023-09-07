@@ -3,7 +3,6 @@ package com.commerce.backendserver.product.domain.option;
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.option.constants.ProductColor;
-import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.product.domain.option.constants.ProductStatus;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -33,13 +32,8 @@ public class ProductOption extends BaseEntity {
     @Embedded
     private ProductColor color;
 
-    @Enumerated(value = STRING)
-    private ProductSize size;
-
     @Embedded
-    private SelectionOption option;
-
-    private Integer additionalFee;
+    private ProductSelectionOption selectionOption;
 
     @Column(nullable = false)
     private Integer inventory;
@@ -52,17 +46,13 @@ public class ProductOption extends BaseEntity {
     private ProductOption(
             Product product,
             ProductColor color,
-            ProductSize size,
-            SelectionOption option,
-            Integer additionalFee,
+            ProductSelectionOption selectionOption,
             Integer inventory,
             ProductStatus productStatus
     ) {
         this.product = product;
         this.color = color;
-        this.size = size;
-        this.option = option;
-        this.additionalFee = additionalFee;
+        this.selectionOption = selectionOption;
         this.inventory = inventory;
         this.productStatus = productStatus;
     }
@@ -71,18 +61,14 @@ public class ProductOption extends BaseEntity {
     public ProductOption of(
             Product product,
             ProductColor color,
-            ProductSize size,
-            SelectionOption option,
-            Integer additionalFee,
+            ProductSelectionOption selectionOption,
             Integer inventory,
             ProductStatus productStatus
     ) {
         return ProductOption.builder()
                 .product(product)
                 .color(color)
-                .size(size)
-                .option(option)
-                .additionalFee(additionalFee)
+                .selectionOption(selectionOption)
                 .inventory(inventory)
                 .productStatus(productStatus)
                 .build();

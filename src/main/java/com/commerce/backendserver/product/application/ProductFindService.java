@@ -31,13 +31,13 @@ public class ProductFindService {
 
         return ProductSingleSimpleResponse.builder()
                 .id(product.getId())
-                .options(convertToOptionResponseList(product.getOptions()))
-                .images(convertToImageResponseList(product.getImages()))
-                .promotionDiscountedAmount(discountedValue)
                 .originPrice(product.getProductPriceAttribute().getOriginPrice())
                 .promotionType(product.getProductPriceAttribute().getPromotion().getPromotionPriceAttribute().getType())
+                .promotionDiscountedAmount(discountedValue)
                 .promotionValue(product.getProductPriceAttribute().getPromotion().getPromotionPriceAttribute().getDiscountAmount())
                 .appliedPromotionPrice(finalDiscountedPrice)
+                .images(convertToImageResponseList(product.getImages()))
+                .options(convertToOptionResponseList(product.getOptions()))
                 .build();
     }
 }

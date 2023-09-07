@@ -8,13 +8,13 @@ import java.util.List;
 @Builder
 public record ProductSingleSimpleResponse(
         Long id,
-        List<ProductOptionResponse> options,
-        List<String> images,
         Integer originPrice,
         PromotionType promotionType,
         Integer promotionValue,
         Integer promotionDiscountedAmount,
-        Integer appliedPromotionPrice
+        Integer appliedPromotionPrice,
+        List<String> images,
+        List<ProductOptionResponse> options
 ) {
 
 }
