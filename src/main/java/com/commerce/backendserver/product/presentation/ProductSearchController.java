@@ -23,7 +23,6 @@ public class ProductSearchController {
     public ResponseEntity<ProductSingleSimpleResponse> findSingleProduct(
             @PathVariable Long productId
     ) {
-        Product foundProduct = productFindService.findSingleProductInfo(productId);
-        return ResponseEntity.ok(productFindService.toSingleSimpleResponse(foundProduct));
+        return ResponseEntity.ok(productFindService.toSingleSimpleResponse(productId));
     }
 }

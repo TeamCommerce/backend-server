@@ -12,6 +12,7 @@ public record ProductSingleSimpleResponse(
         List<String> images,
         Integer originPrice,
         PromotionType promotionType,
+        Integer promotionValue,
         Integer promotionDiscountedAmount,
         Integer appliedPromotionPrice
 ) {
