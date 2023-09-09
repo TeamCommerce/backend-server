@@ -1,20 +1,63 @@
 package com.commerce.backendserver.product.application.dto;
 
+import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.promotion.constants.PromotionType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 @Builder
-public record ProductSingleSimpleResponse(
-        Long id,
-        Integer originPrice,
-        PromotionType promotionType,
-        Integer promotionValue,
-        Integer promotionDiscountedAmount,
-        Integer appliedPromotionPrice,
-        List<String> images,
-        List<ProductOptionResponse> options
-) {
+@AllArgsConstructor
+public class ProductSingleSimpleResponse {
 
+    private final Long id;
+    private final Integer originPrice;
+    private final PromotionType promotionType;
+    private final Integer promotionValue;
+    private final Integer promotionDiscountedAmount;
+    private final Integer appliedPromotionPrice;
+    private final List<String> images;
+    private final List<ProductOptionResponse> options;
+
+    //== Static Factory Method ==//
+    public static ProductSingleSimpleResponse of(
+            final Long id,
+            final Integer originPrice,
+            final PromotionType promotionType,
+            final Integer promotionValue,
+            final Integer promotionDiscountedAmount,
+            final Integer appliedPromotionPrice,
+            final List<String> images,
+            final List<ProductOptionResponse> options
+    ) {
+        return ProductSingleSimpleResponse.builder()
+                .id(id)
+                .originPrice(originPrice)
+                .promotionType(promotionType)
+                .promotionValue(promotionValue)
+                .promotionDiscountedAmount(promotionDiscountedAmount)
+                .appliedPromotionPrice(appliedPromotionPrice)
+                .images(images)
+                .options(options)
+                .build();
+    }
+
+    public static ProductSingleSimpleResponse from(
+            final Product product,
+            final int discountedValue,
+            final int finalDiscountedPrice
+    ) {
+        return ProductSingleSimpleResponse.of(
+                product.getId(),
+                product.getPriceAttribute().getOriginPrice(),
+                product.getPriceAttribute().getPromotion().getPriceAttribute().getType(),
+                discountedValue,
+                product.getPriceAttribute().getPromotion().getPriceAttribute().getDiscountAmount(),
+                finalDiscountedPrice,
+                ProductImageResponse.toResponse(product.getImages()),
+                ProductOptionResponse.toResponse(product.getOptions()));
+    }
 }

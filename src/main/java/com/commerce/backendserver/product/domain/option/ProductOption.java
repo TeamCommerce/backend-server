@@ -39,7 +39,7 @@ public class ProductOption extends BaseEntity {
     private Integer inventory;
 
     @Enumerated(value = STRING)
-    private ProductStatus productStatus;
+    private ProductStatus status;
 
     //== Constructor Method ==//
     @Builder
@@ -48,29 +48,29 @@ public class ProductOption extends BaseEntity {
             ProductColor color,
             ProductSelectionOption selectionOption,
             Integer inventory,
-            ProductStatus productStatus
+            ProductStatus status
     ) {
         this.product = product;
         this.color = color;
         this.selectionOption = selectionOption;
         this.inventory = inventory;
-        this.productStatus = productStatus;
+        this.status = status;
     }
 
     //== Static Factory Method ==//
-    public ProductOption of(
-            Product product,
-            ProductColor color,
-            ProductSelectionOption selectionOption,
-            Integer inventory,
-            ProductStatus productStatus
+    public static ProductOption of(
+            final ProductColor color,
+            final Product product,
+            final ProductSelectionOption selectionOption,
+            final Integer inventory,
+            final ProductStatus status
     ) {
         return ProductOption.builder()
                 .product(product)
                 .color(color)
                 .selectionOption(selectionOption)
                 .inventory(inventory)
-                .productStatus(productStatus)
+                .status(status)
                 .build();
     }
 }

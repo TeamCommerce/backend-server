@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.PERSIST;
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 import static org.hibernate.annotations.OnDeleteAction.CASCADE;
@@ -30,14 +29,13 @@ public class Product extends BaseEntity {
     private Long id;
 
     @OneToMany(
-            fetch = LAZY,
             mappedBy = "product",
             cascade = PERSIST,
             orphanRemoval = true)
+    @OnDelete(action = CASCADE)
     private final List<ProductImage> images = new ArrayList<>();
 
     @OneToMany(
-            fetch = LAZY,
             mappedBy = "product",
             cascade = PERSIST,
             orphanRemoval = true)
@@ -45,30 +43,30 @@ public class Product extends BaseEntity {
     private final List<ProductOption> options = new ArrayList<>();
 
     @Embedded
-    private ProductCommonInfo productInfo;
+    private ProductCommonInfo commonInfo;
 
     @Embedded
-    private ProductPriceAttribute productPriceAttribute;
+    private ProductPriceAttribute priceAttribute;
 
 
     //== Constructor Method ==//
     @Builder
     private Product(
-            final ProductCommonInfo productInfo,
-            final ProductPriceAttribute productPriceAttribute
+            final ProductCommonInfo commonInfo,
+            final ProductPriceAttribute priceAttribute
     ) {
-        this.productInfo = productInfo;
-        this.productPriceAttribute = productPriceAttribute;
+        this.commonInfo = commonInfo;
+        this.priceAttribute = priceAttribute;
     }
 
     //== Static Factory Method ==//
     public static Product toProduct(
-            final ProductCommonInfo info,
+            final ProductCommonInfo commonInfo,
             final ProductPriceAttribute priceAttribute
     ) {
         return Product.builder()
-                .productInfo(info)
-                .productPriceAttribute(priceAttribute)
+                .commonInfo(commonInfo)
+                .priceAttribute(priceAttribute)
                 .build();
     }
 }

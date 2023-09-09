@@ -15,12 +15,12 @@ public class RateDiscountCalculator implements PromotionPriceUtil {
         if (isInvalidPromotion(promotion)) {
             throw CommerceException.of(INVALID_PROMOTION);
         }
-        return originPrice / 100 * promotion.getPromotionPriceAttribute().getDiscountAmount();
+        return originPrice / 100 * promotion.getPriceAttribute().getDiscountAmount();
     }
 
     @Override
     public boolean isInvalidPromotion(Promotion promotion) {
-        return promotion.getPromotionPriceAttribute().getDiscountAmount() <= 0 ||
-                promotion.getPromotionPriceAttribute().getDiscountAmount() > 100;
+        return promotion.getPriceAttribute().getDiscountAmount() <= 0 ||
+                promotion.getPriceAttribute().getDiscountAmount() > 100;
     }
 }

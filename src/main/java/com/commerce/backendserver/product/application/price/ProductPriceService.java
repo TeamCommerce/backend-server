@@ -21,7 +21,7 @@ public class ProductPriceService {
     public Integer applyPromotionDiscount(
             Product product
     ) {
-        int originPrice = product.getProductPriceAttribute().getOriginPrice();
+        int originPrice = product.getPriceAttribute().getOriginPrice();
         int discountedValue = getPromotionDiscountedValue(product, originPrice);
         int finalDiscountedPrice = originPrice - discountedValue;
         if (finalDiscountedPrice < 0) {
@@ -32,8 +32,8 @@ public class ProductPriceService {
     }
 
     public int getPromotionDiscountedValue(Product product, int originPrice) {
-        Promotion promotion = product.getProductPriceAttribute().getPromotion();
-        PromotionType type = promotion.getPromotionPriceAttribute().getType();
+        Promotion promotion = product.getPriceAttribute().getPromotion();
+        PromotionType type = promotion.getPriceAttribute().getType();
 
         return factory.calculateDiscountedAmount(type)
                 .getAppliedPromotionAmount(originPrice, promotion);
