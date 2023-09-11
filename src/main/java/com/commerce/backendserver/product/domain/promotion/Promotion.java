@@ -26,7 +26,7 @@ public class Promotion extends BaseEntity {
     private String name;
 
     @Embedded
-    private PromotionPriceAttribute priceAttribute;
+    private PromotionDiscountAttribute priceAttribute;
 
     @Embedded
     private PromotionPeriodAttribute periodAttribute;

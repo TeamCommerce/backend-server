@@ -1,6 +1,7 @@
 package com.commerce.backendserver.product.application.dto;
 
 import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.product.domain.ProductPriceAttribute;
 import com.commerce.backendserver.product.domain.promotion.constants.PromotionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,12 +51,13 @@ public class ProductSingleSimpleResponse {
             final int discountedValue,
             final int finalDiscountedPrice
     ) {
+        ProductPriceAttribute priceAttribute = product.getPriceAttribute();
         return ProductSingleSimpleResponse.of(
                 product.getId(),
-                product.getPriceAttribute().getOriginPrice(),
-                product.getPriceAttribute().getPromotion().getPriceAttribute().getType(),
+                priceAttribute.getOriginPrice(),
+                priceAttribute.getPromotion().getPriceAttribute().getType(),
                 discountedValue,
-                product.getPriceAttribute().getPromotion().getPriceAttribute().getDiscountAmount(),
+                priceAttribute.getPromotion().getPriceAttribute().getDiscountAmount(),
                 finalDiscountedPrice,
                 ProductImageResponse.toResponse(product.getImages()),
                 ProductOptionResponse.toResponse(product.getOptions()));

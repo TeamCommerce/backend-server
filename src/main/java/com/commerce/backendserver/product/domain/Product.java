@@ -2,7 +2,9 @@ package com.commerce.backendserver.product.domain;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.image.domain.ProductImage;
+import com.commerce.backendserver.product.application.dto.ProductSingleSimpleResponse;
 import com.commerce.backendserver.product.domain.option.ProductOption;
+import com.commerce.backendserver.product.domain.promotion.PromotionDiscountAttribute;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +16,7 @@ import java.util.List;
 
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
@@ -50,7 +53,7 @@ public class Product extends BaseEntity {
 
 
     //== Constructor Method ==//
-    @Builder
+    @Builder(access = PRIVATE)
     private Product(
             final ProductCommonInfo commonInfo,
             final ProductPriceAttribute priceAttribute
@@ -69,4 +72,8 @@ public class Product extends BaseEntity {
                 .priceAttribute(priceAttribute)
                 .build();
     }
+
+    //== Business Method ==//
+
+    //== Utility Method ==//
 }

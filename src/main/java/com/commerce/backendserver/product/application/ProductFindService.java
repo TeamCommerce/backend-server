@@ -2,8 +2,8 @@ package com.commerce.backendserver.product.application;
 
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.product.application.dto.ProductSingleSimpleResponse;
-import com.commerce.backendserver.product.application.price.ProductPriceService;
 import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.product.domain.ProductPriceAttribute;
 import com.commerce.backendserver.product.domain.persistence.ProductQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,19 +17,17 @@ import static com.commerce.backendserver.product.exception.ProductError.PRODUCT_
 public class ProductFindService {
 
     private final ProductQueryRepository productQueryRepository;
-    private final ProductPriceService productPriceService;
 
     public ProductSingleSimpleResponse toSingleSimpleResponse(Long id) {
 
         Product product = productQueryRepository.findProductInfoById(id)
                 .orElseThrow(() -> CommerceException.of(PRODUCT_NOT_FOUND));
 
-        int finalDiscountedPrice = productPriceService.applyPromotionDiscount(product);
-        int discountedValue = productPriceService.getPromotionDiscountedValue(product, product.getPriceAttribute().getOriginPrice());
+        ProductPriceAttribute priceAttribute = product.getPriceAttribute();
 
         return ProductSingleSimpleResponse.from(
                 product,
-                finalDiscountedPrice,
-                discountedValue);
+                priceAttribute.getPromotionDiscountedValue(),
+                priceAttribute.applyPromotionDiscount());
     }
 }
