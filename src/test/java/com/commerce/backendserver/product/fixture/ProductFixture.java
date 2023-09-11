@@ -37,7 +37,7 @@ public enum ProductFixture {
     public Product toEntity(
             Promotion promotion
     ) {
-        return Product.toProduct(
+        return Product.createProduct(
                 images,
                 VALID_OPTION.toOptionList(),
                 ProductCommonInfo.of(

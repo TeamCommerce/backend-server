@@ -15,9 +15,9 @@ public class ProductSearchController {
 
     private final ProductFindService productFindService;
 
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<ProductSingleSimpleResponse> findSingleProduct(
-            @RequestParam Long id
+            @PathVariable Long id
     ) {
         return ResponseEntity.ok(productFindService.toSingleSimpleResponse(id));
     }

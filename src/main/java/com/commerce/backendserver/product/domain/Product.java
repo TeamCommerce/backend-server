@@ -67,7 +67,7 @@ public class Product extends BaseEntity {
     }
 
     //== Static Factory Method ==//
-    public static Product toProduct(
+    public static Product createProduct(
             final List<String> images,
             final List<ProductOption> options,
             final ProductCommonInfo commonInfo,
@@ -91,11 +91,8 @@ public class Product extends BaseEntity {
     }
 
     private void applyOptions(List<ProductOption> options) {
-        this.options.addAll(
-                options.stream()
-                        .peek(option -> option.updateProduct(this))
-                        .toList()
-        );
+        options.forEach(option -> option.updateProduct(this));
+        this.options.addAll(options);
     }
 
     //== Utility Method ==//
