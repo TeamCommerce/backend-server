@@ -24,10 +24,10 @@ class ImageServiceTest extends MockTestBase {
 	private static final String TYPE = "review";
 
 	@InjectMocks
-	ImageService imageService;
+	private ImageService imageService;
 
 	@Mock
-	ImageManager imageManager;
+	private ImageManager imageManager;
 
 	@Test
 	@DisplayName("[uploadImages method]")

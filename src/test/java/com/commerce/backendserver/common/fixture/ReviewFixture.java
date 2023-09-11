@@ -1,9 +1,12 @@
 package com.commerce.backendserver.common.fixture;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+import com.commerce.backendserver.common.utils.FileMockingUtils;
 import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import com.commerce.backendserver.review.domain.Review;
 
 import lombok.Getter;
@@ -33,6 +36,16 @@ public enum ReviewFixture {
 			product,
 			writerId,
 			imageUrls
+		);
+	}
+
+	public CreateReviewRequest toCreateRequest() throws IOException {
+		return new CreateReviewRequest(
+			score,
+			contents,
+			1L,
+			stringInfoSet,
+			FileMockingUtils.createMockMultipartFiles()
 		);
 	}
 }
