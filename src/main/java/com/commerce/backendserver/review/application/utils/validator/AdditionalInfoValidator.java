@@ -32,7 +32,7 @@ public class AdditionalInfoValidator implements
             InfoName infoName = matchInfoName(splitInfo[0]);
             String infoValue = splitInfo[1];
 
-            if (infoName.getType().isInstance(Integer.class)) {
+            if (infoName.getType().isAssignableFrom(Integer.class)) {
                 validateIsInteger(infoValue);
             }
         });

@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.commerce.backendserver.common.base.MockTestBase;
 import com.commerce.backendserver.image.infra.ImageManager;
 
-@DisplayName("ImageService Test] (Application layer)")
+@DisplayName("[ImageService Test] (Application layer)")
 class ImageServiceTest extends MockTestBase {
 
 	private static final String TYPE = "review";

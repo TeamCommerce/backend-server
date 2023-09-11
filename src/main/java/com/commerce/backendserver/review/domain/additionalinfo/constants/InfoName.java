@@ -23,7 +23,7 @@ public enum InfoName {
 
     public static InfoName matchInfoName(String infoName) {
         try {
-            return InfoName.valueOf(infoName);
+            return InfoName.valueOf(infoName.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw CommerceException.of(NOT_EXIST_INFO_NAME);
         }
