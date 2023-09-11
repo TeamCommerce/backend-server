@@ -55,9 +55,9 @@ public class ProductSingleSimpleResponse {
         return ProductSingleSimpleResponse.of(
                 product.getId(),
                 priceAttribute.getOriginPrice(),
-                priceAttribute.getPromotion().getPriceAttribute().getType(),
+                priceAttribute.getPromotion().getDiscountAttribute().getType(),
                 discountedValue,
-                priceAttribute.getPromotion().getPriceAttribute().getDiscountAmount(),
+                priceAttribute.getPromotion().getDiscountAttribute().getDiscountAmount(),
                 finalDiscountedPrice,
                 ProductImageResponse.toResponse(product.getImages()),
                 ProductOptionResponse.toResponse(product.getOptions()));

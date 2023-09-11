@@ -44,13 +44,11 @@ public class ProductOption extends BaseEntity {
     //== Constructor Method ==//
     @Builder
     private ProductOption(
-            Product product,
             ProductColor color,
             ProductSelectionOption selectionOption,
             Integer inventory,
             ProductStatus status
     ) {
-        this.product = product;
         this.color = color;
         this.selectionOption = selectionOption;
         this.inventory = inventory;
@@ -60,17 +58,19 @@ public class ProductOption extends BaseEntity {
     //== Static Factory Method ==//
     public static ProductOption of(
             final ProductColor color,
-            final Product product,
             final ProductSelectionOption selectionOption,
             final Integer inventory,
             final ProductStatus status
     ) {
         return ProductOption.builder()
-                .product(product)
                 .color(color)
                 .selectionOption(selectionOption)
                 .inventory(inventory)
                 .status(status)
                 .build();
+    }
+
+    public void updateProduct(Product product) {
+        this.product = product;
     }
 }

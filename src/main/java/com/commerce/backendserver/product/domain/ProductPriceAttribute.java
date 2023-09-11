@@ -78,6 +78,6 @@ public class ProductPriceAttribute {
 
     //== Utility Method ==//
     private PromotionDiscountAttribute getPromotionPriceAttribute() {
-        return this.getPromotion().getPriceAttribute();
+        return this.getPromotion().getDiscountAttribute();
     }
 }

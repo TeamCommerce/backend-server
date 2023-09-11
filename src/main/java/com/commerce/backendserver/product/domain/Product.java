@@ -2,13 +2,12 @@ package com.commerce.backendserver.product.domain;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.image.domain.ProductImage;
-import com.commerce.backendserver.product.application.dto.ProductSingleSimpleResponse;
 import com.commerce.backendserver.product.domain.option.ProductOption;
-import com.commerce.backendserver.product.domain.promotion.PromotionDiscountAttribute;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.OnDelete;
 
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Entity
 @Getter
+@Slf4j
 @Table(name = "t_product")
 @NoArgsConstructor(access = PROTECTED)
 public class Product extends BaseEntity {
@@ -55,25 +55,48 @@ public class Product extends BaseEntity {
     //== Constructor Method ==//
     @Builder(access = PRIVATE)
     private Product(
+            final List<String> images,
+            final List<ProductOption> options,
             final ProductCommonInfo commonInfo,
             final ProductPriceAttribute priceAttribute
     ) {
+        applyImages(images);
+        applyOptions(options);
         this.commonInfo = commonInfo;
         this.priceAttribute = priceAttribute;
     }
 
     //== Static Factory Method ==//
     public static Product toProduct(
+            final List<String> images,
+            final List<ProductOption> options,
             final ProductCommonInfo commonInfo,
             final ProductPriceAttribute priceAttribute
     ) {
         return Product.builder()
+                .images(images)
+                .options(options)
                 .commonInfo(commonInfo)
                 .priceAttribute(priceAttribute)
                 .build();
     }
 
     //== Business Method ==//
+    private void applyImages(List<String> imageUrls) {
+        this.images.addAll(
+                imageUrls.stream()
+                        .map(imageUrl -> ProductImage.of(imageUrl, this))
+                        .toList()
+        );
+    }
+
+    private void applyOptions(List<ProductOption> options) {
+        this.options.addAll(
+                options.stream()
+                        .peek(option -> option.updateProduct(this))
+                        .toList()
+        );
+    }
 
     //== Utility Method ==//
 }
