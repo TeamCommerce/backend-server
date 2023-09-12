@@ -1,33 +1,29 @@
 package com.commerce.backendserver.review.integration;
 
 import static com.commerce.backendserver.common.utils.S3LinkUtils.*;
+import static com.commerce.backendserver.review.exception.ReviewError.*;
+import static com.commerce.backendserver.review.integration.ReviewAcceptanceFixture.*;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.*;
-import static io.restassured.RestAssured.given;
 import static org.mockito.BDDMockito.*;
-import static org.springframework.http.HttpHeaders.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.commerce.backendserver.common.base.IntegrationTestBase;
-import com.commerce.backendserver.common.fixture.ReviewFixture;
 import com.commerce.backendserver.member.domain.MemberRepository;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.ProductCommandRepository;
@@ -36,13 +32,12 @@ import com.commerce.backendserver.product.domain.ProductPriceAttribute;
 import com.commerce.backendserver.product.domain.constants.ProductBrand;
 import com.commerce.backendserver.product.domain.constants.ProductCategory;
 
-import io.restassured.specification.RequestSpecification;
+import io.restassured.response.ValidatableResponse;
 
 @DisplayName("[ReviewApi Test] (API)")
 class ReviewApiTest extends IntegrationTestBase {
 
 	private static final String REVIEW = "review";
-	private static final String BASE_URL = "/api/reviews";
 
 	@MockBean
 	private AmazonS3Client amazonS3Client;
@@ -55,11 +50,11 @@ class ReviewApiTest extends IntegrationTestBase {
 
 	@BeforeEach
 	void setUp() throws IOException {
-		BDDMockito.given(amazonS3Client.putObject(any(PutObjectRequest.class)))
+		given(amazonS3Client.putObject(any(PutObjectRequest.class)))
 			.willReturn(null);
 
 		final URL mockUrl = new URL(createUploadLink(REVIEW));
-		BDDMockito.given(amazonS3Client.getUrl(anyString(), anyString()))
+		given(amazonS3Client.getUrl(anyString(), anyString()))
 			.willReturn(mockUrl);
 
 		productCommandRepository.save(Product.toProduct(
@@ -83,22 +78,69 @@ class ReviewApiTest extends IntegrationTestBase {
 		@Test
 		@DisplayName("success")
 		void success() {
-			//given
-			Map<String, String> params = generateParams();
-
-			RequestSpecification request = given(spec).log().all()
-				.filter(documentRequest())
-				.header(AUTHORIZATION, generateAccessToken(memberRepository))
-				.multiPart("files", getFile())
-				.request();
-
-			params.keySet().forEach(key -> request.multiPart(key, params.get(key)));
-
-			//when, then
-			request.when()
-				.post(BASE_URL)
-				.then().log().all()
+			리뷰를_등록한다(spec, Set.of(documentRequest()), generateAccessToken(memberRepository))
 				.statusCode(CREATED.value());
+
+		}
+
+		@Test
+		@DisplayName("fail by invalid range score")
+		void failByInvalidRangeScore() {
+			ValidatableResponse response = 잘못된_리뷰_점수_범위로_실패한다(
+				spec,
+				Set.of(documentRequest(), documentErrorResponse()),
+				generateAccessToken(memberRepository)
+			);
+
+			assertErrorResponse(response, BAD_REQUEST, "1에서 5사이의 정수 별점을 입력해주세요.");
+		}
+
+		@Test
+		@DisplayName("fail by invalid contents length")
+		void failByInvalidContentsLength() {
+			ValidatableResponse response = 잘못된_콘텐츠_길이로_실패한다(
+				spec,
+				Set.of(documentRequest(), documentErrorResponse()),
+				generateAccessToken(memberRepository)
+			);
+
+			assertErrorResponse(response, BAD_REQUEST, "최소 5자 이상 입력해주세요.");
+		}
+
+		@Test
+		@DisplayName("fail by invalid additionalInfo format")
+		void failByInvalidAdditionalInfoFormat() {
+			ValidatableResponse response = 잘못된_추가정보_형식으로_실패한다(
+				spec,
+				Set.of(documentRequest(), documentErrorResponse()),
+				generateAccessToken(memberRepository)
+			);
+
+			assertErrorResponse(response, BAD_REQUEST, INVALID_ADDITIONAL_INFO.getMessage());
+		}
+
+		@Test
+		@DisplayName("fail by not exist info name")
+		void failByNotExistInfoName() {
+			ValidatableResponse response = 존재하지_않는_추가정보_이름으로_실패한다(
+				spec,
+				Set.of(documentRequest(), documentErrorResponse()),
+				generateAccessToken(memberRepository)
+			);
+
+			assertErrorResponse(response, BAD_REQUEST, NOT_EXIST_INFO_NAME.getMessage());
+		}
+
+		@Test
+		@DisplayName("fail by invalid integer info value")
+		void failByInvalidIntegerInfoValue() {
+			ValidatableResponse response = 숫자형_추가정보에_문자를_입력해_실패한다(
+				spec,
+				Set.of(documentRequest(), documentErrorResponse()),
+				generateAccessToken(memberRepository)
+			);
+
+			assertErrorResponse(response, BAD_REQUEST, INVALID_INTEGER_INFO_VALUE.getMessage());
 		}
 	}
 
@@ -120,26 +162,5 @@ class ReviewApiTest extends IntegrationTestBase {
 					.attributes(constraint("지정된 이름만 사용가능"))
 			)
 		);
-	}
-
-	private static File getFile() {
-		final String BASE_PATH = "images/";
-		try {
-			return new ClassPathResource(BASE_PATH + "hello1.jpg").getFile();
-		} catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private Map<String, String> generateParams() {
-		Map<String, String> params = new HashMap<>();
-		ReviewFixture fixture = ReviewFixture.A;
-
-		params.put("contents", fixture.getContents());
-		params.put("score", String.valueOf(fixture.getScore()));
-		params.put("productId", String.valueOf(1L));
-		fixture.getStringInfoSet().forEach(info -> params.put("additionalInfo", info));
-
-		return params;
 	}
 }
