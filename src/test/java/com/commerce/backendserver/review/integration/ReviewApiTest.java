@@ -73,7 +73,7 @@ class ReviewApiTest extends IntegrationTestBase {
 
 	@Nested
 	@DisplayName("[Register Review API]")
-	class registerReviewApi {
+	class 리뷰_등록_API {
 
 		@Test
 		@DisplayName("success")
@@ -85,7 +85,7 @@ class ReviewApiTest extends IntegrationTestBase {
 
 		@Test
 		@DisplayName("fail by invalid range score")
-		void failByInvalidRangeScore() {
+		void 잘못된_리뷰_점수_범위로_실패() {
 			ValidatableResponse response = 잘못된_리뷰_점수_범위로_실패한다(
 				spec,
 				Set.of(documentRequest(), documentErrorResponse()),
@@ -97,7 +97,7 @@ class ReviewApiTest extends IntegrationTestBase {
 
 		@Test
 		@DisplayName("fail by invalid contents length")
-		void failByInvalidContentsLength() {
+		void 잘못된_콘텐츠_길이로_실패() {
 			ValidatableResponse response = 잘못된_콘텐츠_길이로_실패한다(
 				spec,
 				Set.of(documentRequest(), documentErrorResponse()),
@@ -109,7 +109,7 @@ class ReviewApiTest extends IntegrationTestBase {
 
 		@Test
 		@DisplayName("fail by invalid additionalInfo format")
-		void failByInvalidAdditionalInfoFormat() {
+		void 잘못된_추가정보_형식으로_실패() {
 			ValidatableResponse response = 잘못된_추가정보_형식으로_실패한다(
 				spec,
 				Set.of(documentRequest(), documentErrorResponse()),
@@ -121,7 +121,7 @@ class ReviewApiTest extends IntegrationTestBase {
 
 		@Test
 		@DisplayName("fail by not exist info name")
-		void failByNotExistInfoName() {
+		void 존재하지_않는_추가정보_이름으로_실패() {
 			ValidatableResponse response = 존재하지_않는_추가정보_이름으로_실패한다(
 				spec,
 				Set.of(documentRequest(), documentErrorResponse()),
@@ -133,7 +133,7 @@ class ReviewApiTest extends IntegrationTestBase {
 
 		@Test
 		@DisplayName("fail by invalid integer info value")
-		void failByInvalidIntegerInfoValue() {
+		void 숫자형_추가정보에_문자를_입력해_실패() {
 			ValidatableResponse response = 숫자형_추가정보에_문자를_입력해_실패한다(
 				spec,
 				Set.of(documentRequest(), documentErrorResponse()),
