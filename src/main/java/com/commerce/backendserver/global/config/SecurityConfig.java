@@ -72,7 +72,8 @@ public class SecurityConfig {
 				configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(registry -> registry
 				//모든 요청에 대해 인증 요구
-				.requestMatchers(new AntPathRequestMatcher("/api/**")).authenticated())
+				.requestMatchers(new AntPathRequestMatcher("/api/**")).authenticated()
+				.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
 			//Jwt 필터
 			.addFilterAt(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(jwtExceptionHandlerFilter, SecurityContextHolderFilter.class)
