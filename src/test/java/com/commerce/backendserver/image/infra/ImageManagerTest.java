@@ -1,6 +1,7 @@
 package com.commerce.backendserver.image.infra;
 
 import static com.commerce.backendserver.common.utils.FileMockingUtils.*;
+import static com.commerce.backendserver.common.utils.S3LinkUtils.*;
 import static com.commerce.backendserver.image.exception.ImageError.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +10,6 @@ import static org.mockito.BDDMockito.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +28,6 @@ class ImageManagerTest extends MockTestBase {
 
 	private static final String REVIEW = "review";
 	private static final String BUCKET_NAME = "bucketName";
-	private static final String CLOUD_DOMAIN = "https://cloud-domain";
 
 	@Mock
 	AmazonS3Client amazonS3Client;
@@ -51,7 +50,7 @@ class ImageManagerTest extends MockTestBase {
 			given(amazonS3Client.putObject(any(PutObjectRequest.class)))
 				.willReturn(null);
 
-			final URL mockUrl = new URL(createUploadLink());
+			final URL mockUrl = new URL(createUploadLink(REVIEW));
 			given(amazonS3Client.getUrl(eq(BUCKET_NAME), any(String.class)))
 				.willReturn(mockUrl);
 
@@ -82,15 +81,5 @@ class ImageManagerTest extends MockTestBase {
 				.isInstanceOf(CommerceException.class)
 				.hasMessageContaining(EMPTY_FILE.getMessage());
 		}
-	}
-
-	private String createUploadLink() {
-		return String.format(
-			"%s/%s/%s/%s",
-			CLOUD_DOMAIN,
-			BUCKET_NAME,
-			REVIEW,
-			UUID.randomUUID() + ".jpg"
-		);
 	}
 }
