@@ -3,6 +3,7 @@ package com.commerce.backendserver.review.domain;
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.image.domain.ReviewImage;
 import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
 import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfoList;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -56,15 +57,15 @@ public class Review extends BaseEntity {
     @OnDelete(action = CASCADE)
     private final List<ReviewImage> images = new ArrayList<>();
 
-    //== Construct Method ==//
+    //== Constructor Method ==//
     @Builder
     private Review(
-        String contents,
-        Integer score,
-        Set<String> stringInfoSet,
-        Product product,
-        Long writerId,
-        List<String> imageUrls
+        final String contents,
+        final Integer score,
+        final Set<String> stringInfoSet,
+        final Product product,
+        final Long writerId,
+        final List<String> imageUrls
     ) {
         this.contents = contents;
         this.score = score;
@@ -75,6 +76,8 @@ public class Review extends BaseEntity {
     }
 
     private void applyImages(List<String> imageUrls) {
+        if (imageUrls == null) return;
+
         this.images.addAll(
             imageUrls.stream()
             .map(imageUrl -> ReviewImage.of(imageUrl, this))
@@ -82,13 +85,14 @@ public class Review extends BaseEntity {
         );
     }
 
+    //== Static Factory Method ==//
     public static Review createReview(
-        String contents,
-        Integer score,
-        Set<String> stringInfoSet,
-        Product product,
-        Long writerId,
-        List<String> imageUrls
+        final String contents,
+        final Integer score,
+        final Set<String> stringInfoSet,
+        final Product product,
+        final Long writerId,
+        final List<String> imageUrls
     ) {
         return Review.builder()
             .contents(contents)
@@ -98,5 +102,10 @@ public class Review extends BaseEntity {
             .writerId(writerId)
             .imageUrls(imageUrls)
             .build();
+    }
+
+    //== Utility Method ==//
+    public List<AdditionalInfo> getAdditionalInfoList() {
+        return additionalInfoList.getList();
     }
 }

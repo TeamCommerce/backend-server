@@ -125,7 +125,8 @@ jacocoTestReport {
                     fileTree(dir: it, excludes: [
                             '**/*Application*', // Exclude SpringApplication
                             '**/*Fixture*',     // Exclude Fixture Class
-                            "**/Q*.class"       // Exclude QueryDsl Class
+                            "**/Q*.class",    // Exclude QueryDsl Class
+                            '**/*Config*'     // Exclude Config class
                     ])
                 })
         )
