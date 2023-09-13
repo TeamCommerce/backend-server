@@ -30,8 +30,11 @@ public class KakaoProfile implements OAuthProfile {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public String getName() {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        return (String) kakaoAccount.get("nickname");
+        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+
+        return (String) profile.get("nickname");
     }
 }

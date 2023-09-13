@@ -5,6 +5,7 @@ import com.commerce.backendserver.auth.application.filter.JwtExceptionHandlerFil
 import com.commerce.backendserver.auth.infra.jwt.JwtProvider;
 import com.commerce.backendserver.member.domain.MemberQueryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,29 +34,29 @@ import static org.springframework.http.HttpMethod.GET;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final JwtExceptionHandlerFilter jwtExceptionHandlerFilter;
-    private final OAuth2UserService<OAuth2UserRequest, OAuth2User> oauthLoginService;
-    private final SimpleUrlAuthenticationSuccessHandler loginSuccessHandler;
-    private final AuthenticationEntryPoint authenticationEntryPoint;
-    private final String serverDomain;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final JwtExceptionHandlerFilter jwtExceptionHandlerFilter;
+	private final OAuth2UserService<OAuth2UserRequest, OAuth2User> oauthLoginService;
+	private final SimpleUrlAuthenticationSuccessHandler loginSuccessHandler;
+	private final AuthenticationEntryPoint authenticationEntryPoint;
+	private final String serverDomain;
 
-    public SecurityConfig(
-            ObjectMapper objectMapper,
-            JwtProvider jwtProvider,
-            OAuth2UserService<OAuth2UserRequest, OAuth2User> oauthLoginService,
-            SimpleUrlAuthenticationSuccessHandler loginSuccessHandler,
-            AuthenticationEntryPoint authenticationEntryPoint,
-            MemberQueryRepository memberQueryRepository,
-            @Value("${server.domain}") String serverDomain
-    ) {
-        this.jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtProvider, memberQueryRepository);
-        this.jwtExceptionHandlerFilter = new JwtExceptionHandlerFilter(objectMapper);
-        this.oauthLoginService = oauthLoginService;
-        this.loginSuccessHandler = loginSuccessHandler;
-        this.authenticationEntryPoint = authenticationEntryPoint;
-        this.serverDomain = serverDomain;
-    }
+	public SecurityConfig(
+		ObjectMapper objectMapper,
+		JwtProvider jwtProvider,
+		OAuth2UserService<OAuth2UserRequest, OAuth2User> oauthLoginService,
+		SimpleUrlAuthenticationSuccessHandler loginSuccessHandler,
+		AuthenticationEntryPoint authenticationEntryPoint,
+		MemberQueryRepository memberQueryRepository,
+		@Value("${server.domain}") String serverDomain
+	) {
+		this.jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtProvider, memberQueryRepository);
+		this.jwtExceptionHandlerFilter = new JwtExceptionHandlerFilter(objectMapper);
+		this.oauthLoginService = oauthLoginService;
+		this.loginSuccessHandler = loginSuccessHandler;
+		this.authenticationEntryPoint = authenticationEntryPoint;
+		this.serverDomain = serverDomain;
+	}
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -89,6 +90,6 @@ public class SecurityConfig {
                 .exceptionHandling(configurer -> configurer
                         .authenticationEntryPoint(authenticationEntryPoint));
 
-        return http.build();
-    }
+		return http.build();
+	}
 }

@@ -67,9 +67,12 @@ class KakaoUserProfileTest {
     void getNameTest() {
         //given
         final String nickname = "nickname";
-        HashMap<String, Object> kakaoAccount = new HashMap<>();
 
-        kakaoAccount.put("nickname", nickname);
+        Map<String, Object> kakaoAccount = new HashMap<>();
+        Map<String, Object> profile = new HashMap<>();
+
+        profile.put("nickname", nickname);
+        kakaoAccount.put("profile", profile);
         attributes.put("kakao_account", kakaoAccount);
 
         kakaoProfile.initAttributes(attributes);
