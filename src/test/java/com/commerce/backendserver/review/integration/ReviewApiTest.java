@@ -1,6 +1,7 @@
 package com.commerce.backendserver.review.integration;
 
 import static com.commerce.backendserver.common.utils.S3LinkUtils.*;
+import static com.commerce.backendserver.product.fixture.ProductFixture.VALID_PRODUCT;
 import static com.commerce.backendserver.review.exception.ReviewError.*;
 import static com.commerce.backendserver.review.integration.ReviewAcceptanceFixture.*;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.*;
@@ -13,6 +14,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Set;
 
+import com.commerce.backendserver.product.domain.persistence.ProductCommandRepository;
+import com.commerce.backendserver.product.fixture.ProductFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -26,7 +29,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.commerce.backendserver.common.base.IntegrationTestBase;
 import com.commerce.backendserver.member.domain.MemberRepository;
 import com.commerce.backendserver.product.domain.Product;
-import com.commerce.backendserver.product.domain.ProductCommandRepository;
 import com.commerce.backendserver.product.domain.ProductCommonInfo;
 import com.commerce.backendserver.product.domain.ProductPriceAttribute;
 import com.commerce.backendserver.product.domain.constants.ProductBrand;
@@ -57,17 +59,7 @@ class ReviewApiTest extends IntegrationTestBase {
 		given(amazonS3Client.getUrl(anyString(), anyString()))
 			.willReturn(mockUrl);
 
-		productCommandRepository.save(Product.toProduct(
-				ProductCommonInfo.of(
-					ProductBrand.ADADIS,
-					"product",
-					ProductCategory.BOT,
-					"description"),
-				ProductPriceAttribute.of(
-					null, 1000
-				)
-			)
-		);
+		productCommandRepository.save(VALID_PRODUCT.toEntity(null));
 
 	}
 

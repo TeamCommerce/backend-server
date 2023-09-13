@@ -3,6 +3,7 @@ package com.commerce.backendserver.image.domain;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.commerce.backendserver.product.fixture.ProductFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ class ReviewImageTest {
 	@DisplayName("[Construct method]")
 	void ofTest() {
 		//given
-		Product product = Product.toProduct(null, null);
+		Product product = ProductFixture.VALID_PRODUCT.toEntity(null);
 		Review review = ReviewFixture.A.toEntity(product, 1L);
 
 		final String url = "testUrl.jpg";

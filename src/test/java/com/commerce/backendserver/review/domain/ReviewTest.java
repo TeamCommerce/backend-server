@@ -1,5 +1,6 @@
 package com.commerce.backendserver.review.domain;
 
+import static com.commerce.backendserver.product.fixture.ProductFixture.VALID_PRODUCT;
 import static java.util.Comparator.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+import com.commerce.backendserver.product.fixture.ProductFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,7 @@ public class ReviewTest {
 	class createReviewTest {
 
 		//given
-		private final Product product = Product.toProduct(null, null);
+		private final Product product = VALID_PRODUCT.toEntity(null);
 		private final Long writerId = 1L;
 
 		@Test
