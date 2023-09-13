@@ -1,4 +1,4 @@
-package com.commerce.backendserver.product.application.price.promotion;
+package com.commerce.backendserver.product.domain.promotion.discount;
 
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.product.domain.promotion.constants.PromotionType;
@@ -9,7 +9,7 @@ import static com.commerce.backendserver.product.exception.ProductError.INVALID_
 @Service
 public class ApplyPromotionFactory {
 
-    public PromotionPriceUtil calculateDiscountedAmount(
+    public PromotionPriceCalculator calculateDiscountedAmount(
             PromotionType type
     ) {
         return switch (type) {
