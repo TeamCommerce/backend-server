@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -26,6 +27,8 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
 import java.util.Collections;
+
+import static org.springframework.http.HttpMethod.GET;
 
 @Configuration
 @EnableWebSecurity
@@ -55,35 +58,37 @@ public class SecurityConfig {
 		this.serverDomain = serverDomain;
 	}
 
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(AbstractHttpConfigurer::disable)
-			.cors(configurer -> configurer.configurationSource(request -> {
-					CorsConfiguration cors = new CorsConfiguration();
-					cors.setAllowedOrigins(Arrays.asList("http://localhost:8080", serverDomain));
-					cors.setAllowedMethods(Collections.singletonList("*"));
-					cors.setAllowedHeaders(Collections.singletonList("*"));
-					cors.setAllowCredentials(true);
-					return cors;
-				}
-			))
-			.formLogin(AbstractHttpConfigurer::disable)
-			.sessionManagement(configurer ->
-				configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(registry -> registry
-				//모든 요청에 대해 인증 요구
-				.requestMatchers(new AntPathRequestMatcher("/api/**")).authenticated())
-			//Jwt 필터
-			.addFilterAt(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-			.addFilterBefore(jwtExceptionHandlerFilter, SecurityContextHolderFilter.class)
-			//oauth
-			.oauth2Login(configurer -> configurer
-				.userInfoEndpoint(userInfoEndpointConfig ->
-					userInfoEndpointConfig.userService(oauthLoginService))
-				.successHandler(loginSuccessHandler))
-			// 인증 예외 핸들러
-			.exceptionHandling(configurer -> configurer
-				.authenticationEntryPoint(authenticationEntryPoint));
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .cors(configurer -> configurer.configurationSource(request -> {
+                            CorsConfiguration cors = new CorsConfiguration();
+                            cors.setAllowedOrigins(Arrays.asList("http://localhost:8080", serverDomain));
+                            cors.setAllowedMethods(Collections.singletonList("*"));
+                            cors.setAllowedHeaders(Collections.singletonList("*"));
+                            cors.setAllowCredentials(true);
+                            return cors;
+                        }
+                ))
+                .formLogin(AbstractHttpConfigurer::disable)
+                .sessionManagement(configurer ->
+                        configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(registry -> registry
+                        //모든 요청에 대해 인증 요구
+                        .requestMatchers(new AntPathRequestMatcher("/api/products/**", GET.toString())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/**")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+                //Jwt 필터
+                .addFilterAt(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionHandlerFilter, SecurityContextHolderFilter.class)
+                //oauth
+                .oauth2Login(configurer -> configurer
+                        .userInfoEndpoint(userInfoEndpointConfig ->
+                                userInfoEndpointConfig.userService(oauthLoginService))
+                        .successHandler(loginSuccessHandler))
+                // 인증 예외 핸들러
+                .exceptionHandling(configurer -> configurer
+                        .authenticationEntryPoint(authenticationEntryPoint));
 
 		return http.build();
 	}

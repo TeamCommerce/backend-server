@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Getter
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public enum ProductError implements ErrorCode {
     // [Domain] Product
     INVALID_PRICE_ATTRIBUTE("상품 가격 정보가 올바르지 않습니다.", BAD_REQUEST),
     INVALID_OPTIONS("상품 옵션 정보가 올바르지 않습니다.", BAD_REQUEST),
+    PRODUCT_NOT_FOUND("상품 정보를 찾을 수 없습니다.", NOT_FOUND),
 
     // [Domain] ProductCommonInfo
     UNKNOWN_BRAND("존재하지 않는 브랜드입니다.", BAD_REQUEST),
@@ -26,7 +28,7 @@ public enum ProductError implements ErrorCode {
     // [Domain] ProductPriceAttribute
     INVALID_PROMOTION("상품 프로모션 정보가 올바르지 않습니다.", BAD_REQUEST),
     INVALID_ORIGIN_PRICE("상품 정가가 올바르지 않습니다.", BAD_REQUEST),
-    MINUS_ORIGIN_PRICE("상품 정가는 음수일 수 없습니다.", BAD_REQUEST);
+    MINUS_APPLIED_PROMOTION_PRICE("상품 프로모션 할인 적용가는 음수일 수 없습니다.", BAD_REQUEST);
 
 
     private final String message;

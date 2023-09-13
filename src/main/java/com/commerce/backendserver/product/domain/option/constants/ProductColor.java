@@ -1,15 +1,36 @@
 package com.commerce.backendserver.product.domain.option.constants;
 
+import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@RequiredArgsConstructor
-public enum ProductColor {
+@Embeddable
+@Builder(access = PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
+public class ProductColor {
 
-    MATT_BLACK("#000000", "매트 블랙"),
-    PURE_WHITE("#FFFFFF", "퓨어 화이트");
+    private String colorCode;
 
-    private final String colorCode;
-    private final String colorName;
+    private String korColorName;
+
+    private String engColorName;
+
+    public static ProductColor of(
+            final String colorCode,
+            final String korColorName,
+            final String engColorName
+    ) {
+        return ProductColor.builder()
+                .colorCode(colorCode)
+                .korColorName(korColorName)
+                .engColorName(engColorName)
+                .build();
+    }
 }
