@@ -23,11 +23,17 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(CommerceException.class)
     public ResponseEntity<ErrorResponse> handleCommerceException(CommerceException ex) {
-        log.error("", ex);
+        logCommerceException(ex);
         return convert(ex.getErrorCode());
     }
 
     private ResponseEntity<ErrorResponse> convert(ErrorCode errorCode) {
         return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.of(errorCode));
+    }
+
+    private void logCommerceException(CommerceException ex) {
+        if (ex.getErrorCode().getStatus().is5xxServerError()) {
+            log.error("", ex);
+        } else log.error("error message = {}", ex.getMessage());
     }
 }
