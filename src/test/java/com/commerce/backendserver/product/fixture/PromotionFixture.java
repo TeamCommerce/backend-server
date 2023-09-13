@@ -7,8 +7,6 @@ import com.commerce.backendserver.product.domain.promotion.constants.PromotionTy
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
-
 import static com.commerce.backendserver.product.domain.promotion.constants.PromotionType.FIX_DISCOUNT;
 import static java.time.LocalDateTime.now;
 

@@ -1,42 +1,41 @@
 package com.commerce.backendserver.common.authorize;
 
-import static com.commerce.backendserver.common.fixture.MemberFixture.*;
-
+import com.commerce.backendserver.auth.infra.oauth.UserPrincipal;
+import com.commerce.backendserver.member.domain.Member;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.commerce.backendserver.auth.infra.oauth.UserPrincipal;
-import com.commerce.backendserver.member.domain.Member;
+import static com.commerce.backendserver.common.fixture.MemberFixture.A;
 
 public class CustomUserSecurityContextFactory implements WithSecurityContextFactory<WithMockCustomUser> {
 
-	@Override
-	public SecurityContext createSecurityContext(WithMockCustomUser annotation) {
+    private static Member generateMember() {
+        Member member = A.toEntity();
+        ReflectionTestUtils.setField(member, "id", 1L);
 
-		final SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        return member;
+    }
 
-		final Member member = generateMember();
+    @Override
+    public SecurityContext createSecurityContext(WithMockCustomUser annotation) {
 
-		UserPrincipal oauthUser = UserPrincipal.of(member, null);
+        final SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 
-		OAuth2AuthenticationToken authentication = new OAuth2AuthenticationToken(
-			oauthUser,
-			oauthUser.getAuthorities(),
-			member.getOauthType()
-		);
+        final Member member = generateMember();
 
-		securityContext.setAuthentication(authentication);
+        UserPrincipal oauthUser = UserPrincipal.of(member, null);
 
-		return securityContext;
-	}
+        OAuth2AuthenticationToken authentication = new OAuth2AuthenticationToken(
+                oauthUser,
+                oauthUser.getAuthorities(),
+                member.getOauthType()
+        );
 
-	private static Member generateMember() {
-		Member member = A.toEntity();
-		ReflectionTestUtils.setField(member, "id", 1L);
+        securityContext.setAuthentication(authentication);
 
-		return member;
-	}
+        return securityContext;
+    }
 }

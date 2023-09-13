@@ -5,7 +5,6 @@ import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.image.application.ImageService;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.persistence.ProductQueryRepository;
-import com.commerce.backendserver.product.fixture.ProductFixture;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import com.commerce.backendserver.review.domain.Review;
 import com.commerce.backendserver.review.domain.ReviewRepository;
@@ -40,6 +39,25 @@ class ReviewServiceTest extends MockTestBase {
     private ReviewRepository reviewRepository;
     @Mock
     private ImageService imageService;
+
+    private Review generateReviewHasId() {
+        Review review = A.toEntity(null, null);
+        setField(review, "id", 1L);
+
+        return review;
+    }
+
+    private Optional<Product> generateProductOf() {
+        return Optional.of(VALID_PRODUCT.toEntity(null));
+    }
+
+    private Optional<Product> generateProductEmpty() {
+        return Optional.empty();
+    }
+
+    private List<String> generateImageUrls() {
+        return List.of("hello1.jpg", "hello2.jpg");
+    }
 
     @Nested
     @DisplayName("[createReview method]")
@@ -85,24 +103,5 @@ class ReviewServiceTest extends MockTestBase {
                     .isInstanceOf(CommerceException.class)
                     .hasMessageContaining(GLOBAL_NOT_FOUND.getMessage());
         }
-    }
-
-    private Review generateReviewHasId() {
-        Review review = A.toEntity(null, null);
-        setField(review, "id", 1L);
-
-        return review;
-    }
-
-    private Optional<Product> generateProductOf() {
-        return Optional.of(VALID_PRODUCT.toEntity(null));
-    }
-
-    private Optional<Product> generateProductEmpty() {
-        return Optional.empty();
-    }
-
-    private List<String> generateImageUrls() {
-        return List.of("hello1.jpg", "hello2.jpg");
     }
 }

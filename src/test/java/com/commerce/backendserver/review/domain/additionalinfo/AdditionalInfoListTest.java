@@ -1,91 +1,90 @@
 package com.commerce.backendserver.review.domain.additionalinfo;
 
-import static com.commerce.backendserver.common.fixture.ReviewFixture.*;
-import static java.util.Comparator.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import com.commerce.backendserver.review.domain.Review;
+import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-
-import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
+import static com.commerce.backendserver.common.fixture.ReviewFixture.A;
+import static java.util.Comparator.comparingInt;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("[AdditionalInfoList Test] (Domain layer)")
 class AdditionalInfoListTest {
 
-	@Nested
-	@DisplayName("[of method]")
-	class ofTest {
+    private List<AdditionalInfo> generateExpectedAdditionalInfo(Set<String> stringInfoSet) {
+        List<AdditionalInfo> expected = new ArrayList<>(
+                stringInfoSet.stream()
+                        .map(info -> {
+                            String[] split = info.split("/");
+                            return AdditionalInfo.of(InfoName.valueOf(split[0]), split[1]);
+                        }).toList()
+        );
 
-		private final Review review = Review.createReview(
-			null,
-			null,
-			null,
-			null,
-			null,
-			null);
+        expected.sort(comparingInt(info -> info.getInfoName().getOrder()));
 
-		@Test
-		@DisplayName("stringInfoSet is not null")
-		void isNotNull() {
-			//given
-			Set<String> stringInfoSet = A.getStringInfoSet();
+        return expected;
+    }
 
-			//when
-			AdditionalInfoList result = AdditionalInfoList.of(stringInfoSet, review);
+    private void assertAdditionalInfoMatching(
+            List<AdditionalInfo> actual,
+            List<AdditionalInfo> expected
+    ) {
+        assertThat(actual).hasSameSizeAs(expected);
 
-			//then
-			List<AdditionalInfo> expected = generateExpectedAdditionalInfo(stringInfoSet);
+        IntStream.range(0, actual.size())
+                .forEach(i -> {
+                    AdditionalInfo actualInfo = actual.get(i);
+                    AdditionalInfo expectedInfo = expected.get(i);
+                    assertAll(
+                            () -> assertThat(actualInfo.getInfoName()).isEqualTo(expectedInfo.getInfoName()),
+                            () -> assertThat(actualInfo.getInfoValue()).isEqualTo(expectedInfo.getInfoValue())
+                    );
+                });
+    }
 
-			assertAdditionalInfoMatching(result.getList(), expected);
-		}
+    @Nested
+    @DisplayName("[of method]")
+    class ofTest {
 
-		@Test
-		@DisplayName("stringInfoSet is null")
-		void isNull() {
-			//when
-			AdditionalInfoList result = AdditionalInfoList.of(null, review);
+        private final Review review = Review.createReview(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
 
-			//then
-			assertThat(result.getList()).isEmpty();
-		}
-	}
+        @Test
+        @DisplayName("stringInfoSet is not null")
+        void isNotNull() {
+            //given
+            Set<String> stringInfoSet = A.getStringInfoSet();
 
-	private List<AdditionalInfo> generateExpectedAdditionalInfo(Set<String> stringInfoSet) {
-		List<AdditionalInfo> expected = new ArrayList<>(
-			stringInfoSet.stream()
-				.map(info -> {
-					String[] split = info.split("/");
-					return AdditionalInfo.of(InfoName.valueOf(split[0]), split[1]);
-				}).toList()
-		);
+            //when
+            AdditionalInfoList result = AdditionalInfoList.of(stringInfoSet, review);
 
-		expected.sort(comparingInt(info -> info.getInfoName().getOrder()));
+            //then
+            List<AdditionalInfo> expected = generateExpectedAdditionalInfo(stringInfoSet);
 
-		return expected;
-	}
+            assertAdditionalInfoMatching(result.getList(), expected);
+        }
 
-	private void assertAdditionalInfoMatching(
-		List<AdditionalInfo> actual,
-		List<AdditionalInfo> expected
-	) {
-		assertThat(actual).hasSameSizeAs(expected);
+        @Test
+        @DisplayName("stringInfoSet is null")
+        void isNull() {
+            //when
+            AdditionalInfoList result = AdditionalInfoList.of(null, review);
 
-		IntStream.range(0, actual.size())
-			.forEach(i -> {
-				AdditionalInfo actualInfo = actual.get(i);
-				AdditionalInfo expectedInfo = expected.get(i);
-				assertAll(
-					() -> assertThat(actualInfo.getInfoName()).isEqualTo(expectedInfo.getInfoName()),
-					() -> assertThat(actualInfo.getInfoValue()).isEqualTo(expectedInfo.getInfoValue())
-				);
-			});
-	}
+            //then
+            assertThat(result.getList()).isEmpty();
+        }
+    }
 }

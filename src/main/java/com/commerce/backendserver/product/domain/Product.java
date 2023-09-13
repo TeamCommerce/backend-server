@@ -26,25 +26,22 @@ import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 @NoArgsConstructor(access = PROTECTED)
 public class Product extends BaseEntity {
 
-    @Id
-    @Column(name = "product_id")
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-
     @OneToMany(
             mappedBy = "product",
             cascade = PERSIST,
             orphanRemoval = true)
     @OnDelete(action = CASCADE)
     private final List<ProductImage> images = new ArrayList<>();
-
     @OneToMany(
             mappedBy = "product",
             cascade = PERSIST,
             orphanRemoval = true)
     @OnDelete(action = CASCADE)
     private final List<ProductOption> options = new ArrayList<>();
-
+    @Id
+    @Column(name = "product_id")
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
     @Embedded
     private ProductCommonInfo commonInfo;
 

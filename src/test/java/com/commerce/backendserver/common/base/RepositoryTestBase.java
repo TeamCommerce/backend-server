@@ -7,8 +7,8 @@ import org.springframework.context.annotation.FilterType;
 
 @DataJpaTest(
         includeFilters = @ComponentScan.Filter(
-        type = FilterType.ASSIGNABLE_TYPE,
-        classes = AuditingConfig.class
-))
+                type = FilterType.ASSIGNABLE_TYPE,
+                classes = AuditingConfig.class
+        ))
 public abstract class RepositoryTestBase {
 }

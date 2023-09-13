@@ -49,6 +49,13 @@ class JwtProviderTest {
         assertThat(result).isEqualTo(MEMBER_ID);
     }
 
+    private void assertToken(JwtProvider provider, String result) {
+        assertAll(
+                () -> assertDoesNotThrow(() -> provider.validateToken(result)),
+                () -> assertThat(provider.getPayload(result)).isEqualTo(1L)
+        );
+    }
+
     @Nested
     @DisplayName("[validateToken method]")
     class validateTokenTest {
@@ -92,12 +99,5 @@ class JwtProviderTest {
                     .isInstanceOf(CommerceException.class)
                     .hasMessageContaining(TOKEN_INVALID.getMessage());
         }
-    }
-
-    private void assertToken(JwtProvider provider, String result) {
-        assertAll(
-                () -> assertDoesNotThrow(() -> provider.validateToken(result)),
-                () -> assertThat(provider.getPayload(result)).isEqualTo(1L)
-        );
     }
 }

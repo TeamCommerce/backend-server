@@ -1,10 +1,9 @@
 package com.commerce.backendserver.review.presentation;
 
-import static com.commerce.backendserver.common.utils.FileMockingUtils.*;
-import static org.mockito.BDDMockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+import com.commerce.backendserver.common.authorize.WithMockCustomUser;
+import com.commerce.backendserver.common.fixture.ReviewFixture;
+import com.commerce.backendserver.review.application.ReviewService;
+import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,57 +18,57 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.commerce.backendserver.common.authorize.WithMockCustomUser;
-import com.commerce.backendserver.common.fixture.ReviewFixture;
-import com.commerce.backendserver.review.application.ReviewService;
-import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
+import static com.commerce.backendserver.common.utils.FileMockingUtils.createMockMultipartFile;
+import static org.mockito.BDDMockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = {ReviewController.class})
 @DisplayName("[ReviewController Test] (Presentation layer)")
 public class ReviewControllerTest {
 
-	private static final String BASE_URL = "/api/reviews";
+    private static final String BASE_URL = "/api/reviews";
 
-	@Autowired
-	private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-	@MockBean
-	private ReviewService reviewService;
+    @MockBean
+    private ReviewService reviewService;
 
-	@Test
-	@DisplayName("[registerReview API]")
-	@WithMockCustomUser
-	void registerReviewTest() throws Exception {
-		//given
-		Long reviewId = 1L;
-		given(reviewService.createReview(any(CreateReviewRequest.class), eq(1L)))
-			.willReturn(reviewId);
+    @Test
+    @DisplayName("[registerReview API]")
+    @WithMockCustomUser
+    void registerReviewTest() throws Exception {
+        //given
+        Long reviewId = 1L;
+        given(reviewService.createReview(any(CreateReviewRequest.class), eq(1L)))
+                .willReturn(reviewId);
 
-		MultipartFile file = createMockMultipartFile("hello1.jpg");
-		MultiValueMap<String, String> params = generateParams();
+        MultipartFile file = createMockMultipartFile("hello1.jpg");
+        MultiValueMap<String, String> params = generateParams();
 
-		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-			.multipart(BASE_URL)
-			.file((MockMultipartFile)file)
-			.queryParams(params)
-			.with(csrf());
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .multipart(BASE_URL)
+                .file((MockMultipartFile) file)
+                .queryParams(params)
+                .with(csrf());
 
-		//when
-		ResultActions actions = mockMvc.perform(requestBuilder);
+        //when
+        ResultActions actions = mockMvc.perform(requestBuilder);
 
-		//then
-		actions.andExpect(status().isCreated());
-	}
+        //then
+        actions.andExpect(status().isCreated());
+    }
 
-	private MultiValueMap<String, String> generateParams() {
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		ReviewFixture fixture = ReviewFixture.A;
+    private MultiValueMap<String, String> generateParams() {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        ReviewFixture fixture = ReviewFixture.A;
 
-		params.add("contents", fixture.getContents());
-		params.add("score", String.valueOf(fixture.getScore()));
-		params.add("productId", String.valueOf(1L));
-		fixture.getStringInfoSet().forEach(info -> params.add("additionalInfo", info));
+        params.add("contents", fixture.getContents());
+        params.add("score", String.valueOf(fixture.getScore()));
+        params.add("productId", String.valueOf(1L));
+        fixture.getStringInfoSet().forEach(info -> params.add("additionalInfo", info));
 
-		return params;
-	}
+        return params;
+    }
 }

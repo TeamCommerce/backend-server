@@ -1,6 +1,5 @@
 package com.commerce.backendserver.auth.application.filter;
 
-import com.commerce.backendserver.auth.exception.AuthError;
 import com.commerce.backendserver.auth.infra.jwt.JwtProvider;
 import com.commerce.backendserver.common.controller.TestController;
 import com.commerce.backendserver.global.config.SecurityConfig;
@@ -28,9 +27,11 @@ import java.util.Optional;
 
 import static com.commerce.backendserver.auth.exception.AuthError.*;
 import static com.commerce.backendserver.common.fixture.MemberFixture.A;
-import static com.commerce.backendserver.common.utils.TokenUtils.*;
+import static com.commerce.backendserver.common.utils.TokenUtils.BEARER;
+import static com.commerce.backendserver.common.utils.TokenUtils.TOKEN;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

@@ -9,7 +9,7 @@ public class RateDiscountCalculator implements PromotionPriceCalculator {
 
     @Override
     public Integer getPromotionDiscountedAmount(
-        PromotionDiscountAttribute priceAttribute
+            PromotionDiscountAttribute priceAttribute
     ) {
         if (isInvalidPromotion(priceAttribute)) {
             throw CommerceException.of(INVALID_PROMOTION);

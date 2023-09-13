@@ -1,112 +1,110 @@
 package com.commerce.backendserver.review.domain;
 
-import static com.commerce.backendserver.product.fixture.ProductFixture.VALID_PRODUCT;
-import static java.util.Comparator.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import com.commerce.backendserver.common.fixture.ReviewFixture;
+import com.commerce.backendserver.image.domain.Image;
+import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
+import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import com.commerce.backendserver.product.fixture.ProductFixture;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-
-import com.commerce.backendserver.common.fixture.ReviewFixture;
-import com.commerce.backendserver.image.domain.Image;
-import com.commerce.backendserver.product.domain.Product;
-import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
-import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
+import static com.commerce.backendserver.product.fixture.ProductFixture.VALID_PRODUCT;
+import static java.util.Comparator.comparingInt;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("[Review Test] (Domain layer)")
 public class ReviewTest {
 
-	@Nested
-	@DisplayName("[createReview method]")
-	class createReviewTest {
+    private List<AdditionalInfo> generateExpectedAdditionalInfo(Set<String> stringInfoSet) {
+        List<AdditionalInfo> expected = new ArrayList<>(
+                stringInfoSet.stream()
+                        .map(info -> {
+                            String[] split = info.split("/");
+                            return AdditionalInfo.of(InfoName.valueOf(split[0]), split[1]);
+                        }).toList()
+        );
 
-		//given
-		private final Product product = VALID_PRODUCT.toEntity(null);
-		private final Long writerId = 1L;
+        expected.sort(comparingInt(info -> info.getInfoName().getOrder()));
 
-		@Test
-		@DisplayName("imageUrl is not null")
-		void imageUrlsIsNotNull() {
-			//given
-			final ReviewFixture fixture = ReviewFixture.A;
+        return expected;
+    }
 
-			//when
-			Review result = fixture.toEntity(product, writerId);
+    private void assertAdditionalInfoMatching(
+            List<AdditionalInfo> actual,
+            List<AdditionalInfo> expected
+    ) {
+        assertThat(actual).hasSameSizeAs(expected);
 
-			//then
-			assertAll(
-				() -> assertThat(result.getScore()).isEqualTo(fixture.getScore()),
-				() -> assertThat(result.getContents()).isEqualTo(fixture.getContents()),
-				() -> assertThat(result.getWriterId()).isEqualTo(writerId),
-				() -> assertThat(result.getProduct()).isEqualTo(product),
-				() -> {
-					List<String> actual = result.getImages().stream().map(Image::getUrl).toList();
-					assertThat(actual).hasSameSizeAs(fixture.getImageUrls());
-					assertThat(actual).containsAll(fixture.getImageUrls());
-				},
-				() -> {
-					List<AdditionalInfo> actual = result.getAdditionalInfoList();
-					List<AdditionalInfo> expected = generateExpectedAdditionalInfo(fixture.getStringInfoSet());
+        IntStream.range(0, actual.size())
+                .forEach(i -> {
+                    AdditionalInfo actualInfo = actual.get(i);
+                    AdditionalInfo expectedInfo = expected.get(i);
+                    assertAll(
+                            () -> assertThat(actualInfo.getInfoName()).isEqualTo(expectedInfo.getInfoName()),
+                            () -> assertThat(actualInfo.getInfoValue()).isEqualTo(expectedInfo.getInfoValue())
+                    );
+                });
+    }
 
-					assertAdditionalInfoMatching(actual, expected);
-				}
-			);
-		}
+    @Nested
+    @DisplayName("[createReview method]")
+    class createReviewTest {
 
-		@Test
-		@DisplayName("imageUrls is null")
-		void ImageUrlsIsNull() {
-			//when
-			Review result = Review.createReview(
-				null,
-				null,
-				null,
-				null,
-				null,
-				null
-			);
+        //given
+        private final Product product = VALID_PRODUCT.toEntity(null);
+        private final Long writerId = 1L;
 
-			//then
-			assertThat(result.getImages()).isEmpty();
-		}
-	}
+        @Test
+        @DisplayName("imageUrl is not null")
+        void imageUrlsIsNotNull() {
+            //given
+            final ReviewFixture fixture = ReviewFixture.A;
 
-	private List<AdditionalInfo> generateExpectedAdditionalInfo(Set<String> stringInfoSet) {
-		List<AdditionalInfo> expected = new ArrayList<>(
-			stringInfoSet.stream()
-				.map(info -> {
-					String[] split = info.split("/");
-					return AdditionalInfo.of(InfoName.valueOf(split[0]), split[1]);
-				}).toList()
-		);
+            //when
+            Review result = fixture.toEntity(product, writerId);
 
-		expected.sort(comparingInt(info -> info.getInfoName().getOrder()));
+            //then
+            assertAll(
+                    () -> assertThat(result.getScore()).isEqualTo(fixture.getScore()),
+                    () -> assertThat(result.getContents()).isEqualTo(fixture.getContents()),
+                    () -> assertThat(result.getWriterId()).isEqualTo(writerId),
+                    () -> assertThat(result.getProduct()).isEqualTo(product),
+                    () -> {
+                        List<String> actual = result.getImages().stream().map(Image::getUrl).toList();
+                        assertThat(actual).hasSameSizeAs(fixture.getImageUrls());
+                        assertThat(actual).containsAll(fixture.getImageUrls());
+                    },
+                    () -> {
+                        List<AdditionalInfo> actual = result.getAdditionalInfoList();
+                        List<AdditionalInfo> expected = generateExpectedAdditionalInfo(fixture.getStringInfoSet());
 
-		return expected;
-	}
+                        assertAdditionalInfoMatching(actual, expected);
+                    }
+            );
+        }
 
-	private void assertAdditionalInfoMatching(
-		List<AdditionalInfo> actual,
-		List<AdditionalInfo> expected
-	) {
-		assertThat(actual).hasSameSizeAs(expected);
+        @Test
+        @DisplayName("imageUrls is null")
+        void ImageUrlsIsNull() {
+            //when
+            Review result = Review.createReview(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
-		IntStream.range(0, actual.size())
-			.forEach(i -> {
-				AdditionalInfo actualInfo = actual.get(i);
-				AdditionalInfo expectedInfo = expected.get(i);
-				assertAll(
-					() -> assertThat(actualInfo.getInfoName()).isEqualTo(expectedInfo.getInfoName()),
-					() -> assertThat(actualInfo.getInfoValue()).isEqualTo(expectedInfo.getInfoValue())
-				);
-			});
-	}
+            //then
+            assertThat(result.getImages()).isEmpty();
+        }
+    }
 }

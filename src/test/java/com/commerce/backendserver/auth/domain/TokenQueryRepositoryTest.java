@@ -15,14 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("[TokenQueryRepository Test] (Domain layer)")
 class TokenQueryRepositoryTest extends RepositoryTestBase {
 
+    private final Long memberId = 1L;
     @Autowired
     private TokenQueryRepository tokenQueryRepository;
-
     @Autowired
     private TokenRepository tokenRepository;
-
     private Token token;
-    private final Long memberId = 1L;
 
     @BeforeEach
     void setUp() {

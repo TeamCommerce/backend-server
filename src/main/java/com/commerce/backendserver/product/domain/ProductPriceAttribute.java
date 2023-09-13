@@ -12,7 +12,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.commerce.backendserver.product.exception.ProductError.*;
+import static com.commerce.backendserver.product.exception.ProductError.INVALID_PRICE_ATTRIBUTE;
+import static com.commerce.backendserver.product.exception.ProductError.MINUS_APPLIED_PROMOTION_PRICE;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
