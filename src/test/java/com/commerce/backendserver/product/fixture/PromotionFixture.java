@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import static com.commerce.backendserver.product.domain.promotion.constants.PromotionType.FIX_DISCOUNT;
 import static java.time.LocalDateTime.now;
 
 @Getter
@@ -16,8 +17,18 @@ import static java.time.LocalDateTime.now;
 public enum PromotionFixture {
     VALID_PROMOTION(
             "유효한 프로모션",
-            PromotionType.FIX_DISCOUNT,
-            3000);
+            FIX_DISCOUNT,
+            3000),
+
+    TOO_HIGH_PROMOTION(
+            "INT_MIN 할인 프로모션",
+            FIX_DISCOUNT,
+            2147483647),
+
+    MINUS_FIX_PROMOTION(
+            "-30000원 할인 프로모션",
+            FIX_DISCOUNT,
+            -30000);
 
     private final String name;
     private final PromotionType type;
