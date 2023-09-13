@@ -14,7 +14,6 @@ import static com.commerce.backendserver.product.exception.ProductError.INVALID_
 import static com.commerce.backendserver.product.exception.ProductError.TOO_LONG_PRODUCT_DESCRIPTION;
 import static jakarta.persistence.EnumType.STRING;
 import static java.util.Objects.isNull;
-import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
@@ -39,7 +38,7 @@ public class ProductCommonInfo {
     private String description;
 
     //== Constructor Method ==//
-    @Builder(access = PRIVATE)
+    @Builder
     private ProductCommonInfo(
             final ProductBrand brand,
             final String name,

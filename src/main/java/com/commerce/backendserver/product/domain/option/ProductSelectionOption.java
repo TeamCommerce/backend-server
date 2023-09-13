@@ -21,15 +21,15 @@ public class ProductSelectionOption {
 
     @Column(
             nullable = false,
-            name = "selection_option_key",
+            name = "option_type",
             columnDefinition = "varchar(30)")
-    private String key;
+    private String optionType;
 
     @Column(
             nullable = false,
-            name = "selection_option_value",
+            name = "option_value",
             columnDefinition = "varchar(30)")
-    private String value;
+    private String optionValue;
 
     private Integer additionalFee;
 
@@ -37,27 +37,27 @@ public class ProductSelectionOption {
     @Builder
     private ProductSelectionOption(
             final ProductSize size,
-            final String key,
-            final String value,
+            final String optionType,
+            final String optionValue,
             final Integer additionalFee
     ) {
         this.size = size;
-        this.key = key;
-        this.value = value;
+        this.optionType = optionType;
+        this.optionValue = optionValue;
         this.additionalFee = additionalFee;
     }
 
     //== Static Factory Method ==//
     public static ProductSelectionOption of(
             final ProductSize size,
-            final String key,
-            final String value,
+            final String optionType,
+            final String optionValue,
             final Integer additionalFee
     ) {
         return ProductSelectionOption.builder()
                 .size(size)
-                .key(key)
-                .value(value)
+                .optionType(optionType)
+                .optionValue(optionValue)
                 .additionalFee(additionalFee)
                 .build();
     }

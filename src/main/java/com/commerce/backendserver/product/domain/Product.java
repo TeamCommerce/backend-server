@@ -7,21 +7,19 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.OnDelete;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Entity
 @Getter
-@Slf4j
 @Table(name = "t_product")
 @NoArgsConstructor(access = PROTECTED)
 public class Product extends BaseEntity {
@@ -32,13 +30,14 @@ public class Product extends BaseEntity {
     private Long id;
 
     @OneToMany(
+            fetch = LAZY,
             mappedBy = "product",
             cascade = PERSIST,
             orphanRemoval = true)
-    @OnDelete(action = CASCADE)
     private final List<ProductImage> images = new ArrayList<>();
 
     @OneToMany(
+            fetch = LAZY,
             mappedBy = "product",
             cascade = PERSIST,
             orphanRemoval = true)
@@ -46,54 +45,30 @@ public class Product extends BaseEntity {
     private final List<ProductOption> options = new ArrayList<>();
 
     @Embedded
-    private ProductCommonInfo commonInfo;
+    private ProductCommonInfo productInfo;
 
     @Embedded
-    private ProductPriceAttribute priceAttribute;
+    private ProductPriceAttribute productPriceAttribute;
 
 
     //== Constructor Method ==//
-    @Builder(access = PRIVATE)
+    @Builder
     private Product(
-            final List<String> images,
-            final List<ProductOption> options,
-            final ProductCommonInfo commonInfo,
-            final ProductPriceAttribute priceAttribute
+            final ProductCommonInfo productInfo,
+            final ProductPriceAttribute productPriceAttribute
     ) {
-        applyImages(images);
-        applyOptions(options);
-        this.commonInfo = commonInfo;
-        this.priceAttribute = priceAttribute;
+        this.productInfo = productInfo;
+        this.productPriceAttribute = productPriceAttribute;
     }
 
     //== Static Factory Method ==//
-    public static Product createProduct(
-            final List<String> images,
-            final List<ProductOption> options,
-            final ProductCommonInfo commonInfo,
+    public static Product toProduct(
+            final ProductCommonInfo info,
             final ProductPriceAttribute priceAttribute
     ) {
         return Product.builder()
-                .images(images)
-                .options(options)
-                .commonInfo(commonInfo)
-                .priceAttribute(priceAttribute)
+                .productInfo(info)
+                .productPriceAttribute(priceAttribute)
                 .build();
     }
-
-    //== Business Method ==//
-    private void applyImages(List<String> imageUrls) {
-        this.images.addAll(
-                imageUrls.stream()
-                        .map(imageUrl -> ProductImage.of(imageUrl, this))
-                        .toList()
-        );
-    }
-
-    private void applyOptions(List<ProductOption> options) {
-        options.forEach(option -> option.updateProduct(this));
-        this.options.addAll(options);
-    }
-
-    //== Utility Method ==//
 }

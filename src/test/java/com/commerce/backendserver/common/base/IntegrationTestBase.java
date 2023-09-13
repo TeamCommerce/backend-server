@@ -9,12 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.payload.PayloadDocumentation;
-import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.snippet.Attributes;
 
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.documentationConfiguration;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -31,6 +28,7 @@ public abstract class IntegrationTestBase {
     @BeforeEach
     void setUpRestDocs(RestDocumentationContextProvider restDocumentation) {
         RestAssured.port = port;
+
         this.spec = new RequestSpecBuilder()
                 .setPort(port)
                 .addFilter(documentationConfiguration(restDocumentation)
@@ -38,12 +36,6 @@ public abstract class IntegrationTestBase {
                         .withRequestDefaults(prettyPrint())
                         .withResponseDefaults(prettyPrint()))
                 .build();
-    }
-
-    protected ResponseFieldsSnippet successResponseDocument() {
-        return PayloadDocumentation.responseFields(
-                fieldWithPath("success").description("성공 여부")
-        );
     }
 
     protected Attributes.Attribute constraint(String value) {
