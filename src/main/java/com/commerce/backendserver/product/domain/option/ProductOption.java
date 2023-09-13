@@ -3,19 +3,16 @@ package com.commerce.backendserver.product.domain.option;
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.option.constants.ProductColor;
-import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.product.domain.option.constants.ProductStatus;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
-import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Getter
 @Entity
@@ -29,66 +26,51 @@ public class ProductOption extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @OnDelete(action = CASCADE)
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Enumerated(value = STRING)
+    @Embedded
     private ProductColor color;
 
-    @Enumerated(value = STRING)
-    private ProductSize size;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "option_id")
-    private SelectionOption option;
-
-    private Integer additionalFee;
+    @Embedded
+    private ProductSelectionOption selectionOption;
 
     @Column(nullable = false)
     private Integer inventory;
 
     @Enumerated(value = STRING)
-    private ProductStatus productStatus;
+    private ProductStatus status;
 
     //== Constructor Method ==//
     @Builder
     private ProductOption(
-            Product product,
             ProductColor color,
-            ProductSize size,
-            SelectionOption option,
-            Integer additionalFee,
+            ProductSelectionOption selectionOption,
             Integer inventory,
-            ProductStatus productStatus
+            ProductStatus status
     ) {
-        this.product = product;
         this.color = color;
-        this.size = size;
-        this.option = option;
-        this.additionalFee = additionalFee;
+        this.selectionOption = selectionOption;
         this.inventory = inventory;
-        this.productStatus = productStatus;
+        this.status = status;
     }
 
     //== Static Factory Method ==//
-    public ProductOption of(
-            Product product,
-            ProductColor color,
-            ProductSize size,
-            SelectionOption option,
-            Integer additionalFee,
-            Integer inventory,
-            ProductStatus productStatus
+    public static ProductOption of(
+            final ProductColor color,
+            final ProductSelectionOption selectionOption,
+            final Integer inventory,
+            final ProductStatus status
     ) {
         return ProductOption.builder()
-                .product(product)
                 .color(color)
-                .size(size)
-                .option(option)
-                .additionalFee(additionalFee)
+                .selectionOption(selectionOption)
                 .inventory(inventory)
-                .productStatus(productStatus)
+                .status(status)
                 .build();
+    }
+
+    public void updateProduct(Product product) {
+        this.product = product;
     }
 }

@@ -33,7 +33,7 @@ public class ProductImage extends Image {
     }
 
     //== Static Factory Method ==//
-    public ProductImage of(
+    public static ProductImage of(
             final String url,
             final Product product
     ) {
