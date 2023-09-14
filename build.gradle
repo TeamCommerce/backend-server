@@ -25,10 +25,6 @@ java {
     sourceCompatibility = '17'
 }
 
-springBoot {
-    mainClass = 'com/commerce/backendserver/BackendServerApplication'
-}
-
 def querydslDir = "src/main/generated"
 
 sourceSets {
