@@ -6,6 +6,7 @@ import com.commerce.backendserver.product.domain.ProductPriceAttribute;
 import com.commerce.backendserver.product.domain.constants.ProductBrand;
 import com.commerce.backendserver.product.domain.constants.ProductCategory;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import static com.commerce.backendserver.product.domain.constants.ProductCategor
 import static com.commerce.backendserver.product.fixture.ProductImageFixture.VALID_URL;
 import static com.commerce.backendserver.product.fixture.ProductOptionFixture.VALID_OPTION;
 
+@Getter
 @RequiredArgsConstructor
 public enum ProductFixture {
 

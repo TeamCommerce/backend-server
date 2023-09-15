@@ -94,6 +94,4 @@ public class Product extends BaseEntity {
         options.forEach(option -> option.updateProduct(this));
         this.options.addAll(options);
     }
-
-    //== Utility Method ==//
 }
