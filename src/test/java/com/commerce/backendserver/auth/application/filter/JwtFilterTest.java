@@ -1,10 +1,10 @@
 package com.commerce.backendserver.auth.application.filter;
 
-import com.commerce.backendserver.auth.exception.AuthError;
 import com.commerce.backendserver.auth.infra.jwt.JwtProvider;
 import com.commerce.backendserver.common.controller.TestController;
 import com.commerce.backendserver.global.config.SecurityConfig;
 import com.commerce.backendserver.global.exception.CommerceException;
+import com.commerce.backendserver.global.exception.error.ErrorCode;
 import com.commerce.backendserver.member.domain.MemberQueryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +21,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -96,16 +98,13 @@ public class JwtFilterTest {
             doNothing().when(jwtProvider).validateToken(TOKEN);
             given(jwtProvider.getPayload(TOKEN)).willReturn(PAYLOAD);
 
-            //when
             MockHttpServletRequestBuilder requestBuilder = generateAuthenticationRequestBuilder();
 
+            //when
+            ResultActions actions = mockMvc.perform(requestBuilder);
+
             //then
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.errorCode").value(TOKEN_INVALID.getStatus().value()),
-                            jsonPath("$.errorMessage").value(TOKEN_INVALID.getMessage())
-                    );
+            assertErrorResponse(actions, status().isBadRequest(), TOKEN_INVALID);
         }
 
         @Test
@@ -115,16 +114,13 @@ public class JwtFilterTest {
             doThrow(CommerceException.of(TOKEN_EXPIRED))
                     .when(jwtProvider).validateToken(TOKEN);
 
-            //when
             MockHttpServletRequestBuilder requestBuilder = generateAuthenticationRequestBuilder();
 
+            //when
+            ResultActions actions = mockMvc.perform(requestBuilder);
+
             //then
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.errorCode").value(TOKEN_EXPIRED.getStatus().value()),
-                            jsonPath("$.errorMessage").value(TOKEN_EXPIRED.getMessage())
-                    );
+            assertErrorResponse(actions, status().isBadRequest(), TOKEN_EXPIRED);
         }
 
         @Test
@@ -134,32 +130,42 @@ public class JwtFilterTest {
             doThrow(CommerceException.of(TOKEN_INVALID))
                     .when(jwtProvider).validateToken(TOKEN);
 
-            //when
             MockHttpServletRequestBuilder requestBuilder = generateAuthenticationRequestBuilder();
 
+            //when
+            ResultActions actions = mockMvc.perform(requestBuilder);
+
             //then
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.errorCode").value(TOKEN_INVALID.getStatus().value()),
-                            jsonPath("$.errorMessage").value(TOKEN_INVALID.getMessage())
-                    );
+            assertErrorResponse(actions, status().isBadRequest(), TOKEN_INVALID);
         }
 
         @Test
         @DisplayName("fail by no authentication")
         void failByNoAuthentication() throws Exception {
-            //when
+            //given
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .get(TEST_URL);
+                .get(TEST_URL);
+
+            //when
+            ResultActions actions = mockMvc.perform(requestBuilder);
 
             //then
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isUnauthorized(),
-                            jsonPath("$.errorCode").value(NEED_LOGIN.getStatus().value()),
-                            jsonPath("$.errorMessage").value(NEED_LOGIN.getMessage())
-                    );
+            assertErrorResponse(actions, status().isUnauthorized(), NEED_LOGIN);
+        }
+
+        @Test
+        @DisplayName("fail by not exist bearer")
+        void failByNotExistBearer() throws Exception {
+            //given
+            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get(TEST_URL)
+                .header(AUTHORIZATION, TOKEN);
+
+            //when
+            ResultActions actions = mockMvc.perform(requestBuilder);
+
+            //then
+            assertErrorResponse(actions, status().isUnauthorized(), NEED_LOGIN);
         }
 
         private MockHttpServletRequestBuilder generateAuthenticationRequestBuilder() {
@@ -167,5 +173,17 @@ public class JwtFilterTest {
                     .get(TEST_URL)
                     .header(AUTHORIZATION, BEARER + TOKEN);
         }
+    }
+
+    private static void assertErrorResponse(
+        ResultActions actions,
+        ResultMatcher statusMatcher,
+        ErrorCode errorCode
+    ) throws Exception {
+        actions.andExpectAll(
+            statusMatcher,
+            jsonPath("$.errorCode").value(errorCode.getStatus().value()),
+            jsonPath("$.errorMessage").value(errorCode.getMessage())
+        );
     }
 }

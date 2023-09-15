@@ -11,11 +11,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -57,14 +59,16 @@ class ImageManagerTest extends MockTestBase {
 			List<MultipartFile> files = createMockMultipartFiles();
 
 			//when
-			List<String> result = imageManager.uploadFiles(files, REVIEW);
+			List<String> notNullFileResult = imageManager.uploadFiles(files, REVIEW);
+			List<String> nullFileResult = imageManager.uploadFiles(null, REVIEW);
 
 			//then
 			assertAll(
-				() -> assertThat(result).hasSize(2),
+				() -> assertThat(nullFileResult).isEmpty(),
+				() -> assertThat(notNullFileResult).hasSize(2),
 				() -> {
-					assert result != null;
-					result.forEach(
+					assert notNullFileResult != null;
+					notNullFileResult.forEach(
 						url -> assertThat(url).isEqualTo(mockUrl.toString()));
 				}
 			);
@@ -76,10 +80,34 @@ class ImageManagerTest extends MockTestBase {
 			//given
 			List<MultipartFile> emptyFiles = List.of(createEmptyFile());
 
-			//when, then
-			assertThatThrownBy(() -> imageManager.uploadFiles(emptyFiles, REVIEW))
+			//when
+			ThrowingCallable throwingCallable = () -> imageManager.uploadFiles(emptyFiles, REVIEW);
+
+			//then
+			assertThatThrownBy(throwingCallable)
 				.isInstanceOf(CommerceException.class)
 				.hasMessageContaining(EMPTY_FILE.getMessage());
+		}
+
+		@Test
+		@DisplayName("fail by file upload")
+		void failByFileUpload() throws IOException {
+			//given
+			MultipartFile mockFile = Mockito.mock(MultipartFile.class);
+
+			given(mockFile.getOriginalFilename()).willReturn("filename.jpg");
+			given(mockFile.isEmpty()).willReturn(false);
+			given(mockFile.getInputStream()).willThrow(new IOException());
+
+			List<MultipartFile> files = List.of(mockFile);
+
+			//when
+			ThrowingCallable throwingCallable = () -> imageManager.uploadFiles(files, REVIEW);
+
+			//then
+			assertThatThrownBy(throwingCallable)
+				.isInstanceOf(CommerceException.class)
+				.hasMessageContaining(UPLOAD_FAIL.getMessage());
 		}
 	}
 }

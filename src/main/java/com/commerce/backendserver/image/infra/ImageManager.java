@@ -67,7 +67,7 @@ public class ImageManager {
 	}
 
 	private void validateFileExist(MultipartFile file) {
-		if (file == null || file.isEmpty()) {
+		if (file.isEmpty()) {
 			throw CommerceException.of(EMPTY_FILE);
 		}
 	}

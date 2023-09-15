@@ -1,5 +1,7 @@
 package com.commerce.backendserver.common.controller;
 
+import static org.springframework.http.HttpStatus.*;
+
 import com.commerce.backendserver.auth.infra.oauth.CustomOAuth2User;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.global.exception.error.ErrorCode;
@@ -23,14 +25,22 @@ public class TestController {
     }
 
     @GetMapping("/test/commerce-ex")
-    public String test2() {
-        throw CommerceException.of(new ErrorCode() {
+    public String test2(@RequestParam boolean isServerError) throws CommerceException {
+        if (isServerError) {
+            throw generateCommerceEx(INTERNAL_SERVER_ERROR);
+        }
+
+        throw generateCommerceEx(BAD_REQUEST);
+    }
+
+    private CommerceException generateCommerceEx(HttpStatus httpStatus) {
+        return CommerceException.of(new ErrorCode() {
             public String getMessage() {
                 return "error";
             }
 
             public HttpStatus getStatus() {
-                return HttpStatus.BAD_REQUEST;
+                return httpStatus;
             }
         });
     }

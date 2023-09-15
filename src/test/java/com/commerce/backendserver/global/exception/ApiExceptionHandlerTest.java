@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -34,31 +36,45 @@ class ApiExceptionHandlerTest {
             //given
             String emptyString = "";
 
-            //when
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .get(BASE_URL + "/method-param-ex")
-                    .queryParam("request", emptyString);
+			MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get(BASE_URL + "/method-param-ex")
+				.queryParam("request", emptyString);
 
-            //then
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.errorMessage").value("Not Blank")
-                    );
-        }
+			//when
+			ResultActions actions = mockMvc.perform(requestBuilder);
+
+			//then
+			assertErrorResponse(actions, status().isBadRequest(), "Not Blank");
+		}
 
         @Test
         @DisplayName("[CommerceException]")
         void handleCommerceException() throws Exception {
-            //when
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .get(BASE_URL + "/commerce-ex");
+            //given
+            MockHttpServletRequestBuilder badRequest = MockMvcRequestBuilders
+                .get(BASE_URL + "/commerce-ex?isServerError=false");
 
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.errorMessage").value("error")
-                    );
-        }
+            MockHttpServletRequestBuilder internalServerError = MockMvcRequestBuilders
+                .get(BASE_URL + "/commerce-ex?isServerError=true");
+
+			//when
+			ResultActions badRequestActions = mockMvc.perform(badRequest);
+			ResultActions serverErrorActions = mockMvc.perform(internalServerError);
+
+			//then
+			assertErrorResponse(badRequestActions, status().isBadRequest(), "error");
+			assertErrorResponse(serverErrorActions, status().is5xxServerError(), "error");
+		}
     }
+
+	private static void assertErrorResponse(
+		ResultActions actions,
+		ResultMatcher statusMather,
+		String errorMessage
+	) throws Exception {
+		actions.andExpectAll(
+			statusMather,
+			jsonPath("$.errorMessage").value(errorMessage)
+		);
+	}
 }
