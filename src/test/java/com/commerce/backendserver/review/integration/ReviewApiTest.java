@@ -2,6 +2,7 @@ package com.commerce.backendserver.review.integration;
 
 import static com.commerce.backendserver.common.utils.S3LinkUtils.*;
 import static com.commerce.backendserver.product.fixture.ProductFixture.VALID_PRODUCT;
+import static com.commerce.backendserver.product.fixture.PromotionFixture.VALID_PROMOTION;
 import static com.commerce.backendserver.review.exception.ReviewError.*;
 import static com.commerce.backendserver.review.integration.ReviewAcceptanceFixture.*;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.*;
@@ -15,7 +16,10 @@ import java.net.URL;
 import java.util.Set;
 
 import com.commerce.backendserver.product.domain.persistence.ProductCommandRepository;
+import com.commerce.backendserver.product.domain.persistence.promotion.PromotionCommandRepository;
+import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.fixture.ProductFixture;
+import com.commerce.backendserver.product.fixture.PromotionFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -48,6 +52,9 @@ class ReviewApiTest extends IntegrationTestBase {
 	private ProductCommandRepository productCommandRepository;
 
 	@Autowired
+	private PromotionCommandRepository promotionCommandRepository;
+
+	@Autowired
 	private MemberRepository memberRepository;
 
 	@BeforeEach
@@ -59,7 +66,8 @@ class ReviewApiTest extends IntegrationTestBase {
 		given(amazonS3Client.getUrl(anyString(), anyString()))
 			.willReturn(mockUrl);
 
-		productCommandRepository.save(VALID_PRODUCT.toEntity(null));
+		Promotion savedPromotion = promotionCommandRepository.save(VALID_PROMOTION.toEntity());
+		productCommandRepository.save(VALID_PRODUCT.toEntity(savedPromotion));
 
 	}
 
