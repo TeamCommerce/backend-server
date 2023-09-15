@@ -20,13 +20,11 @@ public class ProductSelectionOption {
     private ProductSize size;
 
     @Column(
-            nullable = false,
             name = "selection_option_key",
             columnDefinition = "varchar(30)")
     private String key;
 
     @Column(
-            nullable = false,
             name = "selection_option_value",
             columnDefinition = "varchar(30)")
     private String value;
