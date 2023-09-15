@@ -1,5 +1,7 @@
 package com.commerce.backendserver.global.exception;
 
+import java.util.Optional;
+
 import com.commerce.backendserver.global.exception.error.ErrorCode;
 import com.commerce.backendserver.global.exception.error.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +20,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         log.error("", ex);
-        return ErrorResponse.of(HttpStatus.BAD_REQUEST, ex.getFieldError());
+        return ErrorResponse.of(HttpStatus.BAD_REQUEST, Optional.ofNullable(ex.getFieldError()));
     }
 
     @ExceptionHandler(CommerceException.class)

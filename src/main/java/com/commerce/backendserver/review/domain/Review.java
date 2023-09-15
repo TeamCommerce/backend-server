@@ -44,7 +44,7 @@ public class Review extends BaseEntity {
     @Embedded
     private AdditionalInfoList additionalInfoList;
 
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     @ManyToOne(fetch = LAZY)
     private Product product;
 
