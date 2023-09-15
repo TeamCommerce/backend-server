@@ -3,7 +3,7 @@ package com.commerce.backendserver.product.domain;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.domain.promotion.PromotionDiscountAttribute;
-import com.commerce.backendserver.product.domain.promotion.discount.PromotionPriceCalculator;
+import com.commerce.backendserver.product.domain.promotion.constants.PromotionType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
@@ -12,7 +12,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.commerce.backendserver.product.exception.ProductError.*;
+import static com.commerce.backendserver.product.domain.promotion.constants.PromotionType.NO_PROMOTION;
+import static com.commerce.backendserver.product.exception.ProductError.INVALID_PRICE_ATTRIBUTE;
+import static com.commerce.backendserver.product.exception.ProductError.MINUS_APPLIED_PROMOTION_PRICE;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -22,8 +24,8 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class ProductPriceAttribute {
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "promotion_id")
+    @ManyToOne(fetch = LAZY, optional = false)
+    @JoinColumn(name = "promotion_id", nullable = false)
     private Promotion promotion;
 
     @Column(nullable = false)
@@ -59,8 +61,11 @@ public class ProductPriceAttribute {
     }
 
     public int getPromotionDiscountedValue() {
-        PromotionPriceCalculator discountTypeCalculator = this.getPromotionPriceAttribute().getType().getCalculator();
-        return discountTypeCalculator.getPromotionDiscountedAmount(this.getPromotionPriceAttribute());
+        PromotionType type = this.getPromotionPriceAttribute().getType();
+        if (type == NO_PROMOTION) {
+            return 0;
+        }
+        return type.getCalculator().getPromotionDiscountedAmount(this.getPromotionPriceAttribute());
     }
 
     //== Validate Method ==//
