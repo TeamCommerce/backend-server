@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Getter
 public class ErrorResponse {
@@ -25,14 +26,8 @@ public class ErrorResponse {
         return new ErrorResponse(errorCode.getStatus().value(), errorCode.getMessage());
     }
 
-    public static ErrorResponse of(HttpStatus httpStatus, String errorMessage) {
-        return new ErrorResponse(httpStatus.value(), errorMessage);
-    }
-
-    public static ErrorResponse of(HttpStatus httpStatus, FieldError fieldError) {
-        if (fieldError != null) {
-            return new ErrorResponse(httpStatus.value(), fieldError.getDefaultMessage());
-        }
-        return new ErrorResponse(httpStatus.value(), "Invalid Param");
+    public static ErrorResponse of(HttpStatus httpStatus, Optional<FieldError> fieldError) {
+        return fieldError.map(error -> new ErrorResponse(httpStatus.value(), error.getDefaultMessage()))
+            .orElseGet(() -> new ErrorResponse(httpStatus.value(), "Invalid Param"));
     }
 }

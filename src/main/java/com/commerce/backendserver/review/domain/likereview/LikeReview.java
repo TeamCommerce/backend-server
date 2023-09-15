@@ -1,7 +1,10 @@
 package com.commerce.backendserver.review.domain.likereview;
 
+import static lombok.AccessLevel.*;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +24,17 @@ public class LikeReview {
 
     @Column(nullable = false, updatable = false)
     private Long reviewId;
+
+    @Builder(access = PRIVATE)
+    private LikeReview(Long memberId, Long reviewId) {
+        this.memberId = memberId;
+        this.reviewId = reviewId;
+    }
+
+    public static LikeReview of(Long memberId, Long reviewId) {
+        return LikeReview.builder()
+            .memberId(memberId)
+            .reviewId(reviewId)
+            .build();
+    }
 }
