@@ -3,6 +3,7 @@ package com.commerce.backendserver.product.domain;
 import com.commerce.backendserver.image.domain.Image;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.fixture.ProductFixture;
+import com.commerce.backendserver.product.fixture.PromotionFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
