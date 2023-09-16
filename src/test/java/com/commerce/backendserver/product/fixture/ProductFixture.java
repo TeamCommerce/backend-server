@@ -8,6 +8,8 @@ import com.commerce.backendserver.product.domain.constants.ProductCategory;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ import static com.commerce.backendserver.product.domain.constants.ProductBrand.I
 import static com.commerce.backendserver.product.domain.constants.ProductCategory.TOP;
 import static com.commerce.backendserver.product.fixture.ProductImageFixture.VALID_URL;
 import static com.commerce.backendserver.product.fixture.ProductOptionFixture.VALID_OPTION;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 @Getter
 @RequiredArgsConstructor
@@ -25,6 +28,24 @@ public enum ProductFixture {
             "아이없 스튜디오 반팔 상의",
             TOP,
             "Iup Studio 2024 S/S Special Edition",
+            30000,
+            VALID_URL.toEntityList()
+    ),
+
+    NULL_DESCRIPTION(
+            IUP_STUDIO,
+            "상품 설명 null",
+            TOP,
+            null,
+            30000,
+            VALID_URL.toEntityList()
+    ),
+
+    TOO_LONG_DESCRIPTION(
+            IUP_STUDIO,
+            "아이없 스튜디오 반팔 상의",
+            TOP,
+            randomAlphanumeric(301),
             30000,
             VALID_URL.toEntityList()
     );
