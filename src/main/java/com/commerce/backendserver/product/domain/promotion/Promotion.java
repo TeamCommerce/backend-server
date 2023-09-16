@@ -30,31 +30,25 @@ public class Promotion extends BaseEntity {
     @Embedded
     private PromotionDiscountAttribute discountAttribute;
 
-    @Embedded
-    private PromotionPeriodAttribute periodAttribute;
 
     //== Constructor Method ==//
     @Builder(access = PRIVATE)
     private Promotion(
             final String name,
-            final PromotionDiscountAttribute discountAttribute,
-            final PromotionPeriodAttribute periodAttribute
+            final PromotionDiscountAttribute discountAttribute
     ) {
         this.name = name;
         this.discountAttribute = discountAttribute;
-        this.periodAttribute = periodAttribute;
     }
 
     //== Static Factory Method ==//
     public static Promotion of(
             final String name,
-            final PromotionDiscountAttribute discountAttribute,
-            final PromotionPeriodAttribute periodAttribute
+            final PromotionDiscountAttribute discountAttribute
     ) {
         return Promotion.builder()
                 .name(name)
                 .discountAttribute(discountAttribute)
-                .periodAttribute(periodAttribute)
                 .build();
     }
 }

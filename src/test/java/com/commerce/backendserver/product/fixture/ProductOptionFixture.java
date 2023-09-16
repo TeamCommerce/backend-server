@@ -48,13 +48,13 @@ public enum ProductOptionFixture {
                         engColorName
                 ),
                 ProductSelectionOption.of(
-                        size,
                         key,
                         value,
                         additionalFee
                 ),
                 inventory,
-                status
+                status,
+                size
         );
         ArrayList<ProductOption> productOptions = new ArrayList<>();
         productOptions.add(entity);

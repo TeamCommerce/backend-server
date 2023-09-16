@@ -3,6 +3,7 @@ package com.commerce.backendserver.product.domain.option;
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.option.constants.ProductColor;
+import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.product.domain.option.constants.ProductStatus;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -41,18 +42,23 @@ public class ProductOption extends BaseEntity {
     @Enumerated(value = STRING)
     private ProductStatus status;
 
+    @Enumerated(value = STRING)
+    private ProductSize size;
+
     //== Constructor Method ==//
     @Builder
     private ProductOption(
             ProductColor color,
             ProductSelectionOption selectionOption,
             Integer inventory,
-            ProductStatus status
+            ProductStatus status,
+            ProductSize size
     ) {
         this.color = color;
         this.selectionOption = selectionOption;
         this.inventory = inventory;
         this.status = status;
+        this.size = size;
     }
 
     //== Static Factory Method ==//
@@ -60,13 +66,15 @@ public class ProductOption extends BaseEntity {
             final ProductColor color,
             final ProductSelectionOption selectionOption,
             final Integer inventory,
-            final ProductStatus status
+            final ProductStatus status,
+            final ProductSize size
     ) {
         return ProductOption.builder()
                 .color(color)
                 .selectionOption(selectionOption)
                 .inventory(inventory)
                 .status(status)
+                .size(size)
                 .build();
     }
 
