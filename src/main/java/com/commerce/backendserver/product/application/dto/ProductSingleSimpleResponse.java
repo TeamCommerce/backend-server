@@ -15,6 +15,8 @@ import java.util.List;
 public class ProductSingleSimpleResponse {
 
     private final Long id;
+    private final String productName;
+    private final String productBrand;
     private final Integer originPrice;
     private final PromotionType promotionType;
     private final Integer promotionValue;
@@ -26,6 +28,8 @@ public class ProductSingleSimpleResponse {
     //== Static Factory Method ==//
     public static ProductSingleSimpleResponse of(
             final Long id,
+            final String productName,
+            final String productBrand,
             final Integer originPrice,
             final PromotionType promotionType,
             final Integer promotionValue,
@@ -36,6 +40,8 @@ public class ProductSingleSimpleResponse {
     ) {
         return ProductSingleSimpleResponse.builder()
                 .id(id)
+                .productName(productName)
+                .productBrand(productBrand)
                 .originPrice(originPrice)
                 .promotionType(promotionType)
                 .promotionValue(promotionValue)
@@ -54,6 +60,8 @@ public class ProductSingleSimpleResponse {
         ProductPriceAttribute priceAttribute = product.getPriceAttribute();
         return ProductSingleSimpleResponse.of(
                 product.getId(),
+                product.getCommonInfo().getName(),
+                product.getCommonInfo().getBrand().toString(),
                 priceAttribute.getOriginPrice(),
                 priceAttribute.getPromotion().getDiscountAttribute().getType(),
                 discountedValue,

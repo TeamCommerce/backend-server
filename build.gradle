@@ -155,9 +155,11 @@ bootJar{
 }
 
 openapi3 {
-    server = "http://localhost:8080"
+    server = "http://115.85.182.164:8080"
     title = "API 문서"
     description = "Spring REST Docs with SwaggerUI."
     version = "0.0.1"
     format = 'yaml'
+
+    outputDirectory = "build/api-spec"
 }
