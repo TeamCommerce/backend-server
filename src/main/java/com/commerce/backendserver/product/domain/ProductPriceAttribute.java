@@ -62,9 +62,6 @@ public class ProductPriceAttribute {
 
     public int getPromotionDiscountedValue() {
         PromotionType type = this.getPromotionPriceAttribute().getType();
-        if (type == NO_PROMOTION) {
-            return 0;
-        }
         return type.getCalculator().getPromotionDiscountedAmount(this.getPromotionPriceAttribute());
     }
 

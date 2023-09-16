@@ -11,16 +11,15 @@ public class FixDiscountCalculator implements PromotionPriceCalculator {
     public Integer getPromotionDiscountedAmount(
             PromotionDiscountAttribute priceAttribute
     ) {
-        if (isInvalidPromotion(priceAttribute)) {
-            throw CommerceException.of(INVALID_PROMOTION);
-        }
+        validatePromotion(priceAttribute);
         return priceAttribute.getDiscountAmount();
     }
 
-    @Override
-    public boolean isInvalidPromotion(
+    private void validatePromotion(
             PromotionDiscountAttribute priceAttribute
     ) {
-        return priceAttribute.getDiscountAmount() <= 0;
+        if (priceAttribute.getDiscountAmount() < 0) {
+            throw CommerceException.of(INVALID_PROMOTION);
+        }
     }
 }

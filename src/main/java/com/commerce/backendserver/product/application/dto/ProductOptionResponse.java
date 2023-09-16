@@ -3,6 +3,7 @@ package com.commerce.backendserver.product.application.dto;
 import com.commerce.backendserver.product.domain.option.ProductOption;
 import com.commerce.backendserver.product.domain.option.ProductSelectionOption;
 import com.commerce.backendserver.product.domain.option.constants.ProductColor;
+import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.product.domain.option.constants.ProductStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,13 +21,15 @@ public class ProductOptionResponse {
     private ProductSelectionOption selectionOption;
     private Integer inventory;
     private ProductStatus status;
+    private ProductSize size;
 
     public static ProductOptionResponse of(
             final Long optionId,
             final ProductColor color,
             final ProductSelectionOption selectionOption,
             final Integer inventory,
-            final ProductStatus status
+            final ProductStatus status,
+            final ProductSize size
     ) {
         return ProductOptionResponse.builder()
                 .optionId(optionId)
@@ -34,6 +37,7 @@ public class ProductOptionResponse {
                 .selectionOption(selectionOption)
                 .inventory(inventory)
                 .status(status)
+                .size(size)
                 .build();
     }
 
@@ -45,7 +49,8 @@ public class ProductOptionResponse {
                 productOption.getColor(),
                 productOption.getSelectionOption(),
                 productOption.getInventory(),
-                productOption.getStatus()
+                productOption.getStatus(),
+                productOption.getSize()
         );
     }
 

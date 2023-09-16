@@ -11,18 +11,16 @@ public class RateDiscountCalculator implements PromotionPriceCalculator {
     public Integer getPromotionDiscountedAmount(
         PromotionDiscountAttribute priceAttribute
     ) {
-        if (isInvalidPromotion(priceAttribute)) {
-            throw CommerceException.of(INVALID_PROMOTION);
-        }
+        validatePromotion(priceAttribute);
         Integer discountAmount = priceAttribute.getDiscountAmount();
         return discountAmount / 100 * discountAmount;
     }
 
-    @Override
-    public boolean isInvalidPromotion(
+    private void validatePromotion(
             PromotionDiscountAttribute priceAttribute
     ) {
-        Integer discountAmount = priceAttribute.getDiscountAmount();
-        return discountAmount <= 0 || discountAmount > 100;
+        if (priceAttribute.getDiscountAmount() < 0 || priceAttribute.getDiscountAmount() >= 100) {
+            throw CommerceException.of(INVALID_PROMOTION);
+        }
     }
 }

@@ -5,10 +5,8 @@ import com.commerce.backendserver.image.domain.ProductImage;
 import com.commerce.backendserver.product.domain.option.ProductOption;
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.OnDelete;
 
 import java.util.ArrayList;

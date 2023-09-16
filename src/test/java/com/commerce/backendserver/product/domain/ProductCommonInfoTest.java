@@ -27,7 +27,7 @@ class ProductCommonInfoTest {
 
         @Test
         @DisplayName("[Success] 성공")
-        void success() throws Exception {
+        void success() {
             //given
             final ProductBrand brand = IUP_STUDIO;
             final String name = "아이없 상의";
@@ -53,7 +53,7 @@ class ProductCommonInfoTest {
 
         @Test
         @DisplayName("[Fail] 상품 주석이 제한 길이 초과일 때 예외를 던진다.")
-        void When_NullDescriptionPresented_Then_ThrowException() throws Exception {
+        void When_NullDescriptionPresented_Then_ThrowException() {
             //given & when & then
             assertThatThrownBy(
                     () ->
@@ -68,7 +68,7 @@ class ProductCommonInfoTest {
 
         @Test
         @DisplayName("[Fail] 상품 주석이 null 이라면 예외를 던진다.")
-        void When_TooLongDescriptionPresented_Then_ThrowException() throws Exception {
+        void When_TooLongDescriptionPresented_Then_ThrowException() {
             assertThatThrownBy(
                     () ->
                             ProductCommonInfo.of(

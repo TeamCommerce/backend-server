@@ -3,13 +3,12 @@ package com.commerce.backendserver.product.domain;
 import com.commerce.backendserver.image.domain.Image;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.fixture.ProductFixture;
-import com.commerce.backendserver.product.fixture.PromotionFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static com.commerce.backendserver.product.fixture.ProductFixture.VALID_PRODUCT;
-import static com.commerce.backendserver.product.fixture.PromotionFixture.VALID_PROMOTION;
+import static com.commerce.backendserver.product.fixture.PromotionFixture.VALID_FIX_PROMOTION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -20,11 +19,11 @@ class ProductTest {
     @DisplayName("[createProduct] Method Test")
     class OfTest {
 
-        private final Promotion promotion = VALID_PROMOTION.toEntity();
+        private final Promotion promotion = VALID_FIX_PROMOTION.toEntity();
 
         @Test
         @DisplayName("[Success] 성공")
-        void success() throws Exception {
+        void success() {
             //given
             final ProductFixture fixture = VALID_PRODUCT;
 

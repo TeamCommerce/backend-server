@@ -16,8 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class ProductSelectionOption {
 
-    @Enumerated(value = STRING)
-    private ProductSize size;
+
 
     @Column(
             name = "selection_option_key",
@@ -34,12 +33,10 @@ public class ProductSelectionOption {
     //== Constructor Method ==//
     @Builder
     private ProductSelectionOption(
-            final ProductSize size,
             final String key,
             final String value,
             final Integer additionalFee
     ) {
-        this.size = size;
         this.key = key;
         this.value = value;
         this.additionalFee = additionalFee;
@@ -47,13 +44,11 @@ public class ProductSelectionOption {
 
     //== Static Factory Method ==//
     public static ProductSelectionOption of(
-            final ProductSize size,
             final String key,
             final String value,
             final Integer additionalFee
     ) {
         return ProductSelectionOption.builder()
-                .size(size)
                 .key(key)
                 .value(value)
                 .additionalFee(additionalFee)

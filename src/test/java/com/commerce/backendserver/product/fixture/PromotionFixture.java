@@ -7,14 +7,20 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import static com.commerce.backendserver.product.domain.promotion.constants.PromotionType.FIX_DISCOUNT;
+import static com.commerce.backendserver.product.domain.promotion.constants.PromotionType.RATE_DISCOUNT;
 
 @Getter
 @RequiredArgsConstructor
 public enum PromotionFixture {
-    VALID_PROMOTION(
-            "유효한 프로모션",
+    VALID_FIX_PROMOTION(
+            "유효한 3000원 정액 프로모션",
             FIX_DISCOUNT,
             3000),
+
+    VALID_RATE_PROMOTION(
+            "유효한 30% 정률 프로모션",
+            RATE_DISCOUNT,
+            30),
 
     TOO_HIGH_PROMOTION(
             "INT_MIN 할인 프로모션",

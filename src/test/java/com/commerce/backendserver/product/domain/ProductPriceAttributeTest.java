@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static com.commerce.backendserver.product.exception.ProductError.INVALID_PRICE_ATTRIBUTE;
-import static com.commerce.backendserver.product.fixture.PromotionFixture.VALID_PROMOTION;
+import static com.commerce.backendserver.product.fixture.PromotionFixture.VALID_FIX_PROMOTION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -22,9 +22,9 @@ class ProductPriceAttributeTest {
 
         @Test
         @DisplayName("[Success] 성공")
-        void success() throws Exception {
+        void success() {
             //given
-            final Promotion promotion = VALID_PROMOTION.toEntity();
+            final Promotion promotion = VALID_FIX_PROMOTION.toEntity();
             final Integer originPrice = 30000;
 
             //when
@@ -42,11 +42,11 @@ class ProductPriceAttributeTest {
 
         @Test
         @DisplayName("[Fail] 상품 가격(originPrice)이 음의 정수일 때 예외를 던진다.")
-        void When_IsOriginPriceMinus_Then_ThrowException() throws Exception {
+        void When_IsOriginPriceMinus_Then_ThrowException() {
             //given & when & then
             assertThatThrownBy(
                     () ->
-                            ProductPriceAttribute.of(VALID_PROMOTION.toEntity(), -3000))
+                            ProductPriceAttribute.of(VALID_FIX_PROMOTION.toEntity(), -3000))
                     .isInstanceOf(CommerceException.class)
                     .hasMessageContaining(INVALID_PRICE_ATTRIBUTE.getMessage());
         }
@@ -55,17 +55,6 @@ class ProductPriceAttributeTest {
     @Nested
     @DisplayName("[applyPromotionDiscount] Method Test")
     class applyPromotionDiscountTest {
-
-        @Test
-        @DisplayName("")
-        void test() throws Exception {
-            //given
-
-
-            //when
-
-
-            //then
-        }
+        //todo
     }
 }
