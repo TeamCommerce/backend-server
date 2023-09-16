@@ -24,10 +24,13 @@ public class ProductFindService {
                 .orElseThrow(() -> CommerceException.of(PRODUCT_NOT_FOUND));
 
         ProductPriceAttribute priceAttribute = product.getPriceAttribute();
+        int promotionDiscountedValue = priceAttribute.getPromotionDiscountedValue();
+        int promotionalPrice = priceAttribute.applyPromotionDiscount();
 
-        return ProductSingleSimpleResponse.from(
-                product,
-                priceAttribute.getPromotionDiscountedValue(),
-                priceAttribute.applyPromotionDiscount());
+        return ProductSingleSimpleResponse.
+                from(
+                        product,
+                        promotionDiscountedValue,
+                        promotionalPrice);
     }
 }
