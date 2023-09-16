@@ -5,7 +5,6 @@ import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.image.application.ImageService;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.persistence.ProductQueryRepository;
-import com.commerce.backendserver.product.fixture.ProductFixture;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import com.commerce.backendserver.review.domain.Review;
 import com.commerce.backendserver.review.domain.ReviewRepository;
