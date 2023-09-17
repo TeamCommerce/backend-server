@@ -49,4 +49,6 @@ public class ProductImage extends Image {
     public void updateProduct(Product product) {
         this.product = product;
     }
+
+
 }

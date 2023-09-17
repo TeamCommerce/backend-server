@@ -17,4 +17,8 @@ public interface ProductQueryRepository extends ProductJpaRepository, ProductQue
             "where p.id = :id")
     Optional<Product> findProductInfoById(@Param("id") Long id);
 
+    @Query("SELECT DISTINCT pi.url FROM ProductImage pi " +
+            "WHERE pi.imageCategory = 'MAIN' AND pi.product.id = :productId")
+    Optional<String> findProductMainImageUrlById(@Param("productId") Long productId);
+
 }

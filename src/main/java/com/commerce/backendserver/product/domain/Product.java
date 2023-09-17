@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDelete;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -96,4 +97,13 @@ public class Product extends BaseEntity {
         options.forEach(option -> option.updateProduct(this));
         this.options.addAll(options);
     }
+
+    public List<String> getDistinctColorList() {
+        return this.options.stream()
+                .map(option -> option.getColor().getColorCode())
+                .distinct() // 중복 제거
+                .collect(Collectors.toList());
+    }
+
+// distinctColors 리스트에 중복 없이 색상들이 저장됩니다.
 }

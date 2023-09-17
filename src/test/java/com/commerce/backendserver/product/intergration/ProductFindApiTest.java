@@ -117,7 +117,7 @@ class ProductFindApiTest extends IntegrationTestBase {
                     .log().all()
 
                     .when().log().all()
-                    .get("/api/products/{id}", savedProduct.getId())
+                    .get("/api/products/detail/{id}", savedProduct.getId())
 
                     .then().log().all()
                     .statusCode(OK.value())
@@ -136,7 +136,7 @@ class ProductFindApiTest extends IntegrationTestBase {
                     .log().all()
 
                     .when().log().all()
-                    .get("/api/products/{id}", -2147483648)
+                    .get("/api/products/detail/{id}", -2147483648)
 
                     .then().log().all()
                     .statusCode(NOT_FOUND.value())
@@ -160,7 +160,7 @@ class ProductFindApiTest extends IntegrationTestBase {
                     .log().all()
 
                     .when().log().all()
-                    .get("/api/products/{id}", minusPriceProduct.getId())
+                    .get("/api/products/detail/{id}", minusPriceProduct.getId())
 
                     .then().log().all()
                     .statusCode(BAD_REQUEST.value())
@@ -185,7 +185,7 @@ class ProductFindApiTest extends IntegrationTestBase {
 
 
                     .when().log().all()
-                    .get("/api/products/{id}", product.getId())
+                    .get("/api/products/detail/{id}", product.getId())
 
                     .then().log().all()
                     .statusCode(BAD_REQUEST.value())
