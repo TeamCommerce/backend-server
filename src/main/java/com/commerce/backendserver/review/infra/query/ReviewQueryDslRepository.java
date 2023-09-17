@@ -7,7 +7,7 @@ import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.review.domain.Review;
 
 public interface ReviewQueryDslRepository {
-	List<Review> findReviewStatisticInfo(
+	List<Review> findReviewByStatisticCondition(
 		final Set<String> engColorNames,
 		final Set<ProductSize> sizes,
 		final Set<String> selectionOptions,

@@ -21,7 +21,7 @@ public class ReviewQuerydslRepositoryImpl implements ReviewQueryDslRepository {
 	private final JPAQueryFactory query;
 
 	@Override
-	public List<Review> findReviewStatisticInfo(
+	public List<Review> findReviewByStatisticCondition(
 		Set<String> engColorNames,
 		Set<ProductSize> sizes,
 		Set<String> selectionOptionValues,
