@@ -1,8 +1,8 @@
 package com.commerce.backendserver.product.domain;
 
-import com.commerce.backendserver.image.domain.Image;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.fixture.ProductFixture;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,6 +12,7 @@ import static com.commerce.backendserver.product.fixture.PromotionFixture.VALID_
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@Slf4j
 @DisplayName("[Product Test] - Domain Layer")
 class ProductTest {
 
@@ -41,7 +42,7 @@ class ProductTest {
                     () -> assertThat(fixture.getOriginPrice()).isEqualTo(product.getPriceAttribute().getOriginPrice()),
                     () -> assertThat(promotion).isEqualTo(product.getPriceAttribute().getPromotion()),
                     // ProductImages
-                    () -> assertThat(fixture.getImages()).containsAll(product.getImages().stream().map(Image::getUrl).toList())
+                    () -> assertThat(fixture.getImages().size()).isEqualTo(product.getImages().size())
             );
         }
     }

@@ -1,5 +1,6 @@
 package com.commerce.backendserver.product.fixture;
 
+import com.commerce.backendserver.image.domain.ProductImage;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.ProductCommonInfo;
 import com.commerce.backendserver.product.domain.ProductPriceAttribute;
@@ -8,14 +9,12 @@ import com.commerce.backendserver.product.domain.constants.ProductCategory;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.utility.RandomString;
-import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.List;
 
 import static com.commerce.backendserver.product.domain.constants.ProductBrand.IUP_STUDIO;
 import static com.commerce.backendserver.product.domain.constants.ProductCategory.TOP;
-import static com.commerce.backendserver.product.fixture.ProductImageFixture.VALID_URL;
+import static com.commerce.backendserver.product.fixture.ProductImageFixture.VALID_IMAGE;
 import static com.commerce.backendserver.product.fixture.ProductOptionFixture.VALID_OPTION;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
@@ -29,7 +28,7 @@ public enum ProductFixture {
             TOP,
             "Iup Studio 2024 S/S Special Edition",
             30000,
-            VALID_URL.toEntityList()
+            VALID_IMAGE.toEntityList()
     ),
 
     NULL_DESCRIPTION(
@@ -38,7 +37,7 @@ public enum ProductFixture {
             TOP,
             null,
             30000,
-            VALID_URL.toEntityList()
+            VALID_IMAGE.toEntityList()
     ),
 
     TOO_LONG_DESCRIPTION(
@@ -47,7 +46,7 @@ public enum ProductFixture {
             TOP,
             randomAlphanumeric(301),
             30000,
-            VALID_URL.toEntityList()
+            VALID_IMAGE.toEntityList()
     );
 
     private final ProductBrand brand;
@@ -55,13 +54,13 @@ public enum ProductFixture {
     private final ProductCategory category;
     private final String description;
     private final Integer originPrice;
-    private final List<String> images;
+    private final List<ProductImage> images;
 
     public Product toEntity(
             Promotion promotion
     ) {
         return Product.createProduct(
-                images,
+                VALID_IMAGE.toEntityList(),
                 VALID_OPTION.toOptionList(),
                 ProductCommonInfo.of(
                         brand,
