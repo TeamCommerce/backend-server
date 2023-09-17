@@ -1,7 +1,7 @@
 package com.commerce.backendserver.product.application;
 
 import com.commerce.backendserver.global.exception.CommerceException;
-import com.commerce.backendserver.product.application.dto.ProductSingleSimpleResponse;
+import com.commerce.backendserver.product.application.dto.ProductSingleDetailResponse;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.ProductPriceAttribute;
 import com.commerce.backendserver.product.domain.persistence.ProductQueryRepository;
@@ -18,8 +18,9 @@ public class ProductFindService {
 
     private final ProductQueryRepository productQueryRepository;
 
-    public ProductSingleSimpleResponse toSingleSimpleResponse(Long id) {
-
+    public ProductSingleDetailResponse toSingleDetailResponse(
+            Long id
+    ) {
         Product product = productQueryRepository.findProductInfoById(id)
                 .orElseThrow(() -> CommerceException.of(PRODUCT_NOT_FOUND));
 
@@ -27,7 +28,7 @@ public class ProductFindService {
         int promotionDiscountedValue = priceAttribute.getPromotionDiscountedValue();
         int promotionalPrice = priceAttribute.applyPromotionDiscount();
 
-        return ProductSingleSimpleResponse.
+        return ProductSingleDetailResponse.
                 from(
                         product,
                         promotionDiscountedValue,

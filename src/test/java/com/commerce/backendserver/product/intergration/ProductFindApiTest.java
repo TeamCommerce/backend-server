@@ -49,15 +49,15 @@ class ProductFindApiTest extends IntegrationTestBase {
     }
 
     @Nested
-    @DisplayName("[findSingleProduct] 단일 상품 기본 조회")
-    class 단일_상품_조회 {
+    @DisplayName("[findSingleProduct] 단일 상품 상세 조회")
+    class 단일_상품_상세조회 {
 
         private static ResourceSnippetParametersBuilder swaggerDescriptionWithResponseSchema(
                 String ResponseSchema
         ) {
             return ResourceSnippetParameters.builder()
                     .tag("SingleProduct - 단일 상품 관련 API")
-                    .summary("단일 상품 조회 API - @h.beeen")
+                    .summary("단일 상품 상세 조회 API - @h.beeen")
                     .links()
                     .description("상품 ID를 활용해 기본 정보(메인페이지 필요 정보)를 조회하는 API")
                     .requestSchema(schema("[FindSingleProduct] Request - GET"))
