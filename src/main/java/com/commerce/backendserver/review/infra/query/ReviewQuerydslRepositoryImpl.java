@@ -53,7 +53,7 @@ public class ReviewQuerydslRepositoryImpl implements ReviewQueryDslRepository {
 
 	private BooleanExpression sizeIn(Set<ProductSize> sizes) {
 		if (sizes != null)
-			return productOption.selectionOption.size.in(sizes);
+			return productOption.size.in(sizes);
 		return null;
 	}
 
