@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.commerce.backendserver.product.exception.ProductError.INVALID_PRODUCT_MAIN_IMAGE;
 import static com.commerce.backendserver.product.exception.ProductError.PRODUCT_NOT_FOUND;
 
 @Service
@@ -30,13 +29,13 @@ public class ProductFindService {
 
         ProductPriceAttribute priceAttribute = product.getPriceAttribute();
         int promotionDiscountedValue = priceAttribute.getPromotionDiscountedValue();
-        int promotionalPrice = priceAttribute.applyPromotionDiscount();
+        int finalDiscountedPrice = priceAttribute.applyPromotionDiscount();
 
         return ProductSingleDetailResponse.
                 from(
                         product,
                         promotionDiscountedValue,
-                        promotionalPrice);
+                        finalDiscountedPrice);
     }
 
     public ProductSingleSimpleResponse toSingleSimpleResponse(
@@ -45,21 +44,20 @@ public class ProductFindService {
         Product product = productQueryRepository.findProductInfoById(id)
                 .orElseThrow(() -> CommerceException.of(PRODUCT_NOT_FOUND));
 
-        String imgUrl = productQueryRepository.findProductMainImageUrlById(id)
-                .orElseThrow(() -> CommerceException.of(INVALID_PRODUCT_MAIN_IMAGE));
-
         ProductPriceAttribute priceAttribute = product.getPriceAttribute();
         int promotionDiscountedValue = priceAttribute.getPromotionDiscountedValue();
-        int promotionalPrice = priceAttribute.applyPromotionDiscount();
-        List<String> distinctColorList = product.getDistinctColorList();
+        int finalDiscountedPrice = priceAttribute.applyPromotionDiscount();
+        List<String> colors = product.getDistinctColors();
+
+        String imgUrl = product.getMainImageUrl();
 
         return ProductSingleSimpleResponse.
                 from(
                         product,
                         promotionDiscountedValue,
-                        promotionalPrice,
+                        finalDiscountedPrice,
                         imgUrl,
-                        distinctColorList
+                        colors
                 );
     }
 }

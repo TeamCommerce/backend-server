@@ -1,6 +1,7 @@
 package com.commerce.backendserver.product.domain;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
+import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.image.domain.ProductImage;
 import com.commerce.backendserver.product.domain.option.ProductOption;
 import jakarta.persistence.*;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.commerce.backendserver.image.domain.constants.ProductImageCategory.MAIN;
+import static com.commerce.backendserver.product.exception.ProductError.INVALID_PRODUCT_MAIN_IMAGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
@@ -98,12 +101,18 @@ public class Product extends BaseEntity {
         this.options.addAll(options);
     }
 
-    public List<String> getDistinctColorList() {
+    public List<String> getDistinctColors() {
         return this.options.stream()
                 .map(option -> option.getColor().getColorCode())
                 .distinct() // 중복 제거
                 .collect(Collectors.toList());
     }
 
-// distinctColors 리스트에 중복 없이 색상들이 저장됩니다.
+    public String getMainImageUrl() {
+        return this.getImages().stream()
+                .filter(image -> image.getImageCategory().equals(MAIN))
+                .map(ProductImage::getUrl)
+                .findFirst()
+                .orElseThrow(() -> CommerceException.of(INVALID_PRODUCT_MAIN_IMAGE));
+    }
 }
