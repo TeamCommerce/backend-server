@@ -43,7 +43,7 @@ class ProductFindApiTest extends IntegrationTestBase {
 
     @BeforeEach
     void initProduct() {
-        savedPromotion = promotionCommandRepository.save(VALID_PROMOTION.toEntity());
+        savedPromotion = promotionCommandRepository.save(VALID_FIX_PROMOTION.toEntity());
         savedProduct = productCommandRepository.save(VALID_PRODUCT.toEntity(savedPromotion));
         id = savedProduct.getId();
     }
@@ -72,6 +72,8 @@ class ProductFindApiTest extends IntegrationTestBase {
                 fieldWithPath("id").description("상품 ID"),
                 fieldWithPath("originPrice").description("상품 원가"),
                 fieldWithPath("promotionType").description("프로모션 타입 [Key]"),
+                fieldWithPath("productName").description("상품 이름"),
+                fieldWithPath("productBrand").description("상품 브랜드"),
                 fieldWithPath("promotionValue").description("프로모션 값 [Value]"),
                 fieldWithPath("promotionDiscountedAmount").description("프로모션 할인 금액"),
                 fieldWithPath("appliedPromotionPrice").description("프로모션 적용 후 할인가"),
@@ -84,6 +86,7 @@ class ProductFindApiTest extends IntegrationTestBase {
                 fieldWithPath("options[].selectionOption").description("선택 옵션 정보").type(OBJECT),
                 fieldWithPath("options[].inventory").description("재고"),
                 fieldWithPath("options[].status").description("상태"),
+                fieldWithPath("options[].size").description("사이즈"),
 
                 // color 객체 필드
                 fieldWithPath("options[].color.colorCode").description("색상 코드"),
@@ -91,7 +94,6 @@ class ProductFindApiTest extends IntegrationTestBase {
                 fieldWithPath("options[].color.engColorName").description("영어 색상 이름"),
 
                 // selectionOption 객체 필드
-                fieldWithPath("options[].selectionOption.size").description("사이즈"),
                 fieldWithPath("options[].selectionOption.key").description("키"),
                 fieldWithPath("options[].selectionOption.value").description("값"),
                 fieldWithPath("options[].selectionOption.additionalFee").description("추가 비용")
@@ -180,6 +182,7 @@ class ProductFindApiTest extends IntegrationTestBase {
                     .accept(APPLICATION_JSON_VALUE)
                     .header("Content-type", "application/json")
                     .log().all()
+
 
                     .when().log().all()
                     .get("/api/products/{id}", product.getId())

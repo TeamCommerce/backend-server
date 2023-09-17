@@ -5,6 +5,4 @@ import com.commerce.backendserver.product.domain.promotion.PromotionDiscountAttr
 public interface PromotionPriceCalculator {
 
     Integer getPromotionDiscountedAmount(PromotionDiscountAttribute priceAttribute);
-
-    boolean isInvalidPromotion(PromotionDiscountAttribute priceAttribute);
 }
