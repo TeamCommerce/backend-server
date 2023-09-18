@@ -16,8 +16,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.payload.PayloadDocumentation;
-import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import org.springframework.restdocs.snippet.Attributes;
 import org.springframework.test.context.jdbc.Sql;
@@ -58,12 +56,6 @@ public abstract class IntegrationTestBase {
                 .build();
     }
 
-    protected ResponseFieldsSnippet successResponseDocument() {
-        return PayloadDocumentation.responseFields(
-                fieldWithPath("success").description("성공 여부")
-        );
-    }
-
     protected Attributes.Attribute constraint(String value) {
         return new Attributes.Attribute("constraints", value);
     }
@@ -85,7 +77,7 @@ public abstract class IntegrationTestBase {
     ) {
         response.statusCode(status.value())
                 .body("timeStamp", notNullValue(String.class))
-                .body("errorCode", is(status.value()))
+                .body("errorCode", notNullValue())
                 .body("errorMessage", is(errorMessage));
     }
 

@@ -19,8 +19,7 @@ public class ApiExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        log.error("", ex);
-        return ErrorResponse.of(HttpStatus.BAD_REQUEST, Optional.ofNullable(ex.getFieldError()));
+        return ErrorResponse.of(Optional.ofNullable(ex.getFieldError()));
     }
 
     @ExceptionHandler(CommerceException.class)

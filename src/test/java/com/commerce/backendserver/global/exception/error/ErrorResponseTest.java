@@ -1,5 +1,12 @@
 package com.commerce.backendserver.global.exception.error;
 
+
+import static com.commerce.backendserver.global.exception.error.GlobalError.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,13 +29,14 @@ ErrorResponseTest {
 		@DisplayName("[Fail] 필드 에러가 Null일 때 실패]")
 		void whenFieldErrorIsNull() {
 			//when
-			ErrorResponse result = ErrorResponse.of(BAD_REQUEST, Optional.empty());
+			ErrorResponse result = ErrorResponse.of(Optional.empty());
 
 			//then
+
 			assertAll(
-				() -> assertThat(result.getErrorCode()).isEqualTo(BAD_REQUEST.value()),
+				() -> assertThat(result.getErrorCode()).isEqualTo(INVALID_REQUEST_PARAM.getCode()),
 				() -> assertThat(result.getTimeStamp()).isNotBlank(),
-				() -> assertThat(result.getErrorMessage()).isEqualTo("Invalid Param")
+				() -> assertThat(result.getErrorMessage()).isEqualTo(INVALID_REQUEST_PARAM.getMessage())
 			);
 		}
 	}
