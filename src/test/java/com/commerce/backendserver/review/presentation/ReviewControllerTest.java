@@ -1,10 +1,9 @@
 package com.commerce.backendserver.review.presentation;
 
-import static com.commerce.backendserver.common.utils.FileMockingUtils.*;
-import static org.mockito.BDDMockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+import com.commerce.backendserver.common.authorize.WithMockCustomUser;
+import com.commerce.backendserver.common.fixture.ReviewFixture;
+import com.commerce.backendserver.review.application.ReviewService;
+import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +18,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.commerce.backendserver.common.authorize.WithMockCustomUser;
-import com.commerce.backendserver.common.fixture.ReviewFixture;
-import com.commerce.backendserver.review.application.ReviewService;
-import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
+import static com.commerce.backendserver.common.utils.FileMockingUtils.createMockMultipartFile;
+import static org.mockito.BDDMockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = {ReviewController.class})
-@DisplayName("[ReviewController Test] (Presentation layer)")
+@DisplayName("[ReviewController Test] - Presentation layer")
 public class ReviewControllerTest {
 
 	private static final String BASE_URL = "/api/reviews";

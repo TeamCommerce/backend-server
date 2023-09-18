@@ -1,5 +1,6 @@
 package com.commerce.backendserver.global.exception.error;
 
+
 import static com.commerce.backendserver.global.exception.error.GlobalError.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,14 +11,22 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("[ErrorResponse Test] (Additional Test)")
-class ErrorResponseTest {
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
+@DisplayName("[ErrorResponse Test] - Global)")
+class
+ErrorResponseTest {
 
 	@Nested
-	@DisplayName("[of method]")
+	@DisplayName("[of]")
 	class ofTest {
+
 		@Test
-		@DisplayName("when fieldError is null")
+		@DisplayName("[Fail] 필드 에러가 Null일 때 실패]")
 		void whenFieldErrorIsNull() {
 			//when
 			ErrorResponse result = ErrorResponse.of(Optional.empty());

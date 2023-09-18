@@ -1,27 +1,26 @@
 package com.commerce.backendserver.review.domain.additionalinfo;
 
-import static com.commerce.backendserver.common.fixture.ReviewFixture.*;
-import static java.util.Comparator.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import com.commerce.backendserver.review.domain.Review;
+import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-
-import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
+import static com.commerce.backendserver.common.fixture.ReviewFixture.A;
+import static java.util.Comparator.comparingInt;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("[AdditionalInfoList Test] (Domain layer)")
 class AdditionalInfoListTest {
 
 	@Nested
-	@DisplayName("[of method]")
+	@DisplayName("[of]")
 	class ofTest {
 
 		private final Review review = Review.createReview(
@@ -33,8 +32,8 @@ class AdditionalInfoListTest {
 			null);
 
 		@Test
-		@DisplayName("stringInfoSet is not null")
-		void isNotNull() {
+		@DisplayName("[Success] StringInfoSet이 Null이 아닐 때 성공")
+		void SuccessWhenPresentNotNullStringInfoSet() {
 			//given
 			Set<String> stringInfoSet = A.getStringInfoSet();
 
@@ -48,8 +47,8 @@ class AdditionalInfoListTest {
 		}
 
 		@Test
-		@DisplayName("stringInfoSet is null")
-		void isNull() {
+		@DisplayName("[Success] StringInfoSet이 Null일 때 성공")
+		void SuccessWhenPresentNullStringInfoSet() {
 			//when
 			AdditionalInfoList result = AdditionalInfoList.of(null, review);
 

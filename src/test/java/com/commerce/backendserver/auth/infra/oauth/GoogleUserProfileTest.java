@@ -10,7 +10,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("[GoogleUserProfile Test] (Infra layer)")
+@DisplayName("[GoogleUserProfile Test] - Infra layer")
 class GoogleUserProfileTest {
 
     private GoogleProfile googleProfile;
@@ -24,7 +24,7 @@ class GoogleUserProfileTest {
     }
 
     @Test
-    @DisplayName("[isSupport method")
+    @DisplayName("[isSupport]")
     void isSupportTest() {
         //when
         boolean success = googleProfile.isSupport(OAuthType.GOOGLE);
@@ -38,7 +38,7 @@ class GoogleUserProfileTest {
     }
 
     @Test
-    @DisplayName("[getId method]")
+    @DisplayName("[getId]")
     void getIdTest() {
         //given
         final String id = "googleId";
@@ -53,7 +53,7 @@ class GoogleUserProfileTest {
     }
 
     @Test
-    @DisplayName("[getProvider method]")
+    @DisplayName("[getProvider]")
     void getProviderTest() {
         //when
         OAuthType result = googleProfile.getProvider();
@@ -63,7 +63,7 @@ class GoogleUserProfileTest {
     }
 
     @Test
-    @DisplayName("[getName method]")
+    @DisplayName("[getName]")
     void getNameTest() {
         //given
         final String name = "name";

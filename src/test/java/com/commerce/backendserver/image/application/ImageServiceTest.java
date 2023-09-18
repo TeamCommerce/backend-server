@@ -1,24 +1,23 @@
 package com.commerce.backendserver.image.application;
 
-import static com.commerce.backendserver.common.utils.FileMockingUtils.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.IntStream;
-
+import com.commerce.backendserver.common.base.MockTestBase;
+import com.commerce.backendserver.image.infra.ImageManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.commerce.backendserver.common.base.MockTestBase;
-import com.commerce.backendserver.image.infra.ImageManager;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.IntStream;
 
-@DisplayName("[ImageService Test] (Application layer)")
+import static com.commerce.backendserver.common.utils.FileMockingUtils.createMockMultipartFiles;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.BDDMockito.given;
+
+@DisplayName("[ImageService Test] - Application layer")
 class ImageServiceTest extends MockTestBase {
 
 	private static final String TYPE = "review";
@@ -30,7 +29,7 @@ class ImageServiceTest extends MockTestBase {
 	private ImageManager imageManager;
 
 	@Test
-	@DisplayName("[uploadImages method]")
+	@DisplayName("[uploadImages]")
 	void uploadImagesTest() throws IOException {
 		//given
 		List<MultipartFile> files = createMockMultipartFiles();

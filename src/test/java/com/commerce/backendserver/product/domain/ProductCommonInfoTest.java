@@ -22,7 +22,7 @@ class ProductCommonInfoTest {
     private static final int DESCRIPTION_MAX_LENGTH = 300;
 
     @Nested
-    @DisplayName("[ProductCommonInfo.of] Method Test")
+    @DisplayName("[of]")
     class ofTest {
 
         @Test

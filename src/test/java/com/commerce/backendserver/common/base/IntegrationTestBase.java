@@ -3,7 +3,7 @@ package com.commerce.backendserver.common.base;
 import com.commerce.backendserver.auth.infra.jwt.JwtProvider;
 import com.commerce.backendserver.common.fixture.MemberFixture;
 import com.commerce.backendserver.member.domain.Member;
-import com.commerce.backendserver.member.domain.MemberRepository;
+import com.commerce.backendserver.member.infra.persistence.MemberRepository;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ValidatableResponse;

@@ -1,10 +1,10 @@
-package com.commerce.backendserver.product.intergration;
+package com.commerce.backendserver.product.integration;
 
 import com.commerce.backendserver.common.base.IntegrationTestBase;
 import com.commerce.backendserver.product.domain.Product;
-import com.commerce.backendserver.product.domain.persistence.ProductCommandRepository;
-import com.commerce.backendserver.product.domain.persistence.promotion.PromotionCommandRepository;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
+import com.commerce.backendserver.product.infra.persistence.ProductCommandRepository;
+import com.commerce.backendserver.product.infra.persistence.promotion.PromotionCommandRepository;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
-@DisplayName("[ProductFindApi Test] (API)")
+@DisplayName("[ProductFindApi Test] - Integration")
 class ProductFindApiTest extends IntegrationTestBase {
 
     @Autowired
@@ -42,14 +42,14 @@ class ProductFindApiTest extends IntegrationTestBase {
     Promotion savedPromotion;
 
     @BeforeEach
-    void initProduct() {
+    void setUp() {
         savedPromotion = promotionCommandRepository.save(VALID_FIX_PROMOTION.toEntity());
         savedProduct = productCommandRepository.save(VALID_PRODUCT.toEntity(savedPromotion));
         id = savedProduct.getId();
     }
 
     @Nested
-    @DisplayName("[findSingleProduct] 단일 상품 상세 조회")
+    @DisplayName("[findSingleProduct]")
     class 단일_상품_상세조회 {
 
         private static ResourceSnippetParametersBuilder swaggerDescriptionWithResponseSchema(
@@ -106,8 +106,8 @@ class ProductFindApiTest extends IntegrationTestBase {
         );
 
         @Test
-        @DisplayName("[Success] 상품 정보 조회 정상 성공")
-        void success_상품_정보_정상_조회에_성공한다() {
+        @DisplayName("[Success]")
+        void 성공() {
             given(spec)
                     .filter(document(DEFAULT_PATH,
                             swaggerDescriptionWithResponseSchema("[FindSingleResponse] FindSingleProductResponse (GET)"),
@@ -125,8 +125,8 @@ class ProductFindApiTest extends IntegrationTestBase {
         }
 
         @Test
-        @DisplayName("[Fail] 상품 정보 조회 실패")
-        void fail_존재하지_않는_상품_조회시_예외를_던진다() {
+        @DisplayName("[Fail] 존재하지 않는 상품 조회로 실패")
+        void 존재하지_않는_상품_조회시_실패() {
             given(spec)
                     .filter(document(DEFAULT_PATH,
                             swaggerDescriptionWithResponseSchema("[FindSingleResponse] Member Not Found (404)"),
@@ -144,8 +144,8 @@ class ProductFindApiTest extends IntegrationTestBase {
         }
 
         @Test
-        @DisplayName("[Fail] 비정상 정액 프로모션(originPrice - discountedAmount < 0)")
-        void fail_정가보다_정액_할인_프로모션_가격이_크면_예외를_던진다() {
+        @DisplayName("[Fail] 비정상 정액 프로모션으로 실패(originPrice - discountedAmount < 0)")
+        void 정가보다_정액_할인_프로모션_가격이_크므로_실패() {
             //given
             Promotion tooHighPromotion = promotionCommandRepository.save(TOO_HIGH_PROMOTION.toEntity());
             Product minusPriceProduct = productCommandRepository.save(VALID_PRODUCT.toEntity(tooHighPromotion));
@@ -169,7 +169,7 @@ class ProductFindApiTest extends IntegrationTestBase {
 
         @Test
         @DisplayName("[Fail] 비정상 정액 프로모션(discountedAmount 음수")
-        void fail_정액_할인_프로모션_값이_음수면_예외를_던진다() {
+        void 정액_할인_프로모션_값이_음수면_실패() {
             //given
             Promotion minusPromotion = promotionCommandRepository.save(MINUS_FIX_PROMOTION.toEntity());
             Product product = productCommandRepository.save(VALID_PRODUCT.toEntity(minusPromotion));

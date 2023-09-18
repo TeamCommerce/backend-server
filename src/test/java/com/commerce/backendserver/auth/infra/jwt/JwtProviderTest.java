@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@DisplayName("[JwtProvider Test] (Infra layer)")
+@DisplayName("[JwtProvider Test] - Infra layer")
 class JwtProviderTest {
 
     private static final String SECRET_KEY = "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc";
@@ -21,8 +21,8 @@ class JwtProviderTest {
     private static final Long MEMBER_ID = 1L;
 
     @Test
-    @DisplayName("[createAccessToken, createRefreshToken method]")
-    void createAccessTokenTest() {
+    @DisplayName("[CreateAccessToken, CreateRefreshToken]")
+    void createAccessOrRefreshTokenTest() {
         //given
         JwtProvider provider = new JwtProvider(SECRET_KEY, SUC_VALIDITY, SUC_VALIDITY);
 
@@ -36,7 +36,7 @@ class JwtProviderTest {
     }
 
     @Test
-    @DisplayName("[getPayload method]")
+    @DisplayName("[getPayload]")
     void getPayloadTest() {
         //given
         JwtProvider provider = new JwtProvider(SECRET_KEY, SUC_VALIDITY, SUC_VALIDITY);
@@ -50,11 +50,11 @@ class JwtProviderTest {
     }
 
     @Nested
-    @DisplayName("[validateToken method]")
+    @DisplayName("[validateToken]")
     class validateTokenTest {
 
         @Test
-        @DisplayName("success")
+        @DisplayName("[Success]")
         void success() {
             //given
             JwtProvider provider = new JwtProvider(SECRET_KEY, SUC_VALIDITY, SUC_VALIDITY);
@@ -65,8 +65,8 @@ class JwtProviderTest {
         }
 
         @Test
-        @DisplayName("fail by expired token")
-        void failByExpired() {
+        @DisplayName("[Fail] 만료된 토큰 사용으로 인해 실패")
+        void failWhenPresentExpiredToken() {
             //given
             JwtProvider provider = new JwtProvider(SECRET_KEY, FAIL_VALIDITY, FAIL_VALIDITY);
             String token = provider.createAccessToken(MEMBER_ID);
@@ -78,8 +78,8 @@ class JwtProviderTest {
         }
 
         @Test
-        @DisplayName("fail by invalid token")
-        void failByInvalid() {
+        @DisplayName("[Fail] 유효하지 않은 토큰으로 인해 실패")
+        void failWhenPresentInvalidToken() {
             //given
             final String invalidKey = "kkwqeqeewwekkkkklkkkkkkdskddfdfdfdfdkfkkkdfddfd";
             JwtProvider invalidProvider = new JwtProvider(invalidKey, SUC_VALIDITY, SUC_VALIDITY);

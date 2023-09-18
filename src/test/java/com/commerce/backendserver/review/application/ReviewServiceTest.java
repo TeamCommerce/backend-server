@@ -4,10 +4,10 @@ import com.commerce.backendserver.common.base.MockTestBase;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.image.application.ImageService;
 import com.commerce.backendserver.product.domain.Product;
-import com.commerce.backendserver.product.domain.persistence.ProductQueryRepository;
+import com.commerce.backendserver.product.infra.persistence.ProductQueryRepository;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.domain.ReviewRepository;
+import com.commerce.backendserver.review.infra.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
-@DisplayName("[ReviewService Test] (Application layer)")
+@DisplayName("[ReviewService Test] - Application layer")
 class ReviewServiceTest extends MockTestBase {
 
     @InjectMocks
@@ -41,7 +41,7 @@ class ReviewServiceTest extends MockTestBase {
     private ImageService imageService;
 
     @Nested
-    @DisplayName("[createReview method]")
+    @DisplayName("[createReview]")
     class createReview {
 
         private CreateReviewRequest request;
@@ -56,7 +56,7 @@ class ReviewServiceTest extends MockTestBase {
         }
 
         @Test
-        @DisplayName("success")
+        @DisplayName("[success]")
         void success() {
             //given
             given(productQueryRepository.findById(1L))
@@ -73,8 +73,8 @@ class ReviewServiceTest extends MockTestBase {
         }
 
         @Test
-        @DisplayName("fail by product not found")
-        void failByProductNotFound() {
+        @DisplayName("[Fail] 해당 Id의 상품이 존재하지 않아 실패")
+        void failWhenProductNotFound() {
             //given
             given(productQueryRepository.findById(1L))
                     .willReturn(generateProductEmpty());

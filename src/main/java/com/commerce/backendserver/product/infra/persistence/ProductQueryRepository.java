@@ -1,7 +1,6 @@
-package com.commerce.backendserver.product.domain.persistence;
+package com.commerce.backendserver.product.infra.persistence;
 
 import com.commerce.backendserver.product.domain.Product;
-import com.commerce.backendserver.product.domain.infra.query.ProductQueryDslRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
