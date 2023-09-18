@@ -1,5 +1,7 @@
 package com.commerce.backendserver.global.exception.error;
 
+import static com.commerce.backendserver.global.exception.error.GlobalError.*;
+
 import lombok.Getter;
 import org.springframework.validation.FieldError;
 
@@ -27,6 +29,6 @@ public class ErrorResponse {
 
     public static ErrorResponse of(Optional<FieldError> fieldError) {
         return fieldError.map(error -> new ErrorResponse(error.getCode(), error.getDefaultMessage()))
-            .orElseGet(() -> new ErrorResponse("G_100", "Invalid Param"));
+            .orElseGet(() -> ErrorResponse.of(INVALID_REQUEST_PARAM));
     }
 }
