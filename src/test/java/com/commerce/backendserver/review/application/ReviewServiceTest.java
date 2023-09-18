@@ -87,7 +87,7 @@ class ReviewServiceTest extends MockTestBase {
     }
 
     private Review generateReviewHasId() {
-        Review review = A.toEntity(null, null);
+        Review review = A.toEntity(null, null, null);
         setField(review, "id", 1L);
 
         return review;

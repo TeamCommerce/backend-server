@@ -151,6 +151,8 @@ class ReviewApiTest extends IntegrationTestBase {
 					.attributes(constraint("1~5 사이 정수")),
 				partWithName("productId")
 					.description("리뷰할 상품 ID"),
+				partWithName("productOptionId")
+					.description("리뷰할 상품의 옵션 ID"),
 				partWithName("additionalInfo")
 					.description("추가정보 이름/추가정보 값")
 					.attributes(constraint("지정된 이름만 사용가능"))
