@@ -7,7 +7,7 @@ import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.infra.persistence.ProductQueryRepository;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.infra.ReviewRepository;
+import com.commerce.backendserver.review.infra.persistence.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
