@@ -1,16 +1,9 @@
 package com.commerce.backendserver.image.infra;
 
-import static com.commerce.backendserver.common.utils.FileMockingUtils.*;
-import static com.commerce.backendserver.common.utils.S3LinkUtils.*;
-import static com.commerce.backendserver.image.exception.ImageError.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.commerce.backendserver.common.base.MockTestBase;
+import com.commerce.backendserver.global.exception.CommerceException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,12 +13,21 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.commerce.backendserver.common.base.MockTestBase;
-import com.commerce.backendserver.global.exception.CommerceException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
-@DisplayName("ImageManager Test] (Infra layer)")
+import static com.commerce.backendserver.common.utils.FileMockingUtils.createEmptyFile;
+import static com.commerce.backendserver.common.utils.FileMockingUtils.createMockMultipartFiles;
+import static com.commerce.backendserver.common.utils.S3LinkUtils.createUploadLink;
+import static com.commerce.backendserver.image.exception.ImageError.EMPTY_FILE;
+import static com.commerce.backendserver.image.exception.ImageError.UPLOAD_FAIL;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.BDDMockito.*;
+
+@DisplayName("[ImageManager Test] - Infra layer")
 class ImageManagerTest extends MockTestBase {
 
 	private static final String REVIEW = "review";
@@ -76,7 +78,7 @@ class ImageManagerTest extends MockTestBase {
 
 		@Test
 		@DisplayName("fail by empty file")
-		void failByEmptyFile() {
+		void failWhenPresentEmptyFile() {
 			//given
 			List<MultipartFile> emptyFiles = List.of(createEmptyFile());
 
@@ -85,8 +87,8 @@ class ImageManagerTest extends MockTestBase {
 
 			//then
 			assertThatThrownBy(throwingCallable)
-				.isInstanceOf(CommerceException.class)
-				.hasMessageContaining(EMPTY_FILE.getMessage());
+					.isInstanceOf(CommerceException.class)
+					.hasMessageContaining(EMPTY_FILE.getMessage());
 		}
 
 		@Test

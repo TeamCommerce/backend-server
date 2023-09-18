@@ -3,6 +3,7 @@ package com.commerce.backendserver.auth.domain;
 import com.commerce.backendserver.common.base.RepositoryTestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,7 +13,7 @@ import static com.commerce.backendserver.common.utils.TokenUtils.TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("[TokenQueryRepository Test] (Domain layer)")
+@DisplayName("[TokenQueryRepository Test] - Domain layer")
 class TokenQueryRepositoryTest extends RepositoryTestBase {
 
     @Autowired
@@ -30,20 +31,25 @@ class TokenQueryRepositoryTest extends RepositoryTestBase {
         token = tokenRepository.save(Token.issue(TOKEN, memberId));
     }
 
-    @Test
-    @DisplayName("[findByMemberId query]")
-    void findByMemberIdTest() {
-        //when
-        Optional<Token> result = tokenQueryRepository.findByMemberId(memberId);
+    @Nested
+    @DisplayName("[findByMemberId]")
+    class findByMemberIdTest {
 
-        //then
-        assertAll(
-                () -> assertThat(result).isPresent(),
-                () -> {
-                    Token actual = result.get();
-                    assertThat(actual.getMemberId()).isEqualTo(memberId);
-                    assertThat(actual.getRefreshToken()).isEqualTo(token.getRefreshToken());
-                }
-        );
+        @Test
+        @DisplayName("[success]")
+        void success() {
+            //when
+            Optional<Token> result = tokenQueryRepository.findByMemberId(memberId);
+
+            //then
+            assertAll(
+                    () -> assertThat(result).isPresent(),
+                    () -> {
+                        Token actual = result.get();
+                        assertThat(actual.getMemberId()).isEqualTo(memberId);
+                        assertThat(actual.getRefreshToken()).isEqualTo(token.getRefreshToken());
+                    }
+            );
+        }
     }
 }

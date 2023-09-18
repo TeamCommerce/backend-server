@@ -1,17 +1,16 @@
 package com.commerce.backendserver.image.domain;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-
+import com.commerce.backendserver.common.fixture.ReviewFixture;
+import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.fixture.ProductFixture;
+import com.commerce.backendserver.review.domain.Review;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.commerce.backendserver.common.fixture.ReviewFixture;
-import com.commerce.backendserver.product.domain.Product;
-import com.commerce.backendserver.review.domain.Review;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("[ReviewImage Test] (Domain layer)")
+@DisplayName("[ReviewImage Test] - Domain layer")
 class ReviewImageTest {
 
 	@Test

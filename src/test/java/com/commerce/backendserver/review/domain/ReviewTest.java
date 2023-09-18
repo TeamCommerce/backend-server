@@ -1,42 +1,41 @@
 package com.commerce.backendserver.review.domain;
 
-import static java.util.Comparator.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import com.commerce.backendserver.common.fixture.ReviewFixture;
+import com.commerce.backendserver.image.domain.Image;
+import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
+import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import static java.util.Comparator.comparingInt;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.commerce.backendserver.common.fixture.ReviewFixture;
-import com.commerce.backendserver.image.domain.Image;
-import com.commerce.backendserver.product.domain.Product;
-import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
-import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
-
-@DisplayName("[Review Test] (Domain layer)")
+@DisplayName("[Review Test] - Domain layer")
 public class ReviewTest {
 
 	@Nested
-	@DisplayName("[createReview method]")
+	@DisplayName("[createReview]")
 	class createReviewTest {
 
 		//given
 		private final Product product = Product.createProduct(
-			new ArrayList<>(),
-			new ArrayList<>(),
+				new ArrayList<>(),
+				new ArrayList<>(),
 			null,
 			null);
 		private final Long writerId = 1L;
 
 		@Test
-		@DisplayName("imageUrl is not null")
-		void imageUrlsIsNotNull() {
+		@DisplayName("[Success] ImageUrl이 Null이 아닐 때 성공")
+		void SuccessWhenPresentimageUrlsIsNotNull() {
 			//given
 			final ReviewFixture fixture = ReviewFixture.A;
 
@@ -45,18 +44,18 @@ public class ReviewTest {
 
 			//then
 			assertAll(
-				() -> assertThat(result.getScore()).isEqualTo(fixture.getScore()),
-				() -> assertThat(result.getContents()).isEqualTo(fixture.getContents()),
-				() -> assertThat(result.getWriterId()).isEqualTo(writerId),
-				() -> assertThat(result.getProduct()).isEqualTo(product),
-				() -> {
-					List<String> actual = result.getImages().stream().map(Image::getUrl).toList();
-					assertThat(actual).hasSameSizeAs(fixture.getImageUrls());
-					assertThat(actual).containsAll(fixture.getImageUrls());
-				},
-				() -> {
-					List<AdditionalInfo> actual = result.getAdditionalInfoList();
-					List<AdditionalInfo> expected = generateExpectedAdditionalInfo(fixture.getStringInfoSet());
+					() -> assertThat(result.getScore()).isEqualTo(fixture.getScore()),
+					() -> assertThat(result.getContents()).isEqualTo(fixture.getContents()),
+					() -> assertThat(result.getWriterId()).isEqualTo(writerId),
+					() -> assertThat(result.getProduct()).isEqualTo(product),
+					() -> {
+						List<String> actual = result.getImages().stream().map(Image::getUrl).toList();
+						assertThat(actual).hasSameSizeAs(fixture.getImageUrls());
+						assertThat(actual).containsAll(fixture.getImageUrls());
+					},
+					() -> {
+						List<AdditionalInfo> actual = result.getAdditionalInfoList();
+						List<AdditionalInfo> expected = generateExpectedAdditionalInfo(fixture.getStringInfoSet());
 
 					assertAdditionalInfoMatching(actual, expected);
 				}
@@ -64,16 +63,16 @@ public class ReviewTest {
 		}
 
 		@Test
-		@DisplayName("imageUrls is null")
-		void ImageUrlsIsNull() {
+		@DisplayName("[Success] ImageUrls가 Null일 때 성공")
+		void SuccessWhenImageUrlsNull() {
 			//when
 			Review result = Review.createReview(
-				null,
-				null,
-				null,
-				null,
-				null,
-				null
+					null,
+					null,
+					null,
+					null,
+					null,
+					null
 			);
 
 			//then

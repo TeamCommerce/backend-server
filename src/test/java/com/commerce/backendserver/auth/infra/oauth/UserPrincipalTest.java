@@ -14,7 +14,7 @@ import java.util.Map;
 import static com.commerce.backendserver.common.fixture.MemberFixture.A;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("[UserPrincipal Test] (Infra layer)")
+@DisplayName("[UserPrincipal Test] - Infra layer")
 class UserPrincipalTest {
 
     private UserPrincipal principal;
@@ -30,7 +30,7 @@ class UserPrincipalTest {
     }
 
     @Test
-    @DisplayName("[getAttributes method]")
+    @DisplayName("[getAttributes]")
     void getAttributesTest() {
         //when
         Map<String, Object> result = principal.getAttributes();
@@ -40,7 +40,7 @@ class UserPrincipalTest {
     }
 
     @Test
-    @DisplayName("getAuthorities method")
+    @DisplayName("[getAuthorities]")
     void getAuthoritiesTest() {
         //when
         Collection<? extends GrantedAuthority> authorities = principal.getAuthorities();
@@ -52,7 +52,7 @@ class UserPrincipalTest {
     }
 
     @Test
-    @DisplayName("getName method")
+    @DisplayName("[getName]")
     void getNameTest() {
         //when
         String name = principal.getName();
@@ -62,7 +62,7 @@ class UserPrincipalTest {
     }
 
     @Test
-    @DisplayName("getId method")
+    @DisplayName("[getId]")
     void getIdTest() {
         //given
         ReflectionTestUtils.setField(member, "id", 1L);
@@ -75,7 +75,7 @@ class UserPrincipalTest {
     }
 
     @Test
-    @DisplayName("getNickname method")
+    @DisplayName("[getNickname]")
     void getNicknameTest() {
         //when
         String nickname = principal.getNickname();

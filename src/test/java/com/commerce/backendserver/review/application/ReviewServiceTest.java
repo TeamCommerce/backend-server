@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
-@DisplayName("[ReviewService Test] (Application layer)")
+@DisplayName("[ReviewService Test] - Application layer")
 class ReviewServiceTest extends MockTestBase {
 
     @InjectMocks
@@ -41,7 +41,7 @@ class ReviewServiceTest extends MockTestBase {
     private ImageService imageService;
 
     @Nested
-    @DisplayName("[createReview method]")
+    @DisplayName("[createReview]")
     class createReview {
 
         private CreateReviewRequest request;
@@ -56,7 +56,7 @@ class ReviewServiceTest extends MockTestBase {
         }
 
         @Test
-        @DisplayName("success")
+        @DisplayName("[success]")
         void success() {
             //given
             given(productQueryRepository.findById(1L))
@@ -73,8 +73,8 @@ class ReviewServiceTest extends MockTestBase {
         }
 
         @Test
-        @DisplayName("fail by product not found")
-        void failByProductNotFound() {
+        @DisplayName("[Fail] 해당 Id의 상품이 존재하지 않아 실패")
+        void failWhenProductNotFound() {
             //given
             given(productQueryRepository.findById(1L))
                     .willReturn(generateProductEmpty());

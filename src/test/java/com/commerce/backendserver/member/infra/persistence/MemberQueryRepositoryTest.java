@@ -1,8 +1,7 @@
-package com.commerce.backendserver.member.domain;
+package com.commerce.backendserver.member.infra.persistence;
 
 import com.commerce.backendserver.common.base.RepositoryTestBase;
-import com.commerce.backendserver.member.infra.persistence.MemberQueryRepository;
-import com.commerce.backendserver.member.infra.persistence.MemberRepository;
+import com.commerce.backendserver.member.domain.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,7 @@ import static com.commerce.backendserver.common.fixture.MemberFixture.A;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("[MemberQueryRepository Test] (Domain layer)")
+@DisplayName("[MemberQueryRepository Test] - Infra layer)")
 class MemberQueryRepositoryTest extends RepositoryTestBase {
 
     @Autowired
@@ -32,7 +31,7 @@ class MemberQueryRepositoryTest extends RepositoryTestBase {
     }
 
     @Test
-    @DisplayName("[findByOauthId query]")
+    @DisplayName("[findByOauthId]")
     void findByOauthIdTest() {
         //when
         Optional<Member> result = memberQueryRepository.findByOauthId(A.getOauthId());

@@ -1,15 +1,13 @@
 package com.commerce.backendserver.member.domain;
 
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import static com.commerce.backendserver.common.fixture.MemberFixture.A;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("[Member Test] (Domain layer)")
+@DisplayName("[Member Test] - Domain layer")
 class MemberTest {
 
     @Test
