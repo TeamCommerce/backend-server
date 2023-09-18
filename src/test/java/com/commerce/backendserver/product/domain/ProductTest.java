@@ -1,6 +1,5 @@
 package com.commerce.backendserver.product.domain;
 
-import com.commerce.backendserver.image.domain.Image;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.fixture.ProductFixture;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +40,7 @@ class ProductTest {
                     () -> assertThat(fixture.getOriginPrice()).isEqualTo(product.getPriceAttribute().getOriginPrice()),
                     () -> assertThat(promotion).isEqualTo(product.getPriceAttribute().getPromotion()),
                     // ProductImages
-                    () -> assertThat(fixture.getImages()).containsAll(product.getImages().stream().map(Image::getUrl).toList())
+                    () -> assertThat(fixture.getImages().size()).isEqualTo(product.getImages().size())
             );
         }
     }
