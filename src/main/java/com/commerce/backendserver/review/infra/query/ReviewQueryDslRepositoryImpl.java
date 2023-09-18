@@ -16,7 +16,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ReviewQuerydslRepositoryImpl implements ReviewQueryDslRepository {
+public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 
 	private final JPAQueryFactory query;
 
