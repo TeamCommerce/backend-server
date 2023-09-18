@@ -9,9 +9,10 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @Getter
 @RequiredArgsConstructor
 public enum GlobalError implements ErrorCode {
-    GLOBAL_NOT_FOUND("Not Found Error!", NOT_FOUND);
+
+    GLOBAL_NOT_FOUND("Not Found Error!", NOT_FOUND, "G_001");
 
     private final String message;
-
     private final HttpStatus status;
+    private final String code;
 }
