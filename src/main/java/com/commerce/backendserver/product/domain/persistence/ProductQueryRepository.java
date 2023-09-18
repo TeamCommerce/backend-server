@@ -11,10 +11,9 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface ProductQueryRepository extends ProductJpaRepository, ProductQueryDslRepository {
 
-    // Single Review Find Service
+    // Single Product Find Service
     @Query("select distinct p from Product p " +
             "left join fetch p.images " +
             "where p.id = :id")
     Optional<Product> findProductInfoById(@Param("id") Long id);
-
 }

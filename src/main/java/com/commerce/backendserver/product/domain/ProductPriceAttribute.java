@@ -12,7 +12,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.commerce.backendserver.product.domain.promotion.constants.PromotionType.NO_PROMOTION;
 import static com.commerce.backendserver.product.exception.ProductError.INVALID_PRICE_ATTRIBUTE;
 import static com.commerce.backendserver.product.exception.ProductError.MINUS_APPLIED_PROMOTION_PRICE;
 import static jakarta.persistence.FetchType.LAZY;
@@ -62,7 +61,7 @@ public class ProductPriceAttribute {
 
     public int getPromotionDiscountedValue() {
         PromotionType type = this.getPromotionPriceAttribute().getType();
-        return type.getCalculator().getPromotionDiscountedAmount(this.getPromotionPriceAttribute());
+        return type.getCalculator().getPromotionDiscountedAmount(this);
     }
 
     //== Validate Method ==//

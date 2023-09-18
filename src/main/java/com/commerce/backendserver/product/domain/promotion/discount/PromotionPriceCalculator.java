@@ -1,8 +1,8 @@
 package com.commerce.backendserver.product.domain.promotion.discount;
 
-import com.commerce.backendserver.product.domain.promotion.PromotionDiscountAttribute;
+import com.commerce.backendserver.product.domain.ProductPriceAttribute;
 
 public interface PromotionPriceCalculator {
 
-    Integer getPromotionDiscountedAmount(PromotionDiscountAttribute priceAttribute);
+    Integer getPromotionDiscountedAmount(ProductPriceAttribute attribute);
 }
