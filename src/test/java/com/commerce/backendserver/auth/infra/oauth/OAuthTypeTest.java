@@ -9,11 +9,11 @@ import static com.commerce.backendserver.auth.exception.AuthError.NOT_EXIST_OAUT
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("[OAuthType Test] (Infra layer)")
+@DisplayName("[OAuthType Test] - Infra layer")
 class OAuthTypeTest {
 
     @Test
-    @DisplayName("[isGoogle method]")
+    @DisplayName("[isGoogle]")
     void isGoogleTest() {
         //given
         OAuthType google = OAuthType.GOOGLE;
@@ -26,7 +26,7 @@ class OAuthTypeTest {
     }
 
     @Test
-    @DisplayName("[isKakao method]")
+    @DisplayName("[isKakao]")
     void isKakaoTest() {
         //given
         OAuthType kakao = OAuthType.KAKAO;
@@ -39,11 +39,12 @@ class OAuthTypeTest {
     }
 
     @Nested
-    @DisplayName("[matchOAuthType method]")
+    @DisplayName("[matchOAuthType]")
     class matchOAuthTypeTest {
+
         @Test
-        @DisplayName("google")
-        void google() {
+        @DisplayName("[Success] 'google' 타입 성공")
+        void successWhenPresentGoogle() {
             //when
             OAuthType result = OAuthType.matchOAuthType("google");
 
@@ -52,8 +53,8 @@ class OAuthTypeTest {
         }
 
         @Test
-        @DisplayName("kakao")
-        void kakao() {
+        @DisplayName("[Success] 'kakao' 타입 성공")
+        void successWhenPresentKakao() {
             //when
             OAuthType result = OAuthType.matchOAuthType("kakao");
 
@@ -62,8 +63,8 @@ class OAuthTypeTest {
         }
 
         @Test
-        @DisplayName("not supported")
-        void fail() {
+        @DisplayName("[Fail] 지원하지 않는 타입으로 인해 실패")
+        void failWhenPresentNotSupportedType() {
             //when, then
             assertThatThrownBy(() -> OAuthType.matchOAuthType("none"))
                     .isInstanceOf(CommerceException.class)

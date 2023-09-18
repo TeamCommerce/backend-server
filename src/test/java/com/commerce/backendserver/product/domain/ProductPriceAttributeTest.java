@@ -17,11 +17,11 @@ class ProductPriceAttributeTest {
 
 
     @Nested
-    @DisplayName("[ProductPriceAttribute.of] Method Test")
+    @DisplayName("[of]")
     class ofTest {
 
         @Test
-        @DisplayName("[Success] 성공")
+        @DisplayName("[Success]")
         void success() {
             //given
             final Promotion promotion = VALID_FIX_PROMOTION.toEntity();
@@ -41,8 +41,8 @@ class ProductPriceAttributeTest {
         }
 
         @Test
-        @DisplayName("[Fail] 상품 가격(originPrice)이 음의 정수일 때 예외를 던진다.")
-        void When_IsOriginPriceMinus_Then_ThrowException() {
+        @DisplayName("[Fail] 상품 가격(originPrice)이 음의 정수일 때 실패")
+        void FailWhenIsOriginPriceMinus() {
             //given & when & then
             assertThatThrownBy(
                     () ->
@@ -53,7 +53,7 @@ class ProductPriceAttributeTest {
     }
 
     @Nested
-    @DisplayName("[applyPromotionDiscount] Method Test")
+    @DisplayName("[applyPromotionDiscount]")
     class applyPromotionDiscountTest {
         //todo
     }

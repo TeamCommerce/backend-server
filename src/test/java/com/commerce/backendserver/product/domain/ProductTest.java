@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class ProductTest {
 
     @Nested
-    @DisplayName("[createProduct] Method Test")
-    class OfTest {
+    @DisplayName("[createProduct]")
+    class ofTest {
 
         private final Promotion promotion = VALID_FIX_PROMOTION.toEntity();
 
         @Test
-        @DisplayName("[Success] 성공")
+        @DisplayName("[Success]")
         void success() {
             //given
             final ProductFixture fixture = VALID_PRODUCT;

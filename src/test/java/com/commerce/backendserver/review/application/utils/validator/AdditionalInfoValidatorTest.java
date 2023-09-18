@@ -1,28 +1,28 @@
 package com.commerce.backendserver.review.application.utils.validator;
 
-import static com.commerce.backendserver.common.fixture.ReviewFixture.*;
-import static com.commerce.backendserver.review.exception.ReviewError.*;
-import static org.assertj.core.api.Assertions.*;
-
-import java.util.Set;
-
+import com.commerce.backendserver.global.exception.CommerceException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import com.commerce.backendserver.global.exception.CommerceException;
+import java.util.Set;
 
-@DisplayName("[AdditionalInfoValidator Test] (Application layer)")
+import static com.commerce.backendserver.common.fixture.ReviewFixture.A;
+import static com.commerce.backendserver.review.exception.ReviewError.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+@DisplayName("[AdditionalInfoValidator Test] - Application layer")
 class AdditionalInfoValidatorTest {
 
 	private final AdditionalInfoValidator validator = new AdditionalInfoValidator();
 
 	@Nested
-	@DisplayName("[isValid method]")
+	@DisplayName("[isValid]")
 	class isValid {
 
 		@Test
-		@DisplayName("success")
+		@DisplayName("[Success] 정상 인자일 때 성공")
 		void success() {
 			//given
 			Set<String> stringInfoSet = A.getStringInfoSet();
@@ -35,8 +35,8 @@ class AdditionalInfoValidatorTest {
 		}
 
 		@Test
-		@DisplayName("success by value is null")
-		void successByValueIsNull() {
+		@DisplayName("[Success] Value가 Null일 때 성공")
+		void successWhenValueIsNull() {
 			//when
 			boolean result = validator.isValid(null, null);
 
@@ -45,39 +45,39 @@ class AdditionalInfoValidatorTest {
 		}
 
 		@Test
-		@DisplayName("fail by invalid format")
-		void failByInvalidFormat() {
+		@DisplayName("[Fail] 잘못된 포맷으로 인해 실패")
+		void failWhenPresentInvalidFormat() {
 			//given
 			Set<String> invalidValue = Set.of("SIZE|Large");
 
 			//when, then
 			assertThatThrownBy(() -> validator.isValid(invalidValue, null))
-				.isInstanceOf(CommerceException.class)
-				.hasMessageContaining(INVALID_ADDITIONAL_INFO.getMessage());
+					.isInstanceOf(CommerceException.class)
+					.hasMessageContaining(INVALID_ADDITIONAL_INFO.getMessage());
 		}
 
 		@Test
-		@DisplayName("fail by invalid integer value")
-		void failByInvalidIntegerValue() {
+		@DisplayName("[Fail] 잘못된 정수 값 입력시 실패")
+		void failWhenPresentInvalidIntegerValue() {
 			//given
 			Set<String> invalidValue = Set.of("HEIGHT/150cm");
 
 			//when, then
 			assertThatThrownBy(() -> validator.isValid(invalidValue, null))
-				.isInstanceOf(CommerceException.class)
-				.hasMessageContaining(INVALID_INTEGER_INFO_VALUE.getMessage());
+					.isInstanceOf(CommerceException.class)
+					.hasMessageContaining(INVALID_INTEGER_INFO_VALUE.getMessage());
 		}
 
 		@Test
-		@DisplayName("fail by invalid not exist info name")
-		void failByNotExistInfoName() {
+		@DisplayName("[Fail] 존재하지 않는 이름 입력시 실패")
+		void failWhenPresentNotExistInfoName() {
 			//given
 			Set<String> invalidValue = Set.of("HELLO/Large");
 
 			//when, then
 			assertThatThrownBy(() -> validator.isValid(invalidValue, null))
-				.isInstanceOf(CommerceException.class)
-				.hasMessageContaining(NOT_EXIST_INFO_NAME.getMessage());
+					.isInstanceOf(CommerceException.class)
+					.hasMessageContaining(NOT_EXIST_INFO_NAME.getMessage());
 		}
 	}
 }

@@ -12,7 +12,7 @@ import static com.commerce.backendserver.auth.exception.AuthError.NOT_EXIST_OAUT
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("[OAuthProfileFactory Test] (Infra layer)")
+@DisplayName("[OAuthProfileFactory Test] - Infra layer")
 class OAuthProfileFactoryTest {
 
     private static final String GOOGLE = "google";
@@ -20,7 +20,7 @@ class OAuthProfileFactoryTest {
     private static final String NONE = "none";
 
     @Nested
-    @DisplayName("[loadOAuthProfile method]")
+    @DisplayName("[loadOAuthProfile]")
     class LoadOAuthProfileTest {
         //given
         final OAuthProfileFactory factory = new OAuthProfileFactory(
@@ -49,7 +49,7 @@ class OAuthProfileFactoryTest {
 
         @Test
         @DisplayName("Not supported type 1")
-        void failByNotSupportedType1() {
+        void failWhenPresentNotSupportedType1() {
             //when, then
             assertThatThrownBy(() -> factory.loadOAuthProfile(NONE, null))
                     .isInstanceOf(CommerceException.class)
@@ -58,7 +58,7 @@ class OAuthProfileFactoryTest {
 
         @Test
         @DisplayName("Not supported type 2")
-        void failByNotSupportedType2() {
+        void failWhenPresentNotSupportedType2() {
             //given
             OAuthProfileFactory factory = new OAuthProfileFactory(new ArrayList<>());
 

@@ -1,5 +1,6 @@
-package com.commerce.backendserver.product.domain.infra.query;
+package com.commerce.backendserver.product.infra.persistence;
 
+import com.commerce.backendserver.product.infra.persistence.ProductQueryDslRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

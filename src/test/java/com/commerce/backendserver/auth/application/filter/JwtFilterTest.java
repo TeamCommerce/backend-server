@@ -5,7 +5,7 @@ import com.commerce.backendserver.common.controller.TestController;
 import com.commerce.backendserver.global.config.SecurityConfig;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.global.exception.error.ErrorCode;
-import com.commerce.backendserver.member.domain.MemberQueryRepository;
+import com.commerce.backendserver.member.infra.persistence.MemberQueryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,9 +30,11 @@ import java.util.Optional;
 
 import static com.commerce.backendserver.auth.exception.AuthError.*;
 import static com.commerce.backendserver.common.fixture.MemberFixture.A;
-import static com.commerce.backendserver.common.utils.TokenUtils.*;
+import static com.commerce.backendserver.common.utils.TokenUtils.BEARER;
+import static com.commerce.backendserver.common.utils.TokenUtils.TOKEN;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,7 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                                 AuthenticationEntryPoint.class
                         })
         })
-@DisplayName("[JwtFilter Test] (Application layer)")
+@DisplayName("[JwtFilter Test] - Application layer")
 public class JwtFilterTest {
 
     @Autowired
@@ -70,7 +72,7 @@ public class JwtFilterTest {
         private static final String TEST_URL = "/api/test";
 
         @Test
-        @DisplayName("success")
+        @DisplayName("[Success]")
         void success() throws Exception {
             //given
             given(memberQueryRepository.findById(PAYLOAD))
@@ -90,8 +92,8 @@ public class JwtFilterTest {
         }
 
         @Test
-        @DisplayName("fail by invalid payload")
-        void failByInvalidPayload() throws Exception {
+        @DisplayName("[Fail] 적절하지 않은 페이로드가 입력되어 실패")
+        void failWhenPresentInvalidPayload() throws Exception {
             //given
             given(memberQueryRepository.findById(PAYLOAD))
                     .willReturn(Optional.empty());
@@ -108,8 +110,8 @@ public class JwtFilterTest {
         }
 
         @Test
-        @DisplayName("fail by expired token")
-        void failByExpiredToken() throws Exception {
+        @DisplayName("[Fail] 만료된 토큰이 입력되어 실패")
+        void failWhenPresentExpiredToken() throws Exception {
             //given
             doThrow(CommerceException.of(TOKEN_EXPIRED))
                     .when(jwtProvider).validateToken(TOKEN);
@@ -124,8 +126,8 @@ public class JwtFilterTest {
         }
 
         @Test
-        @DisplayName("fail by invalid token")
-        void failByInvalidToken() throws Exception {
+        @DisplayName("[Fail] 유효하지 않는 토큰이 입력되어 실패")
+        void failWhenPresentInvalidToken() throws Exception {
             //given
             doThrow(CommerceException.of(TOKEN_INVALID))
                     .when(jwtProvider).validateToken(TOKEN);
@@ -140,11 +142,11 @@ public class JwtFilterTest {
         }
 
         @Test
-        @DisplayName("fail by no authentication")
-        void failByNoAuthentication() throws Exception {
+        @DisplayName("[Fail] 인증이 없어 실패")
+        void failWhenNoAuthentication() throws Exception {
             //given
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get(TEST_URL);
+                    .get(TEST_URL);
 
             //when
             ResultActions actions = mockMvc.perform(requestBuilder);
@@ -154,12 +156,12 @@ public class JwtFilterTest {
         }
 
         @Test
-        @DisplayName("fail by not exist bearer")
-        void failByNotExistBearer() throws Exception {
+        @DisplayName("[Fail] Bearer 토큰이 존재하지 않아 실패")
+        void failWhenNotExistBearer() throws Exception {
             //given
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get(TEST_URL)
-                .header(AUTHORIZATION, TOKEN);
+                    .get(TEST_URL)
+                    .header(AUTHORIZATION, TOKEN);
 
             //when
             ResultActions actions = mockMvc.perform(requestBuilder);

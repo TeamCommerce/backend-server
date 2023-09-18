@@ -1,7 +1,13 @@
 package com.commerce.backendserver.review.integration;
 
-import static com.commerce.backendserver.common.fixture.CommonRequestFixture.*;
-import static lombok.AccessLevel.*;
+import com.commerce.backendserver.common.fixture.ReviewFixture;
+import io.restassured.RestAssured;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
+import lombok.NoArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,96 +17,89 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import com.commerce.backendserver.common.fixture.ReviewFixture;
-
-import io.restassured.RestAssured;
-import io.restassured.response.ValidatableResponse;
-import io.restassured.specification.RequestSpecification;
-import lombok.NoArgsConstructor;
+import static com.commerce.backendserver.common.fixture.CommonRequestFixture.multipartRequest;
+import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public abstract class ReviewAcceptanceFixture {
 	private static final String BASE_URL = "/api/reviews";
 
-	public static ValidatableResponse 리뷰를_등록한다(
-		final RequestSpecification spec,
-		final Set<RestDocumentationFilter> documentations,
-		final String accessToken
+	public static ValidatableResponse 리뷰_등록_성공(
+			final RequestSpecification spec,
+			final Set<RestDocumentationFilter> documentations,
+			final String accessToken
 	) {
 		return getAcceptance(
-			spec,
-			documentations,
-			accessToken,
-			params -> {}
+				spec,
+				documentations,
+				accessToken,
+				params -> {
+				}
 		);
 	}
 
-	public static ValidatableResponse 잘못된_리뷰_점수_범위로_실패한다(
-		final RequestSpecification spec,
-		final Set<RestDocumentationFilter> documentations,
-		final String accessToken
+	public static ValidatableResponse failByInvalidRangeScope(
+			final RequestSpecification spec,
+			final Set<RestDocumentationFilter> documentations,
+			final String accessToken
 	) {
 		return getAcceptance(
-			spec,
-			documentations,
-			accessToken,
-			params -> params.put("score", String.valueOf(10))
+				spec,
+				documentations,
+				accessToken,
+				params -> params.put("score", String.valueOf(10))
 		);
 	}
 
-	public static ValidatableResponse 잘못된_콘텐츠_길이로_실패한다(
-		final RequestSpecification spec,
-		final Set<RestDocumentationFilter> documentations,
-		final String accessToken
+	public static ValidatableResponse failWhenPresentInvalidContentLength(
+			final RequestSpecification spec,
+			final Set<RestDocumentationFilter> documentations,
+			final String accessToken
 	) {
 		return getAcceptance(
-			spec,
-			documentations,
-			accessToken,
-			params -> params.put("contents", "a a a")
+				spec,
+				documentations,
+				accessToken,
+				params -> params.put("contents", "a a a")
 		);
 	}
 
-	public static ValidatableResponse 잘못된_추가정보_형식으로_실패한다(
-		final RequestSpecification spec,
-		final Set<RestDocumentationFilter> documentations,
-		final String accessToken
+	public static ValidatableResponse failWhenPresentInvalidAdditionalInfoFormat(
+			final RequestSpecification spec,
+			final Set<RestDocumentationFilter> documentations,
+			final String accessToken
 	) {
 		return getAcceptance(
-			spec,
-			documentations,
-			accessToken,
-			params -> params.put("additionalInfo", "SIZE|Large")
+				spec,
+				documentations,
+				accessToken,
+				params -> params.put("additionalInfo", "SIZE|Large")
 		);
 	}
 
-	public static ValidatableResponse 존재하지_않는_추가정보_이름으로_실패한다(
-		final RequestSpecification spec,
-		final Set<RestDocumentationFilter> documentations,
-		final String accessToken
+	public static ValidatableResponse failWhenPresentNonexistenceInfoName(
+			final RequestSpecification spec,
+			final Set<RestDocumentationFilter> documentations,
+			final String accessToken
 	) {
 		return getAcceptance(
-			spec,
-			documentations,
-			accessToken,
-			params -> params.put("additionalInfo", "HELLO/Large")
+				spec,
+				documentations,
+				accessToken,
+				params -> params.put("additionalInfo", "HELLO/Large")
 		);
 	}
 
-	public static ValidatableResponse 숫자형_추가정보에_문자를_입력해_실패한다(
-		final RequestSpecification spec,
-		final Set<RestDocumentationFilter> documentations,
-		final String accessToken
+	public static ValidatableResponse failWhenPresentInvalidIntegerInfoValue(
+			final RequestSpecification spec,
+			final Set<RestDocumentationFilter> documentations,
+			final String accessToken
 	) {
 		return getAcceptance(
-			spec,
-			documentations,
-			accessToken,
-			params -> params.put("additionalInfo", "HEIGHT/172cm")
+				spec,
+				documentations,
+				accessToken,
+				params -> params.put("additionalInfo", "HEIGHT/172cm")
 		);
 	}
 

@@ -5,7 +5,7 @@ import com.commerce.backendserver.product.application.dto.ProductSingleDetailRes
 import com.commerce.backendserver.product.application.dto.ProductSingleSimpleResponse;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.ProductPriceAttribute;
-import com.commerce.backendserver.product.domain.persistence.ProductQueryRepository;
+import com.commerce.backendserver.product.infra.persistence.ProductQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

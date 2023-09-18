@@ -1,17 +1,16 @@
 package com.commerce.backendserver.review.application.utils.validator;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
-
+import com.commerce.backendserver.common.base.MockTestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import com.commerce.backendserver.common.base.MockTestBase;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
-@DisplayName("[ContentsLengthValidator Test] (Application layer)")
+@DisplayName("[ContentsLengthValidator Test] - Application layer")
 class ContentsLengthValidatorTest extends MockTestBase {
 
 	@Mock
@@ -27,11 +26,11 @@ class ContentsLengthValidatorTest extends MockTestBase {
 	}
 
 	@Nested
-	@DisplayName("[isValid method]")
+	@DisplayName("[isValid]")
 	class isValidTest {
 
 		@Test
-		@DisplayName("success")
+		@DisplayName("[success]")
 		void success() {
 			//given
 			final String contents = "hello";
@@ -44,8 +43,8 @@ class ContentsLengthValidatorTest extends MockTestBase {
 		}
 
 		@Test
-		@DisplayName("failByInvalidLength")
-		void failByInvalidLength() {
+		@DisplayName("[Fail] 유효하지 않은 길이로 실패")
+		void failWhenPresentInvalidLength() {
 			//given
 			final String invalidContents = "t e s t";
 
