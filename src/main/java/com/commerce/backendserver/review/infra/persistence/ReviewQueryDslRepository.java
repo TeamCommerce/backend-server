@@ -1,4 +1,4 @@
-package com.commerce.backendserver.review.infra.query;
+package com.commerce.backendserver.review.infra.persistence;
 
 import java.util.List;
 import java.util.Set;

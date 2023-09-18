@@ -5,7 +5,7 @@ import com.commerce.backendserver.auth.infra.jwt.JwtProvider;
 import com.commerce.backendserver.auth.infra.oauth.UserPrincipal;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.member.domain.Member;
-import com.commerce.backendserver.member.domain.MemberQueryRepository;
+import com.commerce.backendserver.member.infra.persistence.MemberQueryRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,6 +1,8 @@
 package com.commerce.backendserver.member.domain;
 
 import com.commerce.backendserver.common.base.RepositoryTestBase;
+import com.commerce.backendserver.member.infra.persistence.MemberQueryRepository;
+import com.commerce.backendserver.member.infra.persistence.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

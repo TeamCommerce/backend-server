@@ -1,4 +1,4 @@
-package com.commerce.backendserver.product.domain.persistence;
+package com.commerce.backendserver.product.infra.persistence;
 
 import org.springframework.transaction.annotation.Transactional;
 

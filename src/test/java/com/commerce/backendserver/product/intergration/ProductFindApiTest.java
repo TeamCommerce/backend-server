@@ -2,8 +2,8 @@ package com.commerce.backendserver.product.intergration;
 
 import com.commerce.backendserver.common.base.IntegrationTestBase;
 import com.commerce.backendserver.product.domain.Product;
-import com.commerce.backendserver.product.domain.persistence.ProductCommandRepository;
-import com.commerce.backendserver.product.domain.persistence.promotion.PromotionCommandRepository;
+import com.commerce.backendserver.product.infra.persistence.ProductCommandRepository;
+import com.commerce.backendserver.product.infra.persistence.promotion.PromotionCommandRepository;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;

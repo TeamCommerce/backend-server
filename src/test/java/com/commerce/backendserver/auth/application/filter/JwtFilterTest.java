@@ -5,7 +5,7 @@ import com.commerce.backendserver.common.controller.TestController;
 import com.commerce.backendserver.global.config.SecurityConfig;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.global.exception.error.ErrorCode;
-import com.commerce.backendserver.member.domain.MemberQueryRepository;
+import com.commerce.backendserver.member.infra.persistence.MemberQueryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

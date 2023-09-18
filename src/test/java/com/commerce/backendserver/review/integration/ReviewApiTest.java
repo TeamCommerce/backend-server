@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Set;
 
-import com.commerce.backendserver.product.domain.persistence.ProductCommandRepository;
-import com.commerce.backendserver.product.domain.persistence.promotion.PromotionCommandRepository;
+import com.commerce.backendserver.product.infra.persistence.ProductCommandRepository;
+import com.commerce.backendserver.product.infra.persistence.promotion.PromotionCommandRepository;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,7 +29,7 @@ import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.commerce.backendserver.common.base.IntegrationTestBase;
-import com.commerce.backendserver.member.domain.MemberRepository;
+import com.commerce.backendserver.member.infra.persistence.MemberRepository;
 
 import io.restassured.response.ValidatableResponse;
 
