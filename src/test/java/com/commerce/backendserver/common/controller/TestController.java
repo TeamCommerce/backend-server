@@ -38,9 +38,12 @@ public class TestController {
             public String getMessage() {
                 return "error";
             }
-
             public HttpStatus getStatus() {
                 return httpStatus;
+            }
+
+            public String getCode() {
+                return "errorCode";
             }
         });
     }

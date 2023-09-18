@@ -74,7 +74,8 @@ class ApiExceptionHandlerTest {
 	) throws Exception {
 		actions.andExpectAll(
 			statusMather,
-			jsonPath("$.errorMessage").value(errorMessage)
+			jsonPath("$.errorMessage").value(errorMessage),
+			jsonPath("$.errorCode").isNotEmpty()
 		);
 	}
 }

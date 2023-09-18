@@ -182,7 +182,7 @@ public class JwtFilterTest {
     ) throws Exception {
         actions.andExpectAll(
             statusMatcher,
-            jsonPath("$.errorCode").value(errorCode.getStatus().value()),
+            jsonPath("$.errorCode").value(errorCode.getCode()),
             jsonPath("$.errorMessage").value(errorCode.getMessage())
         );
     }

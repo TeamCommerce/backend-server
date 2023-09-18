@@ -10,11 +10,12 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum ImageError implements ErrorCode {
-    INVALID_IMAGE_TYPE("이미지 업로드에 실패했습니다.(type)", INTERNAL_SERVER_ERROR),
-    EMPTY_FILE("빈 파일입니다.", BAD_REQUEST),
-    UPLOAD_FAIL("이미지 업로드에 실패했습니다.", INTERNAL_SERVER_ERROR),
+    INVALID_IMAGE_TYPE("이미지 업로드에 실패했습니다.(type)", INTERNAL_SERVER_ERROR, "I_001"),
+    EMPTY_FILE("빈 파일입니다.", BAD_REQUEST, "I_002"),
+    UPLOAD_FAIL("이미지 업로드에 실패했습니다.", INTERNAL_SERVER_ERROR, "I_003"),
     ;
 
     private final String message;
     private final HttpStatus status;
+    private final String code;
 }
