@@ -2,7 +2,6 @@ package com.commerce.backendserver.product.domain;
 
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
-import com.commerce.backendserver.product.domain.promotion.PromotionDiscountAttribute;
 import com.commerce.backendserver.product.domain.promotion.constants.PromotionType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -60,7 +59,7 @@ public class ProductPriceAttribute {
     }
 
     public int getPromotionDiscountedValue() {
-        PromotionType type = this.getPromotionPriceAttribute().getType();
+        PromotionType type = this.getPromotion().getType();
         return type.getCalculator().getPromotionDiscountedAmount(this);
     }
 
@@ -75,10 +74,5 @@ public class ProductPriceAttribute {
         if (productDiscountedPrice < 0) {
             throw CommerceException.of(MINUS_APPLIED_PROMOTION_PRICE);
         }
-    }
-
-    //== Utility Method ==//
-    private PromotionDiscountAttribute getPromotionPriceAttribute() {
-        return this.getPromotion().getDiscountAttribute();
     }
 }

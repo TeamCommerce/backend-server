@@ -2,8 +2,8 @@ package com.commerce.backendserver.product.presentation;
 
 import com.commerce.backendserver.global.dto.response.ResponseWrapper;
 import com.commerce.backendserver.product.application.ProductFindService;
-import com.commerce.backendserver.product.application.dto.ProductSingleDetailResponse;
-import com.commerce.backendserver.product.application.dto.ProductSimpleResponse;
+import com.commerce.backendserver.product.application.dto.response.ProductDetailResponse;
+import com.commerce.backendserver.product.application.dto.response.ProductSimpleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,22 +20,13 @@ public class ProductSearchController {
 
     private final ProductFindService productFindService;
 
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<ProductSingleDetailResponse> findSingleDetailProduct(
-            @PathVariable Long id
-    ) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDetailResponse> findSingleProduct(@PathVariable Long id) {
         return ResponseEntity.ok(productFindService.toSingleDetailResponse(id));
     }
 
-    @GetMapping("/simple/{id}")
-    public ResponseEntity<ProductSimpleResponse> findSingleSimpleProduct(
-            @PathVariable Long id
-    ) {
-        return ResponseEntity.ok(productFindService.toSingleSimpleResponse(id));
-    }
-
     @GetMapping("/best")
-    public ResponseWrapper<ProductSimpleResponse> findBestSimpleProducts() {
+    public ResponseWrapper<ProductSimpleResponse> findBestProducts() {
         return productFindService.toBestProductsResponse();
     }
 }
