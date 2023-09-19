@@ -1,8 +1,9 @@
 package com.commerce.backendserver.product.application;
 
+import com.commerce.backendserver.global.dto.response.ResponseWrapper;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.product.application.dto.ProductSingleDetailResponse;
-import com.commerce.backendserver.product.application.dto.ProductSingleSimpleResponse;
+import com.commerce.backendserver.product.application.dto.ProductSimpleResponse;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.ProductPriceAttribute;
 import com.commerce.backendserver.product.infra.persistence.ProductQueryRepository;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.commerce.backendserver.product.application.dto.ProductResponseAssembler.toWrappedSimpleResponses;
+import static com.commerce.backendserver.product.application.dto.ProductSimpleResponse.from;
 import static com.commerce.backendserver.product.exception.ProductError.PRODUCT_NOT_FOUND;
 
 @Service
@@ -38,7 +41,7 @@ public class ProductFindService {
                         finalDiscountedPrice);
     }
 
-    public ProductSingleSimpleResponse toSingleSimpleResponse(
+    public ProductSimpleResponse toSingleSimpleResponse(
             Long id
     ) {
         Product product = productQueryRepository.findProductInfoById(id)
@@ -51,13 +54,25 @@ public class ProductFindService {
 
         String imgUrl = product.getMainImageUrl();
 
-        return ProductSingleSimpleResponse.
-                from(
-                        product,
-                        promotionDiscountedValue,
-                        finalDiscountedPrice,
-                        imgUrl,
-                        colors
-                );
+        return from(
+                product,
+                promotionDiscountedValue,
+                finalDiscountedPrice,
+                imgUrl,
+                colors
+        );
+    }
+
+    public ResponseWrapper<ProductSimpleResponse> toBestProductsResponse() {
+        List<Product> products = productQueryRepository.findBestProducts();
+        validateProducts(products);
+        return toWrappedSimpleResponses(products);
+    }
+
+    private void validateProducts(List<Product> products) {
+        if (products.isEmpty()) {
+            throw CommerceException.of(PRODUCT_NOT_FOUND);
+        }
     }
 }
+

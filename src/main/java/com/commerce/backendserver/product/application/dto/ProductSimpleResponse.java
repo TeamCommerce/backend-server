@@ -3,10 +3,13 @@ package com.commerce.backendserver.product.application.dto;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.constants.ProductBrand;
 import com.commerce.backendserver.product.domain.promotion.constants.PromotionType;
+import lombok.Builder;
 
 import java.util.List;
 
-public record ProductSingleSimpleResponse(
+import static lombok.AccessLevel.PRIVATE;
+
+public record ProductSimpleResponse(
         Long id,
         int originPrice,
         PromotionType promotionType,
@@ -17,14 +20,14 @@ public record ProductSingleSimpleResponse(
         ProductBrand brand,
         String name
 ) {
-    public static ProductSingleSimpleResponse from(
+    public static ProductSimpleResponse from(
             final Product product,
             final int discountedValue,
             final int finalDiscountedPrice,
             final String imgUrl,
             final List<String> colors
     ) {
-        return new ProductSingleSimpleResponse(
+        return new ProductSimpleResponse(
                 product.getId(),
                 product.getPriceAttribute().getOriginPrice(),
                 product.getPriceAttribute().getPromotion().getDiscountAttribute().getType(),

@@ -63,7 +63,6 @@ public class Product extends BaseEntity {
             final ProductPriceAttribute priceAttribute
     ) {
         applyImages(images);
-        List<ProductImage> images1 = this.getImages();
         applyOptions(options);
         this.images = images;
         this.options = options;
