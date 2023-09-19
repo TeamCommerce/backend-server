@@ -1,22 +1,17 @@
 package com.commerce.backendserver.product.domain.option;
 
-import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.EnumType.STRING;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Embeddable
 @NoArgsConstructor(access = PROTECTED)
-public class ProductSelectionOption {
-
-
+public class ProductAdditionalOption {
 
     @Column(
             name = "selection_option_key",
@@ -32,7 +27,7 @@ public class ProductSelectionOption {
 
     //== Constructor Method ==//
     @Builder
-    private ProductSelectionOption(
+    private ProductAdditionalOption(
             final String key,
             final String value,
             final Integer additionalFee
@@ -43,12 +38,12 @@ public class ProductSelectionOption {
     }
 
     //== Static Factory Method ==//
-    public static ProductSelectionOption of(
+    public static ProductAdditionalOption of(
             final String key,
             final String value,
             final Integer additionalFee
     ) {
-        return ProductSelectionOption.builder()
+        return ProductAdditionalOption.builder()
                 .key(key)
                 .value(value)
                 .additionalFee(additionalFee)

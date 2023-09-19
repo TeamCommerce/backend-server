@@ -1,11 +1,13 @@
 package com.commerce.backendserver.product.domain.promotion;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
+import com.commerce.backendserver.product.domain.promotion.constants.PromotionType;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -27,28 +29,37 @@ public class Promotion extends BaseEntity {
             columnDefinition = "varchar(200)")
     private String name;
 
-    @Embedded
-    private PromotionDiscountAttribute discountAttribute;
+    @Column(
+            nullable = false,
+            columnDefinition = "varchar(100)")
+    @Enumerated(value = STRING)
+    private PromotionType type;
 
+    @Column(nullable = false)
+    private Integer promotionValue;
 
     //== Constructor Method ==//
     @Builder(access = PRIVATE)
     private Promotion(
             final String name,
-            final PromotionDiscountAttribute discountAttribute
+            final PromotionType type,
+            final Integer promotionValue
     ) {
         this.name = name;
-        this.discountAttribute = discountAttribute;
+        this.type = type;
+        this.promotionValue = promotionValue;
     }
 
     //== Static Factory Method ==//
     public static Promotion of(
             final String name,
-            final PromotionDiscountAttribute discountAttribute
+            final PromotionType type,
+            final Integer promotionValue
     ) {
         return Promotion.builder()
                 .name(name)
-                .discountAttribute(discountAttribute)
+                .type(type)
+                .promotionValue(promotionValue)
                 .build();
     }
 }
