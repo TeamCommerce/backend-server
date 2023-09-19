@@ -31,15 +31,13 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 @DisplayName("[ProductFindApi Test] - Integration")
 class ProductFindApiTest extends IntegrationTestBase {
 
-    @Autowired
-    private ProductCommandRepository productCommandRepository;
-
-    @Autowired
-    private PromotionCommandRepository promotionCommandRepository;
-
     Long id;
     Product savedProduct;
     Promotion savedPromotion;
+    @Autowired
+    private ProductCommandRepository productCommandRepository;
+    @Autowired
+    private PromotionCommandRepository promotionCommandRepository;
 
     @BeforeEach
     void setUp() {
@@ -52,22 +50,9 @@ class ProductFindApiTest extends IntegrationTestBase {
     @DisplayName("[findSingleProduct]")
     class 단일_상품_상세조회 {
 
-        private static ResourceSnippetParametersBuilder swaggerDescriptionWithResponseSchema(
-                String ResponseSchema
-        ) {
-            return ResourceSnippetParameters.builder()
-                    .tag("SingleProduct - 단일 상품 관련 API")
-                    .summary("단일 상품 상세 조회 API - @h.beeen")
-                    .links()
-                    .description("상품 ID를 활용해 기본 정보(메인페이지 필요 정보)를 조회하는 API")
-                    .requestSchema(schema("[FindSingleProduct] Request - GET"))
-                    .responseSchema(schema(ResponseSchema));
-        }
-
         private static final Snippet PATH_PARAMETERS = pathParameters(
                 parameterWithName("id").description("조회할 상품 ID")
         );
-
         private static final Snippet RESPONSE_FIELDS = responseFields(
                 fieldWithPath("product.id").description("상품 ID"),
                 fieldWithPath("product.name").description("상품 이름"),
@@ -93,12 +78,23 @@ class ProductFindApiTest extends IntegrationTestBase {
                 fieldWithPath("options[].additionalOption.value").description("추가 옵션 값"),
                 fieldWithPath("options[].additionalOption.additionalFee").description("추가 옵션 추가 비용")
         );
-
         private static final Snippet ERROR_RESPONSE = responseFields(
                 fieldWithPath("timeStamp").description("에러 발생 시간"),
                 fieldWithPath("errorCode").description("발생 에러 httpStatus"),
                 fieldWithPath("errorMessage").description("에러 메세지")
         );
+
+        private static ResourceSnippetParametersBuilder swaggerDescriptionWithResponseSchema(
+                String ResponseSchema
+        ) {
+            return ResourceSnippetParameters.builder()
+                    .tag("SingleProduct - 단일 상품 관련 API")
+                    .summary("단일 상품 상세 조회 API - @h.beeen")
+                    .links()
+                    .description("상품 ID를 활용해 기본 정보(메인페이지 필요 정보)를 조회하는 API")
+                    .requestSchema(schema("[FindSingleProduct] Request - GET"))
+                    .responseSchema(schema(ResponseSchema));
+        }
 
         @Test
         @DisplayName("[Success]")

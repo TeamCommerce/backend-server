@@ -1,8 +1,8 @@
 package com.commerce.backendserver.product.fixture;
 
-import com.commerce.backendserver.product.domain.option.ProductOption;
 import com.commerce.backendserver.product.domain.option.ProductAdditionalOption;
 import com.commerce.backendserver.product.domain.option.ProductColor;
+import com.commerce.backendserver.product.domain.option.ProductOption;
 import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.product.domain.option.constants.ProductStatus;
 import lombok.Getter;

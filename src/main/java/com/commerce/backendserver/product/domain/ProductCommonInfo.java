@@ -44,7 +44,7 @@ public class ProductCommonInfo {
 
     @Column(name = "best", columnDefinition = "varchar(1) default 'F'")
     @Enumerated(EnumType.STRING)
-    private BestProduct best = BestProduct.F;
+    private final BestProduct best = BestProduct.F;
 
     //== Constructor Method ==//
     @Builder(access = PRIVATE)
