@@ -34,11 +34,11 @@ public enum PromotionFixture {
 
     private final String name;
     private final PromotionType type;
-    private final Integer discountAmount;
+    private final Integer promotionValue;
 
     public Promotion toEntity() {
         return Promotion.of(
                 name,
-                PromotionDiscountAttribute.of(type, discountAmount));
+                PromotionDiscountAttribute.of(type, promotionValue));
     }
 }
