@@ -14,12 +14,12 @@ import static lombok.AccessLevel.PROTECTED;
 public class ProductAdditionalOption {
 
     @Column(
-            name = "selection_option_key",
+            name = "additional_option_key",
             columnDefinition = "varchar(30)")
     private String key;
 
     @Column(
-            name = "selection_option_value",
+            name = "additional_option_value",
             columnDefinition = "varchar(30)")
     private String value;
 

@@ -1,7 +1,6 @@
 package com.commerce.backendserver.product.fixture;
 
 import com.commerce.backendserver.product.domain.promotion.Promotion;
-import com.commerce.backendserver.product.domain.promotion.PromotionDiscountAttribute;
 import com.commerce.backendserver.product.domain.promotion.constants.PromotionType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +36,6 @@ public enum PromotionFixture {
     private final Integer promotionValue;
 
     public Promotion toEntity() {
-        return Promotion.of(
-                name,
-                PromotionDiscountAttribute.of(type, promotionValue));
+        return Promotion.of(name, type, promotionValue);
     }
 }
