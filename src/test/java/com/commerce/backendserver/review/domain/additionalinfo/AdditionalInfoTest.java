@@ -33,7 +33,7 @@ public class AdditionalInfoTest {
 	@DisplayName("[registerReview method]")
 	void registerReview() {
 		//given
-		final Review review = A.toEntity(null, null);
+		final Review review = A.toEntity(null, null, null);
 		final AdditionalInfo additionalInfo = AdditionalInfo.of(InfoName.SIZE, "Large");
 
 		//when

@@ -1,4 +1,4 @@
-package com.commerce.backendserver.review.infra;
+package com.commerce.backendserver.review.infra.persistence;
 
 import com.commerce.backendserver.review.domain.Review;
 import org.springframework.data.jpa.repository.JpaRepository;

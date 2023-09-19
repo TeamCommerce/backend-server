@@ -18,7 +18,7 @@ class ReviewImageTest {
 	void ofTest() {
 		//given
 		Product product = ProductFixture.VALID_PRODUCT.toEntity(null);
-		Review review = ReviewFixture.A.toEntity(product, 1L);
+		Review review = ReviewFixture.A.toEntity(product, 1L, 1L);
 
 		final String url = "testUrl.jpg";
 
