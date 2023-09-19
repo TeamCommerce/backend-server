@@ -6,8 +6,10 @@ import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.infra.persistence.ProductQueryRepository;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.infra.ReviewRepository;
+import com.commerce.backendserver.review.infra.persistence.ReviewRepository;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,28 +22,29 @@ import static com.commerce.backendserver.global.exception.error.GlobalError.GLOB
 @Transactional
 public class ReviewService {
 
-    private static final String REVIEW = "review";
+	private static final String REVIEW = "review";
 
-    private final ReviewRepository reviewRepository;
-    private final ImageService imageService;
-    private final ProductQueryRepository productQueryRepository;
+	private final ReviewRepository reviewRepository;
+	private final ImageService imageService;
+	private final ProductQueryRepository productQueryRepository;
 
-    public Long createReview(CreateReviewRequest request, Long writerId) {
+	public Long createReview(CreateReviewRequest request, Long writerId) {
 
-        List<String> imageUrls = imageService.uploadImages(request.files(), REVIEW);
+		List<String> imageUrls = imageService.uploadImages(request.files(), REVIEW);
 
-        Product product = productQueryRepository.findById(request.productId())
-                .orElseThrow(() -> CommerceException.of(GLOBAL_NOT_FOUND));
+		Product product = productQueryRepository.findById(request.productId())
+			.orElseThrow(() -> CommerceException.of(GLOBAL_NOT_FOUND));
 
-        Review review = Review.createReview(
-                request.contents(),
-                request.score(),
-                request.additionalInfo(),
-                product,
-                writerId,
-                imageUrls
-        );
+		Review review = Review.createReview(
+			request.contents(),
+			request.score(),
+			request.additionalInfo(),
+			product,
+			request.productId(),
+			writerId,
+			imageUrls
+		);
 
-        return reviewRepository.save(review).getId();
-    }
+		return reviewRepository.save(review).getId();
+	}
 }

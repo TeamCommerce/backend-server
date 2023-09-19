@@ -18,6 +18,8 @@ public record CreateReviewRequest(
 
 	Long productId,
 
+	Long productOptionId,
+
 	@ValidAdditionalInfo
 	Set<String> additionalInfo,
 

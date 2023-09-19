@@ -48,6 +48,8 @@ public class Review extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     private Product product;
 
+    private Long productOptionId;
+
     private Long writerId;
 
     @OneToMany(
@@ -64,6 +66,7 @@ public class Review extends BaseEntity {
         final Integer score,
         final Set<String> stringInfoSet,
         final Product product,
+        final Long productOptionId,
         final Long writerId,
         final List<String> imageUrls
     ) {
@@ -71,6 +74,7 @@ public class Review extends BaseEntity {
         this.score = score;
         this.additionalInfoList = AdditionalInfoList.of(stringInfoSet, this);
         this.product = product;
+        this.productOptionId = productOptionId;
         this.writerId = writerId;
         applyImages(imageUrls);
     }
@@ -91,6 +95,7 @@ public class Review extends BaseEntity {
         final Integer score,
         final Set<String> stringInfoSet,
         final Product product,
+        final Long productOptionId,
         final Long writerId,
         final List<String> imageUrls
     ) {
@@ -99,6 +104,7 @@ public class Review extends BaseEntity {
             .score(score)
             .stringInfoSet(stringInfoSet)
             .product(product)
+            .productOptionId(productOptionId)
             .writerId(writerId)
             .imageUrls(imageUrls)
             .build();

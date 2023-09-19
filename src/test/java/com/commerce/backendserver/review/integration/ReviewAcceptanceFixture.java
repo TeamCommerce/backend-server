@@ -150,6 +150,7 @@ public abstract class ReviewAcceptanceFixture {
 		params.put("contents", fixture.getContents());
 		params.put("score", String.valueOf(fixture.getScore()));
 		params.put("productId", String.valueOf(1L));
+		params.put("productOptionId", String.valueOf(1L));
 		fixture.getStringInfoSet().forEach(info -> params.put("additionalInfo", info));
 
 		return params;
