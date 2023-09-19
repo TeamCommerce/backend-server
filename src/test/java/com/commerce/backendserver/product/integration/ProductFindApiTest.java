@@ -159,7 +159,7 @@ class ProductFindApiTest extends IntegrationTestBase {
         }
 
         @Test
-        @DisplayName("[Fail] 비정상 정액 프로모션(discountedAmount 음수")
+        @DisplayName("[Fail] 비정상 정액 프로모션(discountedAmount 음수)")
         void 정액_할인_프로모션_값이_음수면_실패() {
             //given
             Promotion minusPromotion = promotionCommandRepository.save(MINUS_FIX_PROMOTION.toEntity());
