@@ -29,6 +29,7 @@ class AdditionalInfoListTest {
 			null,
 			null,
 			null,
+			null,
 			null);
 
 		@Test

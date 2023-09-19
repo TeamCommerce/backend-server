@@ -28,12 +28,13 @@ public enum ReviewFixture {
 	private final Set<String> stringInfoSet;
 	private final List<String> imageUrls;
 
-	public Review toEntity(Product product, Long writerId) {
+	public Review toEntity(Product product, Long writerId, Long productOptionId) {
 		return Review.createReview(
 			contents,
 			score,
 			stringInfoSet,
 			product,
+			productOptionId,
 			writerId,
 			imageUrls
 		);
@@ -43,6 +44,7 @@ public enum ReviewFixture {
 		return new CreateReviewRequest(
 			score,
 			contents,
+			1L,
 			1L,
 			stringInfoSet,
 			FileMockingUtils.createMockMultipartFiles()

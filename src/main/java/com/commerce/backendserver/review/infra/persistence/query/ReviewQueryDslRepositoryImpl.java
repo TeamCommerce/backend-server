@@ -1,4 +1,4 @@
-package com.commerce.backendserver.review.infra.persistence;
+package com.commerce.backendserver.review.infra.persistence.query;
 
 import static com.commerce.backendserver.review.domain.QReview.*;
 import static com.commerce.backendserver.review.domain.additionalinfo.QAdditionalInfo.*;
