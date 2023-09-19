@@ -100,7 +100,10 @@ class ProductQueryRepositoryTest extends RepositoryTestBase {
 			});
 	}
 
-	private void assertProductCommonInfoMatching(ProductCommonInfo actual, ProductCommonInfo expected) {
+	private void assertProductCommonInfoMatching(
+		final ProductCommonInfo actual,
+		final ProductCommonInfo expected
+	) {
 		assertAll(
 			() -> assertThat(actual.getDescription()).isEqualTo(expected.getDescription()),
 			() -> assertThat(actual.getName()).isEqualTo(expected.getName()),
@@ -109,7 +112,10 @@ class ProductQueryRepositoryTest extends RepositoryTestBase {
 		);
 	}
 
-	private void assertProductPriceAttributeMatching(ProductPriceAttribute actual, ProductPriceAttribute expected) {
+	private void assertProductPriceAttributeMatching(
+		final ProductPriceAttribute actual,
+		final ProductPriceAttribute expected
+	) {
 		assertAll(
 			() -> assertThat(actual.getOriginPrice()).isEqualTo(expected.getOriginPrice()),
 			() -> assertPromotionMatching(actual.getPromotion(), expected.getPromotion()),
@@ -118,7 +124,7 @@ class ProductQueryRepositoryTest extends RepositoryTestBase {
 		);
 	}
 
-	private void assertPromotionMatching(Promotion actual, Promotion expected) {
+	private void assertPromotionMatching(final Promotion actual, final Promotion expected) {
 		assertAll(
 			() -> assertThat(actual.getDiscountAttribute().getDiscountAmount())
 				.isEqualTo(expected.getDiscountAttribute().getDiscountAmount()),
