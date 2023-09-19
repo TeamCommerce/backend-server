@@ -69,34 +69,29 @@ class ProductFindApiTest extends IntegrationTestBase {
         );
 
         private static final Snippet RESPONSE_FIELDS = responseFields(
-                fieldWithPath("id").description("상품 ID"),
-                fieldWithPath("originPrice").description("상품 원가"),
-                fieldWithPath("promotionType").description("프로모션 타입 [Key]"),
-                fieldWithPath("productName").description("상품 이름"),
-                fieldWithPath("productBrand").description("상품 브랜드"),
-                fieldWithPath("promotionValue").description("프로모션 값 [Value]"),
-                fieldWithPath("promotionDiscountedAmount").description("프로모션 할인 금액"),
-                fieldWithPath("appliedPromotionPrice").description("프로모션 적용 후 할인가"),
-                fieldWithPath("images").description("이미지 URL 목록").type(ARRAY),
-                fieldWithPath("options").description("옵션 목록").type(ARRAY),
+                fieldWithPath("product.id").description("상품 ID"),
+                fieldWithPath("product.name").description("상품 이름"),
+                fieldWithPath("product.brand").description("상품 브랜드"),
+                fieldWithPath("product.description").description("상품 설명"),
+                fieldWithPath("product.originPrice").description("상품 정상가"),
+                fieldWithPath("product.promotionType").description("프로모션 타입"),
+                fieldWithPath("product.promotionValue").description("프로모션 값"),
+                fieldWithPath("product.finalPrice").description("상품 최종 판매가"),
+                fieldWithPath("product.colors").description("상품 색상코드 리스트").type(ARRAY),
 
-                // options 배열 안의 객체 필드
+                fieldWithPath("images").description("이미지 URL 목록").type(ARRAY),
+
                 fieldWithPath("options[].optionId").description("옵션 ID"),
                 fieldWithPath("options[].color").description("색상 정보").type(OBJECT),
-                fieldWithPath("options[].selectionOption").description("선택 옵션 정보").type(OBJECT),
+                fieldWithPath("options[].color.colorCode").description("색상 코드"),
+                fieldWithPath("options[].color.korColorName").description("한글 색상 이름"),
+                fieldWithPath("options[].color.engColorName").description("영어 색상 이름"),
                 fieldWithPath("options[].inventory").description("재고"),
                 fieldWithPath("options[].status").description("상태"),
                 fieldWithPath("options[].size").description("사이즈"),
-
-                // color 객체 필드
-                fieldWithPath("options[].color.colorCode").description("색상 코드"),
-                fieldWithPath("options[].color.korColorName").description("한국어 색상 이름"),
-                fieldWithPath("options[].color.engColorName").description("영어 색상 이름"),
-
-                // selectionOption 객체 필드
-                fieldWithPath("options[].selectionOption.key").description("키"),
-                fieldWithPath("options[].selectionOption.value").description("값"),
-                fieldWithPath("options[].selectionOption.additionalFee").description("추가 비용")
+                fieldWithPath("options[].additionalOption.key").description("추가 옵션 키"),
+                fieldWithPath("options[].additionalOption.value").description("추가 옵션 값"),
+                fieldWithPath("options[].additionalOption.additionalFee").description("추가 옵션 추가 비용")
         );
 
         private static final Snippet ERROR_RESPONSE = responseFields(
@@ -117,7 +112,7 @@ class ProductFindApiTest extends IntegrationTestBase {
                     .log().all()
 
                     .when().log().all()
-                    .get("/api/products/detail/{id}", savedProduct.getId())
+                    .get("/api/products/{id}", savedProduct.getId())
 
                     .then().log().all()
                     .statusCode(OK.value())
@@ -136,7 +131,7 @@ class ProductFindApiTest extends IntegrationTestBase {
                     .log().all()
 
                     .when().log().all()
-                    .get("/api/products/detail/{id}", -2147483648)
+                    .get("/api/products/{id}", -2147483648)
 
                     .then().log().all()
                     .statusCode(NOT_FOUND.value())
@@ -160,7 +155,7 @@ class ProductFindApiTest extends IntegrationTestBase {
                     .log().all()
 
                     .when().log().all()
-                    .get("/api/products/detail/{id}", minusPriceProduct.getId())
+                    .get("/api/products/{id}", minusPriceProduct.getId())
 
                     .then().log().all()
                     .statusCode(BAD_REQUEST.value())
@@ -185,7 +180,7 @@ class ProductFindApiTest extends IntegrationTestBase {
 
 
                     .when().log().all()
-                    .get("/api/products/detail/{id}", product.getId())
+                    .get("/api/products/{id}", product.getId())
 
                     .then().log().all()
                     .statusCode(BAD_REQUEST.value())
