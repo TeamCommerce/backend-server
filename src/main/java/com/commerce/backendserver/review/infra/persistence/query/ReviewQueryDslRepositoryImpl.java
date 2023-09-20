@@ -1,9 +1,8 @@
 package com.commerce.backendserver.review.infra.persistence.query;
 
+import static com.commerce.backendserver.product.domain.option.QProductOption.*;
 import static com.commerce.backendserver.review.domain.QReview.*;
 import static com.commerce.backendserver.review.domain.additionalinfo.QAdditionalInfo.*;
-import static com.commerce.backendserver.product.domain.option.QProductOption.*;
-import static com.commerce.backendserver.product.domain.QProduct.*;
 
 import java.util.List;
 import java.util.Set;
@@ -33,7 +32,7 @@ public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 			.from(review)
 			.leftJoin(review.product)
 			.fetchJoin()
-			.leftJoin(product.options).on(product.id.eq(productOption.product.id))
+			.leftJoin(productOption).on(review.productOptionId.eq(productOption.id))
 			.where(
 				engColorNameIn(engColorNames),
 				sizeIn(sizes),
