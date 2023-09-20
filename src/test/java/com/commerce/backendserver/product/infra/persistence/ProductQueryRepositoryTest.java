@@ -92,8 +92,8 @@ class ProductQueryRepositoryTest extends RepositoryTestBase {
 				assertAll(
 					() -> assertThat(actualOption.getId()).isEqualTo(expectedOption.getId()),
 					() -> assertThat(actualOption.getInventory()).isEqualTo(expectedOption.getInventory()),
-					() -> assertThat(actualOption.getSelectionOption().getAdditionalFee())
-						.isEqualTo(expectedOption.getSelectionOption().getAdditionalFee()),
+					() -> assertThat(actualOption.getAdditionalOption().getAdditionalFee())
+						.isEqualTo(expectedOption.getAdditionalOption().getAdditionalFee()),
 					() -> assertThat(actualOption.getColor()).isEqualTo(expectedOption.getColor()),
 					() -> assertThat(actualOption.getSize()).isEqualTo(expectedOption.getSize())
 				);
@@ -126,10 +126,10 @@ class ProductQueryRepositoryTest extends RepositoryTestBase {
 
 	private void assertPromotionMatching(final Promotion actual, final Promotion expected) {
 		assertAll(
-			() -> assertThat(actual.getDiscountAttribute().getDiscountAmount())
-				.isEqualTo(expected.getDiscountAttribute().getDiscountAmount()),
-			() -> assertThat(actual.getDiscountAttribute().getType())
-				.isEqualTo(expected.getDiscountAttribute().getType()),
+			() -> assertThat(actual.getPromotionValue())
+				.isEqualTo(expected.getPromotionValue()),
+			() -> assertThat(actual.getPromotionValue())
+				.isEqualTo(expected.getPromotionValue()),
 			() -> assertThat(actual.getName()).isEqualTo(expected.getName())
 		);
 	}
