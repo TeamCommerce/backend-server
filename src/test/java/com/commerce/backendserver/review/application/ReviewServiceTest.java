@@ -63,7 +63,7 @@ class ReviewServiceTest extends MockTestBase {
         @DisplayName("[success]")
         void success() {
             //given
-            given(productQueryRepository.findWithOptionsById(1L))
+            given(productQueryRepository.findDistinctWithOptionsById(1L))
                 .willReturn(generateProductOf(
                     product -> setProductOptionsId(product.getOptions(), request.productOptionId()))
                 );
@@ -82,7 +82,7 @@ class ReviewServiceTest extends MockTestBase {
         @DisplayName("[Fail] 해당 Id의 상품이 존재하지 않아 실패")
         void failWhenProductNotFound() {
             //given
-            given(productQueryRepository.findWithOptionsById(1L))
+            given(productQueryRepository.findDistinctWithOptionsById(1L))
                 .willReturn(generateProductEmpty());
 
             //when, then
@@ -96,7 +96,7 @@ class ReviewServiceTest extends MockTestBase {
         void failWhenNoProductOptionIdInProduct() {
             //given
             final Long invalidProductOptionId = 1000L;
-            given(productQueryRepository.findWithOptionsById(1L))
+            given(productQueryRepository.findDistinctWithOptionsById(1L))
                 .willReturn(generateProductOf(
                     product -> setProductOptionsId(product.getOptions(), invalidProductOptionId))
                 );

@@ -19,5 +19,5 @@ public interface ProductQueryRepository extends ProductJpaRepository, ProductQue
     Optional<Product> findProductInfoById(@Param("id") Long id);
 
     @EntityGraph(attributePaths = "options")
-    Optional<Product> findWithOptionsById(Long id);
+    Optional<Product> findDistinctWithOptionsById(Long id);
 }

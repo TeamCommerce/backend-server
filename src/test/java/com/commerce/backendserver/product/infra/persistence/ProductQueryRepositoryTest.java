@@ -44,7 +44,7 @@ class ProductQueryRepositoryTest extends RepositoryTestBase {
 			Product expected = productQueryRepository.save(VALID_PRODUCT.toEntity(promotion));
 
 			//when
-			Optional<Product> result = productQueryRepository.findWithOptionsById(expected.getId());
+			Optional<Product> result = productQueryRepository.findDistinctWithOptionsById(expected.getId());
 
 			//then
 			assertThat(result).isPresent();
@@ -62,7 +62,7 @@ class ProductQueryRepositoryTest extends RepositoryTestBase {
 		@DisplayName("[Fail] 해당 id 에 맞는 상품이 없을 경우 null optional 을 리턴한다")
 		void failWhenNoProductHasInputId() {
 			//when
-			Optional<Product> result = productQueryRepository.findWithOptionsById(1L);
+			Optional<Product> result = productQueryRepository.findDistinctWithOptionsById(1L);
 
 			//then
 			assertThat(result).isEmpty();

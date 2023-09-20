@@ -34,7 +34,7 @@ public class ReviewService {
 
 		List<String> imageUrls = imageService.uploadImages(request.files(), REVIEW);
 
-		Product product = productQueryRepository.findWithOptionsById(request.productId())
+		Product product = productQueryRepository.findDistinctWithOptionsById(request.productId())
 			.orElseThrow(() -> CommerceException.of(GLOBAL_NOT_FOUND));
 
 		checkMatchingProductOptionIdToProduct(request.productOptionId(), product.getOptions());
