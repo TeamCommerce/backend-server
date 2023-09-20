@@ -3,6 +3,7 @@ package com.commerce.backendserver.product.application;
 import com.commerce.backendserver.global.dto.response.ResponseWrapper;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.product.application.dto.response.ProductDetailResponse;
+import com.commerce.backendserver.product.application.dto.response.ProductResponseAssembler;
 import com.commerce.backendserver.product.application.dto.response.ProductSimpleResponse;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.infra.persistence.ProductQueryRepository;
@@ -12,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.commerce.backendserver.product.application.dto.response.ProductResponseAssembler.toProductSimpleResponseList;
 import static com.commerce.backendserver.product.exception.ProductError.PRODUCT_NOT_FOUND;
 
 @Service
@@ -26,14 +26,14 @@ public class ProductFindService {
         Product product = productQueryRepository.findProductInfoById(id)
                 .orElseThrow(() -> CommerceException.of(PRODUCT_NOT_FOUND));
 
-        return ProductDetailResponse.from(product);
+        return ProductResponseAssembler.transferToDetailResponse(product);
     }
 
     public ResponseWrapper<ProductSimpleResponse> toBestProductsResponse() {
         List<Product> bestProducts = productQueryRepository.findBestProducts();
         validateProducts(bestProducts);
 
-        return toProductSimpleResponseList(bestProducts);
+        return ProductResponseAssembler.wrapSimpleResponses(bestProducts);
     }
 
     //== Validation Method ==//

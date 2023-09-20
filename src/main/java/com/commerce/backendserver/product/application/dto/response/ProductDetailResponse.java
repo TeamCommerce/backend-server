@@ -1,20 +1,22 @@
 package com.commerce.backendserver.product.application.dto.response;
 
-import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.product.domain.constants.ProductBrand;
+import com.commerce.backendserver.product.domain.promotion.constants.PromotionType;
 
 import java.util.List;
 
 public record ProductDetailResponse(
-        ProductCommonResponse product,
-        List<String> images,
+        Long id,
+        String name,
+        ProductBrand brand,
+        String description,
+        Integer originPrice,
+        PromotionType promotionType,
+        Integer promotionValue,
+        Integer finalPrice,
+        List<String> colors,
+        String mainImage,
+        List<String> specificImages,
         List<ProductOptionResponse> options
 ) {
-    public static ProductDetailResponse from(
-            final Product product
-    ) {
-        return new ProductDetailResponse(
-                ProductCommonResponse.from(product),
-                ProductResponseAssembler.toImageResponseList(product.getImages()),
-                ProductOptionResponse.toOptionResponseList(product.getOptions()));
-    }
 }
