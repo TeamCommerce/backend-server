@@ -15,13 +15,27 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ReviewFixture {
+
 	A(
 		"contentsA",
 		3,
 		Set.of("HEIGHT/172", "SIZE/Large"),
 		List.of("helloA.jpg", "helloB.png")
 	),
-	;
+
+	B(
+		"contentsB",
+		4,
+		Set.of("HEIGHT/172", "SIZE/Medium", "WEIGHT/60"),
+		List.of("helloA.jpg", "helloB.png")
+	),
+
+	C(
+		"contentsC",
+		2,
+		Set.of("HEIGHT/156", "SIZE/SMALL", "WEIGHT/40"),
+		List.of("helloA.jpg", "helloB.png")
+	);
 
 	private final String contents;
 	private final Integer score;
