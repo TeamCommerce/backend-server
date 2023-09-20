@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public enum BestProduct {
     T,
-    F;
+    F
 }
