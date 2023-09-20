@@ -33,12 +33,14 @@ public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 			.leftJoin(review.product)
 			.fetchJoin()
 			.leftJoin(productOption).on(review.productOptionId.eq(productOption.id))
+			.leftJoin(additionalInfo).on(additionalInfo.review.id.eq(review.id))
 			.where(
 				engColorNameIn(engColorNames),
 				sizeIn(sizes),
 				selectionOptionIn(selectionOptionValues),
 				scoreIn(scores),
 				additionalInfoIn(additionalInfoValues))
+			.groupBy(review.id)
 			.fetch();
 
 	}
