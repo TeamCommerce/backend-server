@@ -39,7 +39,6 @@ public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 				selectionOptionIn(selectionOptionValues),
 				scoreIn(scores),
 				additionalInfoIn(additionalInfoValues))
-			.groupBy(review.id)
 			.fetch();
 
 	}
