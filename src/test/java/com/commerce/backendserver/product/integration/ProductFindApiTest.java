@@ -54,17 +54,18 @@ class ProductFindApiTest extends IntegrationTestBase {
                 parameterWithName("id").description("조회할 상품 ID")
         );
         private static final Snippet RESPONSE_FIELDS = responseFields(
-                fieldWithPath("product.id").description("상품 ID"),
-                fieldWithPath("product.name").description("상품 이름"),
-                fieldWithPath("product.brand").description("상품 브랜드"),
-                fieldWithPath("product.description").description("상품 설명"),
-                fieldWithPath("product.originPrice").description("상품 정상가"),
-                fieldWithPath("product.promotionType").description("프로모션 타입"),
-                fieldWithPath("product.promotionValue").description("프로모션 값"),
-                fieldWithPath("product.finalPrice").description("상품 최종 판매가"),
-                fieldWithPath("product.colors").description("상품 색상코드 리스트").type(ARRAY),
+                fieldWithPath("id").description("상품 ID"),
+                fieldWithPath("name").description("상품 이름"),
+                fieldWithPath("brand").description("상품 브랜드"),
+                fieldWithPath("description").description("상품 설명"),
+                fieldWithPath("originPrice").description("상품 정상가"),
+                fieldWithPath("promotionType").description("프로모션 타입"),
+                fieldWithPath("promotionValue").description("프로모션 값"),
+                fieldWithPath("finalPrice").description("상품 최종 판매가"),
+                fieldWithPath("colors").description("상품 색상코드 리스트").type(ARRAY),
 
-                fieldWithPath("images").description("이미지 URL 목록").type(ARRAY),
+                fieldWithPath("mainImage").description("상품 메인 이미지"),
+                fieldWithPath("specificImages").description("상품 세부 정보 이미지 URL 목록").type(ARRAY),
 
                 fieldWithPath("options[].optionId").description("옵션 ID"),
                 fieldWithPath("options[].color").description("색상 정보").type(OBJECT),
