@@ -1,4 +1,4 @@
-package com.commerce.backendserver.product.domain.option.constants;
+package com.commerce.backendserver.product.domain.option;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -11,8 +11,8 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Embeddable
-@Builder(access = PRIVATE)
 @AllArgsConstructor
+@Builder(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
 public class ProductColor {
 

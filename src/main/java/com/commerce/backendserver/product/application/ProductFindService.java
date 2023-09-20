@@ -1,10 +1,11 @@
 package com.commerce.backendserver.product.application;
 
+import com.commerce.backendserver.global.dto.response.ResponseWrapper;
 import com.commerce.backendserver.global.exception.CommerceException;
-import com.commerce.backendserver.product.application.dto.ProductSingleDetailResponse;
-import com.commerce.backendserver.product.application.dto.ProductSingleSimpleResponse;
+import com.commerce.backendserver.product.application.dto.response.ProductDetailResponse;
+import com.commerce.backendserver.product.application.dto.response.ProductResponseAssembler;
+import com.commerce.backendserver.product.application.dto.response.ProductSimpleResponse;
 import com.commerce.backendserver.product.domain.Product;
-import com.commerce.backendserver.product.domain.ProductPriceAttribute;
 import com.commerce.backendserver.product.infra.persistence.ProductQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,43 +22,25 @@ public class ProductFindService {
 
     private final ProductQueryRepository productQueryRepository;
 
-    public ProductSingleDetailResponse toSingleDetailResponse(
-            Long id
-    ) {
+    public ProductDetailResponse toSingleDetailResponse(Long id) {
         Product product = productQueryRepository.findProductInfoById(id)
                 .orElseThrow(() -> CommerceException.of(PRODUCT_NOT_FOUND));
 
-        ProductPriceAttribute priceAttribute = product.getPriceAttribute();
-        int promotionDiscountedValue = priceAttribute.getPromotionDiscountedValue();
-        int finalDiscountedPrice = priceAttribute.applyPromotionDiscount();
-
-        return ProductSingleDetailResponse.
-                from(
-                        product,
-                        promotionDiscountedValue,
-                        finalDiscountedPrice);
+        return ProductResponseAssembler.transferToDetailResponse(product);
     }
 
-    public ProductSingleSimpleResponse toSingleSimpleResponse(
-            Long id
-    ) {
-        Product product = productQueryRepository.findProductInfoById(id)
-                .orElseThrow(() -> CommerceException.of(PRODUCT_NOT_FOUND));
+    public ResponseWrapper<ProductSimpleResponse> toBestProductsResponse() {
+        List<Product> bestProducts = productQueryRepository.findBestProducts();
+        validateProducts(bestProducts);
 
-        ProductPriceAttribute priceAttribute = product.getPriceAttribute();
-        int promotionDiscountedValue = priceAttribute.getPromotionDiscountedValue();
-        int finalDiscountedPrice = priceAttribute.applyPromotionDiscount();
-        List<String> colors = product.getDistinctColors();
+        return ProductResponseAssembler.wrapSimpleResponses(bestProducts);
+    }
 
-        String imgUrl = product.getMainImageUrl();
-
-        return ProductSingleSimpleResponse.
-                from(
-                        product,
-                        promotionDiscountedValue,
-                        finalDiscountedPrice,
-                        imgUrl,
-                        colors
-                );
+    //== Validation Method ==//
+    private void validateProducts(List<Product> products) {
+        if (products.isEmpty()) {
+            throw CommerceException.of(PRODUCT_NOT_FOUND);
+        }
     }
 }
+
