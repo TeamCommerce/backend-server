@@ -1,19 +1,18 @@
 package com.commerce.backendserver.review.infra.persistence.query;
 
-import static com.commerce.backendserver.review.domain.QReview.*;
-import static com.commerce.backendserver.review.domain.additionalinfo.QAdditionalInfo.*;
-import static com.commerce.backendserver.product.domain.option.QProductOption.*;
-import static com.commerce.backendserver.product.domain.QProduct.*;
-
-import java.util.List;
-import java.util.Set;
-
 import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.review.domain.Review;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+import java.util.Set;
+
+import static com.commerce.backendserver.product.domain.QProduct.product;
+import static com.commerce.backendserver.product.domain.option.QProductOption.productOption;
+import static com.commerce.backendserver.review.domain.QReview.review;
+import static com.commerce.backendserver.review.domain.additionalinfo.QAdditionalInfo.additionalInfo;
 
 @RequiredArgsConstructor
 public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
@@ -24,7 +23,7 @@ public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 	public List<Review> findReviewByStatisticCondition(
 		Set<String> engColorNames,
 		Set<ProductSize> sizes,
-		Set<String> selectionOptionValues,
+		Set<String> additionalOptions,
 		Set<Integer> scores,
 		Set<String> additionalInfoValues
 	) {
@@ -37,7 +36,7 @@ public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 			.where(
 				engColorNameIn(engColorNames),
 				sizeIn(sizes),
-				selectionOptionIn(selectionOptionValues),
+				additionalOptionIn(additionalOptions),
 				scoreIn(scores),
 				additionalInfoIn(additionalInfoValues))
 			.groupBy(review.id)
@@ -57,9 +56,9 @@ public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 		return null;
 	}
 
-	private BooleanExpression selectionOptionIn(Set<String> selectionOptionValues) {
-		if (selectionOptionValues != null)
-			return productOption.selectionOption.value.in(selectionOptionValues);
+	private BooleanExpression additionalOptionIn(Set<String> additionalOptionValues) {
+		if (additionalOptionValues != null)
+			return productOption.additionalOption.value.in(additionalOptionValues);
 		return null;
 	}
 

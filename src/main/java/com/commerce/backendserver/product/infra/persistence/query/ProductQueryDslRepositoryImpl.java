@@ -1,11 +1,9 @@
-package com.commerce.backendserver.product.infra.persistence;
+package com.commerce.backendserver.product.infra.persistence.query;
 
-import com.commerce.backendserver.product.infra.persistence.ProductQueryDslRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProductQueryDslRepositoryImpl implements ProductQueryDslRepository {
-
 }

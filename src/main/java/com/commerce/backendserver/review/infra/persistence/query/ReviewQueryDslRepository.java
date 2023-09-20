@@ -10,7 +10,7 @@ public interface ReviewQueryDslRepository {
 	List<Review> findReviewByStatisticCondition(
 		final Set<String> engColorNames,
 		final Set<ProductSize> sizes,
-		final Set<String> selectionOptions,
+		final Set<String> additionalOptions,
 		final Set<Integer> scores,
 		final Set<String> additionalInfoList
 	);

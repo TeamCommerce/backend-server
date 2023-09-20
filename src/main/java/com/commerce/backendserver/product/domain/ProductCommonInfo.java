@@ -1,10 +1,12 @@
 package com.commerce.backendserver.product.domain;
 
 import com.commerce.backendserver.global.exception.CommerceException;
+import com.commerce.backendserver.product.domain.constants.BestProduct;
 import com.commerce.backendserver.product.domain.constants.ProductBrand;
 import com.commerce.backendserver.product.domain.constants.ProductCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +30,9 @@ public class ProductCommonInfo {
     @Column(nullable = false)
     private ProductBrand brand;
 
-    @Column(nullable = false, columnDefinition = "varchar(100)")
+    @Column(
+            nullable = false,
+            columnDefinition = "varchar(100)")
     private String name;
 
     @Enumerated(value = STRING)
@@ -37,6 +41,10 @@ public class ProductCommonInfo {
 
     @Column(columnDefinition = "varchar(300)")
     private String description;
+
+    @Column(name = "best", columnDefinition = "varchar(1) default 'F'")
+    @Enumerated(EnumType.STRING)
+    private BestProduct best;
 
     //== Constructor Method ==//
     @Builder(access = PRIVATE)

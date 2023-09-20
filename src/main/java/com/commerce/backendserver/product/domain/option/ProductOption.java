@@ -2,7 +2,6 @@ package com.commerce.backendserver.product.domain.option;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
 import com.commerce.backendserver.product.domain.Product;
-import com.commerce.backendserver.product.domain.option.constants.ProductColor;
 import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.product.domain.option.constants.ProductStatus;
 import jakarta.persistence.*;
@@ -34,7 +33,7 @@ public class ProductOption extends BaseEntity {
     private ProductColor color;
 
     @Embedded
-    private ProductSelectionOption selectionOption;
+    private ProductAdditionalOption additionalOption;
 
     @Column(nullable = false)
     private Integer inventory;
@@ -49,13 +48,13 @@ public class ProductOption extends BaseEntity {
     @Builder
     private ProductOption(
             ProductColor color,
-            ProductSelectionOption selectionOption,
+            ProductAdditionalOption additionalOption,
             Integer inventory,
             ProductStatus status,
             ProductSize size
     ) {
         this.color = color;
-        this.selectionOption = selectionOption;
+        this.additionalOption = additionalOption;
         this.inventory = inventory;
         this.status = status;
         this.size = size;
@@ -64,14 +63,14 @@ public class ProductOption extends BaseEntity {
     //== Static Factory Method ==//
     public static ProductOption of(
             final ProductColor color,
-            final ProductSelectionOption selectionOption,
+            final ProductAdditionalOption additionalOption,
             final Integer inventory,
             final ProductStatus status,
             final ProductSize size
     ) {
         return ProductOption.builder()
                 .color(color)
-                .selectionOption(selectionOption)
+                .additionalOption(additionalOption)
                 .inventory(inventory)
                 .status(status)
                 .size(size)

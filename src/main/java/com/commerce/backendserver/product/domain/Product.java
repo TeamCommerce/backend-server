@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.commerce.backendserver.image.domain.constants.ProductImageCategory.MAIN;
+import static com.commerce.backendserver.image.domain.constants.ProductImageCategory.SPECIFIC;
 import static com.commerce.backendserver.product.exception.ProductError.INVALID_PRODUCT_MAIN_IMAGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -63,7 +64,6 @@ public class Product extends BaseEntity {
             final ProductPriceAttribute priceAttribute
     ) {
         applyImages(images);
-        List<ProductImage> images1 = this.getImages();
         applyOptions(options);
         this.images = images;
         this.options = options;
@@ -108,11 +108,18 @@ public class Product extends BaseEntity {
                 .collect(Collectors.toList());
     }
 
-    public String getMainImageUrl() {
+    public String getMainImage() {
         return this.getImages().stream()
                 .filter(image -> image.getImageCategory().equals(MAIN))
                 .map(ProductImage::getUrl)
                 .findFirst()
                 .orElseThrow(() -> CommerceException.of(INVALID_PRODUCT_MAIN_IMAGE));
+    }
+
+    public List<String> getSpecificImage() {
+        return this.getImages().stream()
+                .filter(image -> image.getImageCategory().equals(SPECIFIC))
+                .map(ProductImage::getUrl)
+                .toList();
     }
 }
