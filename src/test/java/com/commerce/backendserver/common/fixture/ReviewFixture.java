@@ -33,7 +33,7 @@ public enum ReviewFixture {
 	C(
 		"contentsC",
 		2,
-		Set.of("HEIGHT/156", "SIZE/SMALL", "WEIGHT/40"),
+		Set.of("HEIGHT/156", "SIZE/Small", "WEIGHT/40"),
 		List.of("helloA.jpg", "helloB.png")
 	);
 

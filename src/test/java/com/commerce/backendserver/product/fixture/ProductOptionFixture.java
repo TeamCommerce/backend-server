@@ -33,7 +33,7 @@ public enum ProductOptionFixture {
 		"blue",
 		L,
 		"기모",
-		"O",
+		"x",
 		1000,
 		100,
 		AVAILABLE
