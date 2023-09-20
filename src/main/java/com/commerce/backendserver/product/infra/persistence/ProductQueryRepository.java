@@ -1,7 +1,10 @@
 package com.commerce.backendserver.product.infra.persistence;
 
 import com.commerce.backendserver.product.domain.Product;
+
 import com.commerce.backendserver.product.infra.persistence.query.ProductQueryDslRepository;
+
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,4 +27,6 @@ public interface ProductQueryRepository extends ProductJpaRepository, ProductQue
             "WHERE p.commonInfo.best = 'T'")
     List<Product> findBestProducts();
 
+    @EntityGraph(attributePaths = "options")
+    Optional<Product> findDistinctWithOptionsById(Long id);
 }

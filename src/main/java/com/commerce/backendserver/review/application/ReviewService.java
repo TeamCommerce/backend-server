@@ -3,6 +3,7 @@ package com.commerce.backendserver.review.application;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.image.application.ImageService;
 import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.product.domain.option.ProductOption;
 import com.commerce.backendserver.product.infra.persistence.ProductQueryRepository;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import com.commerce.backendserver.review.domain.Review;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.commerce.backendserver.global.exception.error.GlobalError.GLOBAL_NOT_FOUND;
+import static com.commerce.backendserver.review.exception.ReviewError.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +34,10 @@ public class ReviewService {
 
 		List<String> imageUrls = imageService.uploadImages(request.files(), REVIEW);
 
-		Product product = productQueryRepository.findById(request.productId())
+		Product product = productQueryRepository.findDistinctWithOptionsById(request.productId())
 			.orElseThrow(() -> CommerceException.of(GLOBAL_NOT_FOUND));
+
+		checkMatchingProductOptionIdToProduct(request.productOptionId(), product.getOptions());
 
 		Review review = Review.createReview(
 			request.contents(),
@@ -46,5 +50,15 @@ public class ReviewService {
 		);
 
 		return reviewRepository.save(review).getId();
+	}
+
+	private void checkMatchingProductOptionIdToProduct(Long productOptionId, List<ProductOption> options) {
+		boolean isPresent = options.stream()
+			.map(ProductOption::getId)
+			.anyMatch(productOptionId::equals);
+
+		if (!isPresent) {
+			throw CommerceException.of(NOT_MATCH_PRODUCT_OPTION_ID);
+		}
 	}
 }
