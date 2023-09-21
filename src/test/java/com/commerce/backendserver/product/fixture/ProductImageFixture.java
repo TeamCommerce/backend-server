@@ -1,14 +1,12 @@
 package com.commerce.backendserver.product.fixture;
 
+import static com.commerce.backendserver.image.domain.constants.ProductImageCategory.*;
+
 import com.commerce.backendserver.image.domain.ProductImage;
 import com.commerce.backendserver.image.domain.constants.ProductImageCategory;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.commerce.backendserver.image.domain.constants.ProductImageCategory.MAIN;
 
 @Getter
 @RequiredArgsConstructor
@@ -18,9 +16,7 @@ public enum ProductImageFixture {
     private final String url;
     private final ProductImageCategory category;
 
-    public List<ProductImage> toEntityList() {
-        List<ProductImage> list = new ArrayList<>();
-        list.add(ProductImage.of(url, category));
-        return list;
+    public ProductImage toEntity() {
+        return ProductImage.of(url, category);
     }
 }
