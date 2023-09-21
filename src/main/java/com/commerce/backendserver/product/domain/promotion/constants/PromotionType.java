@@ -9,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum PromotionType {
-    FIX_DISCOUNT("정액 할인", new FixDiscountCalculator()),
-    RATE_DISCOUNT("정률 할인", new RateDiscountCalculator()),
-    NO_PROMOTION("할인 없음",  priceAttribute -> 0);
+    FIX_DISCOUNT(new FixDiscountCalculator()),
+    RATE_DISCOUNT(new RateDiscountCalculator()),
+    NO_PROMOTION(priceAttribute -> 0);
 
-    private final String type;
     private final PromotionPriceCalculator calculator;
 }

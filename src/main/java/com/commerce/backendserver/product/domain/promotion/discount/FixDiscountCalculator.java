@@ -12,13 +12,13 @@ public class FixDiscountCalculator implements PromotionPriceCalculator {
             ProductPriceAttribute attribute
     ) {
         validatePromotion(attribute);
-        return attribute.getPromotion().getDiscountAttribute().getDiscountAmount();
+        return attribute.getPromotion().getPromotionValue();
     }
 
     private void validatePromotion(
             ProductPriceAttribute attribute
     ) {
-        if (attribute.getPromotion().getDiscountAttribute().getDiscountAmount() < 0) {
+        if (attribute.getPromotion().getPromotionValue() < 0) {
             throw CommerceException.of(INVALID_PROMOTION);
         }
     }

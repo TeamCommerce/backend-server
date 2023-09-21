@@ -59,7 +59,7 @@ public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 
 	private BooleanExpression selectionOptionIn(Set<String> selectionOptionValues) {
 		if (selectionOptionValues != null)
-			return productOption.selectionOption.value.in(selectionOptionValues);
+			return productOption.additionalOption.value.in(selectionOptionValues);
 		return null;
 	}
 

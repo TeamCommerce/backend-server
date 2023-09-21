@@ -135,7 +135,7 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 			//then
 			assertQueryResultByProductCondition(
 				product -> {
-					String optionValue = product.getOptions().get(0).getSelectionOption().getValue();
+					String optionValue = product.getOptions().get(0).getAdditionalOption().getValue();
 					return additionalOptionValues.contains(optionValue);
 				},
 				result,
