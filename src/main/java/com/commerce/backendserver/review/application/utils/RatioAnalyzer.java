@@ -83,6 +83,6 @@ public class RatioAnalyzer {
 	}
 
 	private double calculateRatio(double now, double total) {
-		return (now / total) / 100;
+		return (now / total) * 100;
 	}
 }
