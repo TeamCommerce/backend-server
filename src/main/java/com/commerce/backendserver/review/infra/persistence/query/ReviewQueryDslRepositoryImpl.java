@@ -1,18 +1,18 @@
 package com.commerce.backendserver.review.infra.persistence.query;
 
-import com.commerce.backendserver.product.domain.option.constants.ProductSize;
-import com.commerce.backendserver.review.domain.Review;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
+import static com.commerce.backendserver.product.domain.option.QProductOption.*;
+import static com.commerce.backendserver.review.domain.QReview.*;
+import static com.commerce.backendserver.review.domain.additionalinfo.QAdditionalInfo.*;
 
 import java.util.List;
 import java.util.Set;
 
-import static com.commerce.backendserver.product.domain.QProduct.product;
-import static com.commerce.backendserver.product.domain.option.QProductOption.productOption;
-import static com.commerce.backendserver.review.domain.QReview.review;
-import static com.commerce.backendserver.review.domain.additionalinfo.QAdditionalInfo.additionalInfo;
+import com.commerce.backendserver.product.domain.option.constants.ProductSize;
+import com.commerce.backendserver.review.domain.Review;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
@@ -23,7 +23,7 @@ public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 	public List<Review> findReviewByStatisticCondition(
 		Set<String> engColorNames,
 		Set<ProductSize> sizes,
-		Set<String> additionalOptions,
+		Set<String> selectionOptionValues,
 		Set<Integer> scores,
 		Set<String> additionalInfoValues
 	) {
@@ -32,11 +32,12 @@ public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 			.from(review)
 			.leftJoin(review.product)
 			.fetchJoin()
-			.leftJoin(product.options).on(product.id.eq(productOption.product.id))
+			.leftJoin(productOption).on(review.productOptionId.eq(productOption.id))
+			.leftJoin(additionalInfo).on(additionalInfo.review.id.eq(review.id))
 			.where(
 				engColorNameIn(engColorNames),
 				sizeIn(sizes),
-				additionalOptionIn(additionalOptions),
+				selectionOptionIn(selectionOptionValues),
 				scoreIn(scores),
 				additionalInfoIn(additionalInfoValues))
 			.groupBy(review.id)
@@ -56,9 +57,9 @@ public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 		return null;
 	}
 
-	private BooleanExpression additionalOptionIn(Set<String> additionalOptionValues) {
-		if (additionalOptionValues != null)
-			return productOption.additionalOption.value.in(additionalOptionValues);
+	private BooleanExpression selectionOptionIn(Set<String> selectionOptionValues) {
+		if (selectionOptionValues != null)
+			return productOption.additionalOption.value.in(selectionOptionValues);
 		return null;
 	}
 
