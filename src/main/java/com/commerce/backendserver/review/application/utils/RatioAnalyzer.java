@@ -12,16 +12,22 @@ import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
 @Component
 public class RatioAnalyzer {
 
+	/**
+	 * 모든 리뷰의 AdditionalInfo 를 통해 infoName 를 key 로 Map 을 리턴
+	 * 각 Map 의 key 는 infoValue 이며 value 는 각 infoValue 별 비율(한 infoName 을 가지는 각각의 infoValue 의 비율)
+	 */
 	public Map<String, Map<String, RatioStatistic>> analyzeAdditionalInfo(
 		List<List<AdditionalInfo>> additionalInfoData
 	) {
-		Map<String, Map<String, Integer>> infoMap = new HashMap<>();
+		Map<String, Map<String, Integer>> countingMap = new HashMap<>();
+
+		//모든 AdditionalInfo 를 탐색하며 비율을 구하기 위한 각 infoName 의 각각의 infoValue 개수를 카운팅
 		additionalInfoData.forEach(additionalInfoList ->
 			additionalInfoList.forEach(additionalInfo -> {
 				String infoName = additionalInfo.getInfoName().getValue();
-				infoMap.put(infoName, infoMap.getOrDefault(infoName, new HashMap<>()));
+				countingMap.put(infoName, countingMap.getOrDefault(infoName, new HashMap<>()));
 
-				Map<String, Integer> infoValueMap = infoMap.get(infoName);
+				Map<String, Integer> infoValueMap = countingMap.get(infoName);
 				String infoValue = additionalInfo.getInfoValue();
 
 				infoValueMap.put(infoValue, infoValueMap.getOrDefault(infoValue, 0) + 1);
@@ -29,10 +35,11 @@ public class RatioAnalyzer {
 
 		Map<String, Map<String, RatioStatistic>> result = new HashMap<>();
 
-		infoMap.keySet()
+		//카운팅 된 Map 을 통해서 비율로 변환
+		countingMap.keySet()
 			.forEach(nameKey -> {
 				Map<String, RatioStatistic> ratioMap = new HashMap<>();
-				Map<String, Integer> countMap = infoMap.get(nameKey);
+				Map<String, Integer> countMap = countingMap.get(nameKey);
 
 				int total = countMap.keySet().stream()
 					.mapToInt(countMap::get)
@@ -50,19 +57,22 @@ public class RatioAnalyzer {
 		return result;
 	}
 
+	/**
+	 * 모든 리뷰의 score 읉 통해 score 마다의 비율을 가진 Map 을 리턴
+	 */
 	public Map<String, RatioStatistic> analyzeScore(List<Integer> scores) {
 
-		Map<Integer, Integer> scoreMap = new HashMap<>();
+		Map<Integer, Integer> countingMap = new HashMap<>();
 		scores.forEach(score ->
-			scoreMap.put(score, scoreMap.getOrDefault(score, 0) + 1)
+			countingMap.put(score, countingMap.getOrDefault(score, 0) + 1)
 		);
 
 		Map<String, RatioStatistic> result = new HashMap<>();
-		scoreMap.keySet()
+		countingMap.keySet()
 			.forEach(key ->
 				result.put(
 					String.valueOf(key),
-					generateRatioStatistic(scoreMap.get(key), scores.size())
+					generateRatioStatistic(countingMap.get(key), scores.size())
 				));
 
 		return result;
