@@ -1,5 +1,6 @@
 package com.commerce.backendserver.review.utils;
 
+import static com.commerce.backendserver.review.fixture.ReviewStatisticFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,6 +10,8 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import com.commerce.backendserver.review.application.dto.response.RatioStatistic;
+import com.commerce.backendserver.review.application.dto.response.ReviewStatistics;
+import com.commerce.backendserver.review.domain.Review;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -55,12 +58,12 @@ public abstract class ReviewAsserter {
 	}
 
 	/**
-	 * @param result : 실제 결과값
+	 * @param actual : 실제 결과값
 	 * @param keyList : 기댓값 AdditionalInfoStatistic 의 key list
 	 * @param dtoSetList : 기댓값 AdditionalInfoStatistic 의 value 인 Map 의 key, key 각각의 count(개수) 를 담은 list
 	 */
 	public static void assertAdditionalInfoStatistic(
-		final Map<String, Map<String, RatioStatistic>> result,
+		final Map<String, Map<String, RatioStatistic>> actual,
 		final List<String> keyList,
 		final List<Set<RatioTestDto>> dtoSetList
 	) {
@@ -72,11 +75,46 @@ public abstract class ReviewAsserter {
 				Set<RatioTestDto> dtoSet = dtoSetList.get(i);
 
 				assertSingleAdditionalInfoStatistic(
-					result,
+					actual,
 					key,
 					dtoSet
 				);
 			});
+	}
+
+	/**
+	 * @param actual : 실제 결과값
+	 * @param reviews : 기댓값 제작을 위한 review
+	 */
+	public static void assertReviewStatistic(
+		final ReviewStatistics actual,
+		final List<Review> reviews
+	) {
+		double expectedAverage = generateAverage(reviews);
+
+		assertAll(
+			() -> assertThat(actual.totalReviewCount()).isEqualTo(reviews.size()),
+			() -> assertThat(actual.averageScore()).isEqualTo(expectedAverage),
+			() -> assertThat(actual.existSizes()).containsAll(EXIST_SIZE_DATA),
+			() -> assertScoreStatistic(
+				actual.scoreStatistics(),
+				SCORE_DATA
+			),
+			() -> assertAdditionalInfoStatistic(
+				actual.additionalInfoStatistics(),
+				ADDITIONAL_INFO_KEY_DATA,
+				List.of(
+					HEIGHT_DATA,
+					WEIGHT_DATA,
+					SIZE_DATA
+				)
+			)
+		);
+	}
+
+	private static double generateAverage(List<Review> reviews) {
+		double totalScore = reviews.stream().mapToDouble(Review::getScore).sum();
+		return totalScore / (double)reviews.size();
 	}
 
 	public record RatioTestDto(
