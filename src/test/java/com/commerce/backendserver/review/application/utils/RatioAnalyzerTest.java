@@ -17,6 +17,9 @@ import com.commerce.backendserver.review.application.dto.response.RatioStatistic
 import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
 import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
 
+/**
+ * ReviewFixture 의 데이터가 바뀌면 테스트가 실패할 수 있음!! 주의!!
+ */
 @DisplayName("[RatioAnalyzer Test] - Application layer")
 class RatioAnalyzerTest {
 
