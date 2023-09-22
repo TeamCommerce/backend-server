@@ -1,5 +1,6 @@
 package com.commerce.backendserver.review.application.utils;
 
+import static com.commerce.backendserver.review.fixture.ReviewStatisticFixture.*;
 import static com.commerce.backendserver.review.utils.ReviewAsserter.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,15 +39,11 @@ class RatioAnalyzerTest {
 
 		assertAdditionalInfoStatistic(
 			result,
-			List.of("키", "몸무게", "사이즈"),
+			ADDITIONAL_INFO_KEY_DATA,
 			List.of(
-				Set.of(new RatioTestDto("156", 1), new RatioTestDto("172", 2)),
-				Set.of(new RatioTestDto("60", 1), new RatioTestDto("40", 1)),
-				Set.of(
-					new RatioTestDto("Small", 1),
-					new RatioTestDto("Medium", 1),
-					new RatioTestDto("Large", 1)
-				)
+				HEIGHT_DATA,
+				WEIGHT_DATA,
+				SIZE_DATA
 			)
 		);
 	}
@@ -56,22 +52,19 @@ class RatioAnalyzerTest {
 	@DisplayName("[analyzeScore]")
 	void analyzeScoreTest() {
 		//given
-		List<Integer> scores = List.of(1, 2, 3, 3, 3, 4);
+		List<Integer> scores = Arrays.stream(ReviewFixture.values())
+			.mapToInt(ReviewFixture::getScore)
+			.boxed().toList();
 
 		//when
 		Map<String, RatioStatistic> result = ratioAnalyzer.analyzeScore(scores);
 
 		//then
-		assertThat(result).hasSize(4);
+		assertThat(result).hasSize(3);
 
 		assertScoreStatistic(
 			result,
-			Set.of(
-				new RatioTestDto("1", 1),
-				new RatioTestDto("2", 1),
-				new RatioTestDto("3", 3),
-				new RatioTestDto("4", 1)
-			)
+			SCORE_DATA
 		);
 	}
 
