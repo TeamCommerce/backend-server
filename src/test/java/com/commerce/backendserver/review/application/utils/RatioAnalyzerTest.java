@@ -1,7 +1,7 @@
 package com.commerce.backendserver.review.application.utils;
 
+import static com.commerce.backendserver.review.utils.ReviewAsserter.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,20 +37,12 @@ class RatioAnalyzerTest {
 		//then
 		assertThat(result).hasSize(3);
 
-		assertAll(
-			() -> assertAdditionalInfoStatistic(
-				result,
-				"키",
-				Set.of(new RatioTestDto("156", 1), new RatioTestDto("172", 2))
-			),
-			() -> assertAdditionalInfoStatistic(
-				result,
-				"몸무게",
-				Set.of(new RatioTestDto("60", 1), new RatioTestDto("40", 1))
-			),
-			() -> assertAdditionalInfoStatistic(
-				result,
-				"사이즈",
+		assertAdditionalInfoStatistic(
+			result,
+			List.of("키", "몸무게", "사이즈"),
+			List.of(
+				Set.of(new RatioTestDto("156", 1), new RatioTestDto("172", 2)),
+				Set.of(new RatioTestDto("60", 1), new RatioTestDto("40", 1)),
 				Set.of(
 					new RatioTestDto("Small", 1),
 					new RatioTestDto("Medium", 1),
@@ -83,44 +75,6 @@ class RatioAnalyzerTest {
 		);
 	}
 
-	private void assertScoreStatistic(
-		Map<String, RatioStatistic> result,
-		Set<RatioTestDto> dtoSet
-	) {
-		int totalCount = dtoSet.stream().mapToInt(dto -> dto.count).sum();
-
-		dtoSet.forEach(dto -> {
-			RatioStatistic statistic = result.get(dto.key);
-			assertThat(statistic).isNotNull();
-
-			assertAll(
-				() -> assertThat(statistic.reviewers()).isEqualTo(dto.count),
-				() -> assertThat(statistic.ratio()).isEqualTo((double)dto.count / totalCount * 100)
-			);
-		});
-	}
-
-	private void assertAdditionalInfoStatistic(
-		final Map<String, Map<String, RatioStatistic>> result,
-		final String key,
-		final Set<RatioTestDto> dtoSet
-	) {
-		int totalCount = dtoSet.stream().mapToInt(dto -> dto.count).sum();
-
-		Map<String, RatioStatistic> valueResult = result.get(key);
-		assertThat(valueResult).isNotNull();
-
-		dtoSet.forEach(dto -> {
-			RatioStatistic statistic = valueResult.get(dto.key);
-			assertThat(statistic).isNotNull();
-
-			assertAll(
-				() -> assertThat(statistic.reviewers()).isEqualTo(dto.count),
-				() -> assertThat(statistic.ratio()).isEqualTo((double)dto.count / totalCount * 100)
-			);
-		});
-	}
-
 	private List<List<AdditionalInfo>> generateAdditionalInfoData() {
 		List<List<AdditionalInfo>> additionalInfoData = new ArrayList<>();
 
@@ -137,12 +91,6 @@ class RatioAnalyzerTest {
 			});
 
 		return additionalInfoData;
-	}
-
-	private record RatioTestDto(
-		String key,
-		int count
-	) {
 	}
 }
 
