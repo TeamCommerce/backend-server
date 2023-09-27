@@ -2,14 +2,14 @@ package com.commerce.backendserver.newauth.infra.jwt;
 
 import org.springframework.stereotype.Component;
 
-import com.commerce.backendserver.newauth.domain.AuthTokenProvider;
+import com.commerce.backendserver.newauth.domain.AuthTokenManager;
 import com.commerce.backendserver.newauth.domain.model.AuthToken;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class AuthTokenProviderAdaptor implements AuthTokenProvider {
+public class AuthTokenManagerAdaptor implements AuthTokenManager {
 
 	private final JwtTokenProvider jwtTokenProvider;
 
