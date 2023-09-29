@@ -2,6 +2,7 @@ package com.commerce.backendserver.newauth.infra.oauth.google;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.commerce.backendserver.newauth.domain.OAuthUriProvider;
@@ -10,6 +11,7 @@ import com.commerce.backendserver.newauth.infra.oauth.google.model.GooglePropert
 
 import lombok.RequiredArgsConstructor;
 
+@Component
 @RequiredArgsConstructor
 public class GoogleUriProvider implements OAuthUriProvider {
 
