@@ -1,6 +1,6 @@
 package com.commerce.backendserver.newauth.domain.model;
 
-public interface OAuthMemberResponse {
+public interface OAuthMemberInfo {
 
 	String id();
 

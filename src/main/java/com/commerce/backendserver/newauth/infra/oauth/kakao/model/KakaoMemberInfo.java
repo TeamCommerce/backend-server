@@ -1,13 +1,13 @@
 package com.commerce.backendserver.newauth.infra.oauth.kakao.model;
 
-import com.commerce.backendserver.newauth.domain.model.OAuthMemberResponse;
+import com.commerce.backendserver.newauth.domain.model.OAuthMemberInfo;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-public record KakaoMemberResponse(
+public record KakaoMemberInfo(
 	String id,
 	KakaoAccount kakaoAccount
-) implements OAuthMemberResponse {
+) implements OAuthMemberInfo {
 
 	@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 	public record KakaoAccount(

@@ -2,15 +2,15 @@ package com.commerce.backendserver.newauth.infra.oauth.google.model;
 
 import static com.fasterxml.jackson.databind.PropertyNamingStrategies.*;
 
-import com.commerce.backendserver.newauth.domain.model.OAuthMemberResponse;
+import com.commerce.backendserver.newauth.domain.model.OAuthMemberInfo;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @JsonNaming(value = SnakeCaseStrategy.class)
-public record GoogleMemberResponse(
+public record GoogleMemberInfo(
 	String sub,
 	String name,
 	String email
-) implements OAuthMemberResponse {
+) implements OAuthMemberInfo {
 
 	@Override
 	public String id() {
