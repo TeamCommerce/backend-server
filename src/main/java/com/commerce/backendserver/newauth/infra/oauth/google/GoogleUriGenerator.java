@@ -7,7 +7,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.commerce.backendserver.newauth.domain.OAuthUriGenerator;
 import com.commerce.backendserver.newauth.domain.model.OAuthProvider;
-import com.commerce.backendserver.newauth.infra.oauth.google.model.GoogleProperties;
 
 import lombok.RequiredArgsConstructor;
 

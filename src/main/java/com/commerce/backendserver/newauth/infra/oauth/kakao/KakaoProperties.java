@@ -1,4 +1,4 @@
-package com.commerce.backendserver.newauth.infra.oauth.kakao.model;
+package com.commerce.backendserver.newauth.infra.oauth.kakao;
 
 import java.util.Set;
 

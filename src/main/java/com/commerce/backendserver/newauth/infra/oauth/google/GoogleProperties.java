@@ -1,4 +1,4 @@
-package com.commerce.backendserver.newauth.infra.oauth.google.model;
+package com.commerce.backendserver.newauth.infra.oauth.google;
 
 import java.util.Set;
 

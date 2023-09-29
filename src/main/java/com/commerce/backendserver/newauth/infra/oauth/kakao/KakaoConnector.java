@@ -18,7 +18,6 @@ import com.commerce.backendserver.newauth.domain.model.OAuthMemberInfo;
 import com.commerce.backendserver.newauth.domain.model.OAuthProvider;
 import com.commerce.backendserver.newauth.domain.model.OAuthTokenInfo;
 import com.commerce.backendserver.newauth.infra.oauth.kakao.model.KakaoMemberInfo;
-import com.commerce.backendserver.newauth.infra.oauth.kakao.model.KakaoProperties;
 import com.commerce.backendserver.newauth.infra.oauth.kakao.model.KakaoTokenInfo;
 
 import lombok.RequiredArgsConstructor;

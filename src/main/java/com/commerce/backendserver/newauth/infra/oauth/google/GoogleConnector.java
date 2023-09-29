@@ -18,7 +18,6 @@ import com.commerce.backendserver.newauth.domain.model.OAuthMemberInfo;
 import com.commerce.backendserver.newauth.domain.model.OAuthProvider;
 import com.commerce.backendserver.newauth.domain.model.OAuthTokenInfo;
 import com.commerce.backendserver.newauth.infra.oauth.google.model.GoogleMemberInfo;
-import com.commerce.backendserver.newauth.infra.oauth.google.model.GoogleProperties;
 import com.commerce.backendserver.newauth.infra.oauth.google.model.GoogleTokenInfo;
 
 import lombok.RequiredArgsConstructor;
