@@ -1,25 +1,25 @@
-package com.commerce.backendserver.newauth.infra.oauth.google;
+package com.commerce.backendserver.newauth.infra.oauth.kakao;
 
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.commerce.backendserver.newauth.domain.OAuthUriProvider;
+import com.commerce.backendserver.newauth.domain.OAuthUriGenerator;
 import com.commerce.backendserver.newauth.domain.model.OAuthProvider;
-import com.commerce.backendserver.newauth.infra.oauth.google.model.GoogleProperties;
+import com.commerce.backendserver.newauth.infra.oauth.kakao.model.KakaoProperties;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class GoogleUriProvider implements OAuthUriProvider {
+public class KakaoUriGenerator implements OAuthUriGenerator {
 
-	private final GoogleProperties properties;
+	private final KakaoProperties properties;
 
 	@Override
 	public boolean isSupported(final OAuthProvider provider) {
-		return provider.isGoogle();
+		return provider.isKakao();
 	}
 
 	@Override

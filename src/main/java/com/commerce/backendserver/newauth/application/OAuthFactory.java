@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.newauth.domain.OAuthConnector;
-import com.commerce.backendserver.newauth.domain.OAuthUriProvider;
+import com.commerce.backendserver.newauth.domain.OAuthUriGenerator;
 import com.commerce.backendserver.newauth.domain.model.OAuthProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class OAuthFactory {
 
 	private final List<OAuthConnector> connectors;
-	private final List<OAuthUriProvider> uriProviders;
+	private final List<OAuthUriGenerator> uriProviders;
 
 	public OAuthConnector getOAuthConnector(final String provider) {
 		OAuthProvider authProvider = OAuthProvider.from(provider);
@@ -29,7 +29,7 @@ public class OAuthFactory {
 			.orElseThrow(() -> CommerceException.of(NOT_EXIST_OAUTH_TYPE));
 	}
 
-	public OAuthUriProvider getOAuthUriGenerator(final String provider) {
+	public OAuthUriGenerator getOAuthUriGenerator(final String provider) {
 		OAuthProvider authProvider = OAuthProvider.from(provider);
 
 		return uriProviders.stream()
