@@ -23,6 +23,11 @@ public record KakaoMemberInfo(
 	}
 
 	@Override
+	public String oauthId() {
+		return id;
+	}
+
+	@Override
 	public String nickname() {
 		return kakaoAccount.profile.nickname;
 	}

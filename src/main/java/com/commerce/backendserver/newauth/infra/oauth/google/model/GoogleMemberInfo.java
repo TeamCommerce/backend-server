@@ -13,7 +13,7 @@ public record GoogleMemberInfo(
 ) implements OAuthMemberInfo {
 
 	@Override
-	public String id() {
+	public String oauthId() {
 		return sub;
 	}
 

@@ -2,7 +2,7 @@ package com.commerce.backendserver.newauth.domain.model;
 
 public interface OAuthMemberInfo {
 
-	String id();
+	String oauthId();
 
 	String nickname();
 
