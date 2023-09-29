@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonNaming(value = SnakeCaseStrategy.class)
 public record GoogleTokenResponse(
 	String tokenType,
-	String idToken,
 	String accessToken,
 	String refreshToken,
 	long expiresIn

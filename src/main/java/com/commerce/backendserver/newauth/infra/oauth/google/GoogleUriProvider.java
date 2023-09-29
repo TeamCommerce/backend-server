@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GoogleUriProvider implements OAuthUriProvider {
 
-	private static final String AUTHORIZE_URI = "https://accounts.google.com/o/oauth2/v2/auth";
 	private final GoogleProperties properties;
 
 	@Override
@@ -24,7 +23,7 @@ public class GoogleUriProvider implements OAuthUriProvider {
 	@Override
 	public String generate(final String redirectUri) {
 		return UriComponentsBuilder
-			.fromUriString(AUTHORIZE_URI)
+			.fromUriString(properties.getAuthorizationEndpoint())
 			.queryParam("response_type", "code")
 			.queryParam("client_id", properties.getClientId())
 			.queryParam("scope", String.join(" ", properties.getScope()))
