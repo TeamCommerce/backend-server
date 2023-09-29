@@ -23,13 +23,13 @@ public class GoogleUriGenerator implements OAuthUriGenerator {
 	}
 
 	@Override
-	public String generate(final String redirectUri) {
+	public String generate() {
 		return UriComponentsBuilder
 			.fromUriString(properties.getAuthorizationEndpoint())
 			.queryParam("response_type", "code")
 			.queryParam("client_id", properties.getClientId())
 			.queryParam("scope", String.join(" ", properties.getScope()))
-			.queryParam("redirect_uri", redirectUri)
+			.queryParam("redirect_uri", properties.getRedirectUri())
 			.queryParam("state", UUID.randomUUID().toString().replaceAll("-", ""))
 			.build()
 			.toUriString();
