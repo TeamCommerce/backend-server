@@ -47,17 +47,11 @@ public class JwtTokenProvider {
 	}
 
 	public Long getPayload(final String token) {
-		try {
-			String subject = getClaims(token)
+		return Long.parseLong(
+			getClaims(token)
 				.getBody()
-				.getSubject();
-			return Long.parseLong(subject);
-		} catch (final ExpiredJwtException e) {
-			throw CommerceException.of(TOKEN_EXPIRED);
-		} catch (final SecurityException | MalformedJwtException | UnsupportedJwtException |
-					   IllegalArgumentException e) {
-			throw CommerceException.of(TOKEN_INVALID);
-		}
+				.getSubject()
+		);
 	}
 
 	private String createToken(final Long id, final long expireTime) {
@@ -72,10 +66,22 @@ public class JwtTokenProvider {
 			.compact();
 	}
 
+	public void validateToken(final String token) {
+		getClaims(token);
+	}
+
 	private Jws<Claims> getClaims(final String token) {
-		return Jwts.parserBuilder()
-			.setSigningKey(secretKey)
-			.build()
-			.parseClaimsJws(token);
+		try {
+			return Jwts.parserBuilder()
+				.setSigningKey(secretKey)
+				.build()
+				.parseClaimsJws(token);
+		} catch (final ExpiredJwtException e) {
+			throw CommerceException.of(TOKEN_EXPIRED);
+		} catch (final SecurityException | MalformedJwtException |
+					   UnsupportedJwtException | IllegalArgumentException e
+		) {
+			throw CommerceException.of(TOKEN_INVALID);
+		}
 	}
 }

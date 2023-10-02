@@ -24,4 +24,9 @@ public class AuthTokenManagerAdaptor implements AuthTokenManager {
 	public Long getId(final String token) {
 		return jwtTokenProvider.getPayload(token);
 	}
+
+	@Override
+	public void validateToken(final String token) {
+		jwtTokenProvider.validateToken(token);
+	}
 }
