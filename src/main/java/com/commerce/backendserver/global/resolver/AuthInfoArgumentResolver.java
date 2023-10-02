@@ -39,6 +39,6 @@ public class AuthInfoArgumentResolver implements HandlerMethodArgumentResolver {
 		String header = request.getHeader(AUTHORIZATION);
 		String token = header.split(" ")[1];
 
-		return new AuthInfo(authTokenManager.getId(token), token);
+		return new AuthInfo(authTokenManager.getId(token));
 	}
 }
