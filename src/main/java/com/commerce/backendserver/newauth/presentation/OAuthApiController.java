@@ -1,5 +1,6 @@
 package com.commerce.backendserver.newauth.presentation;
 
+import static com.commerce.backendserver.auth.exception.AuthError.*;
 import static org.springframework.http.HttpStatus.*;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.newauth.application.OAuthService;
 import com.commerce.backendserver.newauth.application.dto.AuthTokenResponse;
 import com.commerce.backendserver.newauth.presentation.dto.OAuthLoginRequest;
@@ -27,10 +29,10 @@ public class OAuthApiController {
 	public ResponseEntity<Void> redirectToOAuthAuthorization(
 		@PathVariable final String provider,
 		HttpServletResponse response
-	) throws IOException {
+	) {
 		String authorizationUri = oauthService.getAuthorizationUri(provider);
 
-		response.sendRedirect(authorizationUri);
+		executeRedirect(response, authorizationUri);
 
 		return new ResponseEntity<>(FOUND);
 	}
@@ -43,5 +45,16 @@ public class OAuthApiController {
 		AuthTokenResponse response = oauthService.login(provider, request.code(), request.state());
 
 		return ResponseEntity.ok(response);
+	}
+
+	private void executeRedirect(
+		final HttpServletResponse response,
+		final String authorizationUri
+	) {
+		try {
+			response.sendRedirect(authorizationUri);
+		} catch (IOException e) {
+			throw CommerceException.of(REDIRECT_ERROR);
+		}
 	}
 }
