@@ -41,7 +41,9 @@ public class PathMatcherContainer {
 		final String targetPath,
 		final String targetMethod
 	) {
-		return pathMatcher.match(pathInfo.pathPattern, targetPath) && pathInfo.pathPattern.equals(targetMethod);
+		boolean match = pathMatcher.match(pathInfo.pathPattern, targetPath);
+		boolean equals = pathInfo.method.equals(targetMethod);
+		return match && equals;
 	}
 
 	private record PathInfo(
