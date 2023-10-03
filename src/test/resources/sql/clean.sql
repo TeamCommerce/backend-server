@@ -1,6 +1,5 @@
 SET REFERENTIAL_INTEGRITY FALSE;
 
-DELETE FROM t_token;
 DELETE FROM t_member;
 DELETE FROM t_additional_info;
 DELETE FROM t_image;

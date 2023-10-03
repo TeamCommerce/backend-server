@@ -1,13 +1,12 @@
 package com.commerce.backendserver.common.base;
 
-import com.commerce.backendserver.auth.infra.jwt.JwtProvider;
-import com.commerce.backendserver.common.fixture.MemberFixture;
-import com.commerce.backendserver.member.domain.Member;
-import com.commerce.backendserver.member.infra.persistence.MemberRepository;
-import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.response.ValidatableResponse;
-import io.restassured.specification.RequestSpecification;
+import static com.commerce.backendserver.common.utils.TokenUtils.*;
+import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +19,15 @@ import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import org.springframework.restdocs.snippet.Attributes;
 import org.springframework.test.context.jdbc.Sql;
 
-import static com.commerce.backendserver.common.utils.TokenUtils.BEARER;
-import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.documentationConfiguration;
+import com.commerce.backendserver.common.fixture.MemberFixture;
+import com.commerce.backendserver.member.domain.Member;
+import com.commerce.backendserver.member.infra.persistence.MemberRepository;
+import com.commerce.backendserver.newauth.infra.jwt.JwtTokenProvider;
+
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(RestDocumentationExtension.class)
@@ -42,7 +42,7 @@ public abstract class IntegrationTestBase {
     private int port;
 
     @Autowired
-    private JwtProvider provider;
+    private JwtTokenProvider provider;
 
     @BeforeEach
     void setUpRestDocs(RestDocumentationContextProvider restDocumentation) {
