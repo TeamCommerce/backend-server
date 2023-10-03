@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
 	private static final String AUTHORIZATION = "Authorization";
-	private static final String BEARER = "BEARER";
+	private static final String BEARER = "Bearer";
 
 	private final AuthTokenManager authTokenManager;
 
