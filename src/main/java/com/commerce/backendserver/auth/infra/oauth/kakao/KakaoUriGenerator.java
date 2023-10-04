@@ -1,5 +1,6 @@
 package com.commerce.backendserver.auth.infra.oauth.kakao;
 
+import java.net.URI;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class KakaoUriGenerator implements OAuthUriGenerator {
 	}
 
 	@Override
-	public String generate() {
+	public URI generate() {
 		return UriComponentsBuilder
 			.fromUriString(properties.getAuthorizationEndpoint())
 			.queryParam("response_type", "code")
@@ -31,6 +32,6 @@ public class KakaoUriGenerator implements OAuthUriGenerator {
 			.queryParam("redirect_uri", properties.getRedirectUri())
 			.queryParam("state", UUID.randomUUID().toString().replaceAll("-", ""))
 			.build()
-			.toUriString();
+			.toUri();
 	}
 }

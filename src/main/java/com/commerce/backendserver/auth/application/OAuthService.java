@@ -1,5 +1,6 @@
 package com.commerce.backendserver.auth.application;
 
+import java.net.URI;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class OAuthService {
 	private final MemberQueryRepository memberQueryRepository;
 	private final MemberRepository memberRepository;
 
-	public String getAuthorizationUri(final String provider) {
+	public URI getAuthorizationUri(final String provider) {
 		return oauthFactory
 			.getOAuthUriGenerator(provider)
 			.generate();
