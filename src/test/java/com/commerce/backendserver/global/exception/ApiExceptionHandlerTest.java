@@ -1,31 +1,30 @@
 package com.commerce.backendserver.global.exception;
 
-import com.commerce.backendserver.common.controller.TestController;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.commerce.backendserver.common.base.WebMvcTestBase;
+import com.commerce.backendserver.common.controller.TestController;
 
 @WebMvcTest(controllers = TestController.class)
 @DisplayName("ApiExceptionHandler Test")
-class ApiExceptionHandlerTest {
+class ApiExceptionHandlerTest extends WebMvcTestBase {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Nested
     @DisplayName("Exception Handling Test")
-    @WithMockUser
     class exceptionHandler {
 
         private static final String BASE_URL = "/test";

@@ -1,16 +1,21 @@
 package com.commerce.backendserver.image.domain;
 
+import static jakarta.persistence.EnumType.*;
+import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
+
 import com.commerce.backendserver.image.domain.constants.ProductImageCategory;
 import com.commerce.backendserver.product.domain.Product;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
-
-import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
@@ -18,7 +23,6 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class ProductImage extends Image {
 
-    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
