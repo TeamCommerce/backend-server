@@ -17,7 +17,7 @@ import io.restassured.specification.RequestSpecification;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = PRIVATE)
-public abstract class CommonRequestFixture {
+public final class CommonRequestFixture {
 
 	public static ValidatableResponse multipartRequest(
 		final RequestSpecification spec,
@@ -41,6 +41,19 @@ public abstract class CommonRequestFixture {
 				return request.when()
 					.post(path);
 			}
+		);
+	}
+
+	public static ValidatableResponse getRequest(
+		final RequestSpecification spec,
+		final Set<RestDocumentationFilter> documentations,
+		final String path,
+		final String pathVariable
+	) {
+		return request(
+			spec,
+			documentations,
+			given -> given.when().get(path, pathVariable)
 		);
 	}
 
