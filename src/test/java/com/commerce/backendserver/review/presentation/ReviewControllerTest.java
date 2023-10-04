@@ -1,6 +1,7 @@
 package com.commerce.backendserver.review.presentation;
 
 import static com.commerce.backendserver.common.utils.FileMockingUtils.*;
+import static com.commerce.backendserver.common.utils.TokenUtils.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -20,10 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.commerce.backendserver.common.base.WebMvcTestBase;
 import com.commerce.backendserver.common.fixture.ReviewFixture;
+import com.commerce.backendserver.global.config.WebConfig;
 import com.commerce.backendserver.review.application.ReviewService;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 
-@WebMvcTest(value = {ReviewController.class})
+@WebMvcTest(
+	value = {ReviewController.class},
+	excludeAutoConfiguration = {WebConfig.class})
 @DisplayName("[ReviewController Test] - Presentation layer")
 public class ReviewControllerTest extends WebMvcTestBase {
 
@@ -49,6 +53,7 @@ public class ReviewControllerTest extends WebMvcTestBase {
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
 			.multipart(BASE_URL)
 			.file((MockMultipartFile)file)
+			.header(AUTHORIZATION, ACCESS_TOKEN)
 			.queryParams(params);
 
 		//when

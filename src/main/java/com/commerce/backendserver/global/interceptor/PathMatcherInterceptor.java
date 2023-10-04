@@ -23,7 +23,7 @@ public class PathMatcherInterceptor implements HandlerInterceptor {
 		final Object handler
 	) throws Exception {
 
-		if (pathMatcherContainer.isInterceptorRequired(request.getServletPath(), request.getMethod())) {
+		if (pathMatcherContainer.isInterceptorRequired(request.getRequestURI(), request.getMethod())) {
 			return target.preHandle(request, response, handler);
 		}
 		return true;
