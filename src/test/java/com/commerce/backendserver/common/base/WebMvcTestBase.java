@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.commerce.backendserver.newauth.domain.AuthTokenManager;
+import com.commerce.backendserver.auth.domain.AuthTokenManager;
 
 public abstract class WebMvcTestBase {
 

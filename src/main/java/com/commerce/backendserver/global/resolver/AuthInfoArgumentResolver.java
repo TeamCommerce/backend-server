@@ -8,7 +8,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.commerce.backendserver.global.annotation.FetchAuthInfo;
 import com.commerce.backendserver.global.resolver.dto.AuthInfo;
-import com.commerce.backendserver.newauth.domain.AuthTokenManager;
+import com.commerce.backendserver.auth.domain.AuthTokenManager;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

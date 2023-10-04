@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.commerce.backendserver.global.exception.CommerceException;
-import com.commerce.backendserver.newauth.domain.AuthTokenManager;
+import com.commerce.backendserver.auth.domain.AuthTokenManager;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

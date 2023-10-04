@@ -22,7 +22,7 @@ import org.springframework.test.context.jdbc.Sql;
 import com.commerce.backendserver.common.fixture.MemberFixture;
 import com.commerce.backendserver.member.domain.Member;
 import com.commerce.backendserver.member.infra.persistence.MemberRepository;
-import com.commerce.backendserver.newauth.infra.jwt.JwtTokenProvider;
+import com.commerce.backendserver.auth.infra.jwt.JwtTokenProvider;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;

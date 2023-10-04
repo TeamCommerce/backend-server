@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.commerce.backendserver.global.interceptor.AuthenticationInterceptor;
 import com.commerce.backendserver.global.interceptor.PathMatcherInterceptor;
 import com.commerce.backendserver.global.resolver.AuthInfoArgumentResolver;
-import com.commerce.backendserver.newauth.domain.AuthTokenManager;
+import com.commerce.backendserver.auth.domain.AuthTokenManager;
 
 import lombok.RequiredArgsConstructor;
 
