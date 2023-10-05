@@ -34,6 +34,7 @@ class ProductFindApiTest extends IntegrationTestBase {
     Long id;
     Product savedProduct;
     Promotion savedPromotion;
+
     @Autowired
     private ProductCommandRepository productCommandRepository;
     @Autowired
