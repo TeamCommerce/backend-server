@@ -20,8 +20,7 @@ public enum AuthError implements ErrorCode {
 
 	GOOGLE_OAUTH_ERROR("구글 서버 통신간 오류입니다.", INTERNAL_SERVER_ERROR, "A_006"),
 	KAKAO_OAUTH_ERROR("카카오 서버 통신간 오류입니다.", INTERNAL_SERVER_ERROR, "A_007"),
-
-	REDIRECT_ERROR("리다이렉트간 에러입니다.", INTERNAL_SERVER_ERROR, "A_008");
+	;
 
 	private final String message;
 	private final HttpStatus status;

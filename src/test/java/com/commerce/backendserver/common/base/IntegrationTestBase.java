@@ -19,13 +19,14 @@ import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import org.springframework.restdocs.snippet.Attributes;
 import org.springframework.test.context.jdbc.Sql;
 
+import com.commerce.backendserver.auth.infra.jwt.JwtTokenProvider;
 import com.commerce.backendserver.common.fixture.MemberFixture;
 import com.commerce.backendserver.member.domain.Member;
 import com.commerce.backendserver.member.infra.persistence.MemberRepository;
-import com.commerce.backendserver.auth.infra.jwt.JwtTokenProvider;
 
-import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.config.RedirectConfig;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 
@@ -34,61 +35,66 @@ import io.restassured.specification.RequestSpecification;
 @Sql("/sql/clean.sql")
 public abstract class IntegrationTestBase {
 
-    protected static final String DEFAULT_PATH = "{class_name}/{method_name}/";
+	protected static final String DEFAULT_PATH = "{class_name}/{method_name}/";
 
-    protected RequestSpecification spec;
+	protected RequestSpecification spec;
 
-    @LocalServerPort
-    private int port;
+	@LocalServerPort
+	private int port;
 
-    @Autowired
-    private JwtTokenProvider provider;
+	@Autowired
+	private JwtTokenProvider provider;
 
-    @BeforeEach
-    void setUpRestDocs(RestDocumentationContextProvider restDocumentation) {
-        RestAssured.port = port;
-        this.spec = new RequestSpecBuilder()
-                .setPort(port)
-                .addFilter(documentationConfiguration(restDocumentation)
-                        .operationPreprocessors()
-                        .withRequestDefaults(prettyPrint())
-                        .withResponseDefaults(prettyPrint()))
-                .build();
-    }
+	@BeforeEach
+	void setUpRestDocs(RestDocumentationContextProvider restDocumentation) {
+		this.spec = new RequestSpecBuilder()
+			.setPort(port)
+			.addFilter(documentationConfiguration(restDocumentation)
+				.operationPreprocessors()
+				.withRequestDefaults(prettyPrint())
+				.withResponseDefaults(prettyPrint()))
+			.build();
 
-    protected Attributes.Attribute constraint(String value) {
-        return new Attributes.Attribute("constraints", value);
-    }
+		this.spec.config(
+			RestAssuredConfig.config()
+				.redirect(RedirectConfig.redirectConfig()
+					.followRedirects(false)))
+		;
+	}
 
-    protected String generateAccessToken(MemberRepository memberRepository) {
-        final Long memberId = saveMember(memberRepository);
-        return BEARER.concat(provider.createAccessToken(memberId));
-    }
+	protected Attributes.Attribute constraint(String value) {
+		return new Attributes.Attribute("constraints", value);
+	}
 
-    private Long saveMember(MemberRepository memberRepository) {
-        final Member member = MemberFixture.A.toEntity();
-        return memberRepository.save(member).getId();
-    }
+	protected String generateAccessToken(MemberRepository memberRepository) {
+		final Long memberId = saveMember(memberRepository);
+		return BEARER.concat(provider.createAccessToken(memberId));
+	}
 
-    protected void assertErrorResponse(
-            ValidatableResponse response,
-            HttpStatus status,
-            String errorMessage
-    ) {
-        response.statusCode(status.value())
-                .body("timeStamp", notNullValue(String.class))
-                .body("errorCode", notNullValue())
-                .body("errorMessage", is(errorMessage));
-    }
+	private Long saveMember(MemberRepository memberRepository) {
+		final Member member = MemberFixture.A.toEntity();
+		return memberRepository.save(member).getId();
+	}
 
-    protected RestDocumentationFilter documentErrorResponse() {
-        return document(
-                DEFAULT_PATH,
-                responseFields(
-                        fieldWithPath("timeStamp").description("에러 발생 시간"),
-                        fieldWithPath("errorCode").description("에러 상태코드"),
-                        fieldWithPath("errorMessage").description("에러 메세지")
-                )
-        );
-    }
+	protected void assertErrorResponse(
+		ValidatableResponse response,
+		HttpStatus status,
+		String errorMessage
+	) {
+		response.statusCode(status.value())
+			.body("timeStamp", notNullValue(String.class))
+			.body("errorCode", notNullValue())
+			.body("errorMessage", is(errorMessage));
+	}
+
+	protected RestDocumentationFilter documentErrorResponse() {
+		return document(
+			DEFAULT_PATH,
+			responseFields(
+				fieldWithPath("timeStamp").description("에러 발생 시간"),
+				fieldWithPath("errorCode").description("에러 상태코드"),
+				fieldWithPath("errorMessage").description("에러 메세지")
+			)
+		);
+	}
 }
