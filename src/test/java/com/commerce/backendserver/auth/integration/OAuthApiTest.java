@@ -28,6 +28,8 @@ import com.commerce.backendserver.auth.domain.model.OAuthTokenInfo;
 import com.commerce.backendserver.auth.infra.oauth.google.model.GoogleMemberInfo;
 import com.commerce.backendserver.auth.infra.oauth.google.model.GoogleTokenInfo;
 import com.commerce.backendserver.common.base.IntegrationTestBase;
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 
 import io.restassured.response.ValidatableResponse;
 
@@ -111,11 +113,19 @@ class OAuthApiTest extends IntegrationTestBase {
 	private RestDocumentationFilter redirectToOAuthAuthorizationDocuments() {
 		return document(
 			DEFAULT_PATH,
+			customOAuthApiSwagger(),
 			pathParameters(
-				parameterWithName("provider").description("소셜로그인 제공")
+				parameterWithName("provider").description("소셜로그인 제공자")
 					.attributes(constraint("구글, 카카오만 지원함"))
 			)
 		);
 	}
 
+	private ResourceSnippetParametersBuilder customOAuthApiSwagger() {
+		return ResourceSnippetParameters.builder()
+			.tag("인증 API")
+			.summary("소셜 로그인 API - @eunchannam")
+			.links()
+			.description("provider 로 지정한 소셜로그인 제공자의 소셜로그인 페이지로 리다이랙트한다");
+	}
 }
