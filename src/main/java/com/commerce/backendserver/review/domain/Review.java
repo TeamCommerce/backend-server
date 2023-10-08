@@ -49,8 +49,7 @@ public class Review extends BaseEntity {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String contents;
+	private Contents contents;
 
 	@Embedded
 	private Score score;
@@ -76,7 +75,7 @@ public class Review extends BaseEntity {
 		final Long writerId,
 		final List<String> imageUrls
 	) {
-		this.contents = contents;
+		this.contents = new Contents(contents);
 		this.score = new Score(score);
 		this.additionalInfoList = AdditionalInfoList.of(stringInfoSet, this);
 		this.product = product;
@@ -125,5 +124,9 @@ public class Review extends BaseEntity {
 
 	public int getScore() {
 		return score.getValue();
+	}
+
+	public String getContents() {
+		return contents.getValue();
 	}
 }
