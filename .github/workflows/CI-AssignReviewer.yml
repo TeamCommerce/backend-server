@@ -6,7 +6,7 @@ on:
 
 jobs:
   assign:
-    name: Assign Reviewer
+    name: [CI] Assign Reviewer
     runs-on: ubuntu-latest
     steps:
       - uses: hkusu/review-assign-action@v1
