@@ -1,13 +1,6 @@
 package com.commerce.backendserver.image.infra;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.commerce.backendserver.global.exception.CommerceException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
+import static com.commerce.backendserver.image.exception.ImageError.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,72 +8,79 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.commerce.backendserver.image.exception.ImageError.EMPTY_FILE;
-import static com.commerce.backendserver.image.exception.ImageError.UPLOAD_FAIL;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.commerce.backendserver.global.exception.CommerceException;
 
 @Component
 public class ImageManager {
 
-    private final AmazonS3Client amazonS3Client;
-    private final String bucketName;
+	private final AmazonS3Client amazonS3Client;
+	private final String bucketName;
 
-    public ImageManager(
-            AmazonS3Client amazonS3Client,
-            @Value("${cloud.aws.s3.bucket}") String bucketName
-    ) {
-        this.amazonS3Client = amazonS3Client;
-        this.bucketName = bucketName;
-    }
+	public ImageManager(
+		AmazonS3Client amazonS3Client,
+		@Value("${cloud.aws.s3.bucket}") String bucketName
+	) {
+		this.amazonS3Client = amazonS3Client;
+		this.bucketName = bucketName;
+	}
 
-    public List<String> uploadFiles(List<MultipartFile> files, String type) {
-        List<String> storeUrls = new ArrayList<>();
-        if (files != null) {
-            files.forEach(file -> storeUrls.add(uploadFile(file, type)));
-        }
-        return storeUrls;
-    }
+	public List<String> uploadFiles(List<MultipartFile> files, String type) {
+		List<String> storeUrls = new ArrayList<>();
+		if (files != null) {
+			files.forEach(file -> storeUrls.add(uploadFile(file, type)));
+		}
+		return storeUrls;
+	}
 
-    private String uploadFile(MultipartFile file, String type) {
-        validateFileExist(file);
+	private String uploadFile(MultipartFile file, String type) {
+		validateFileExist(file);
 
-        String originalFilename = file.getOriginalFilename();
-        String storeFilename = createStoreFilename(originalFilename, type);
+		String originalFilename = file.getOriginalFilename();
+		String storeFilename = createStoreFilename(originalFilename, type);
 
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType(file.getContentType());
-        metadata.setContentLength(file.getSize());
+		ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentType(file.getContentType());
+		metadata.setContentLength(file.getSize());
 
-        try (InputStream inputStream = file.getInputStream()) {
-            PutObjectRequest putObjectRequest = new PutObjectRequest(
-                    bucketName,
-                    storeFilename,
-                    inputStream,
-                    metadata).withCannedAcl(CannedAccessControlList.PublicRead);
+		try (InputStream inputStream = file.getInputStream()) {
+			PutObjectRequest putObjectRequest = new PutObjectRequest(
+				bucketName,
+				storeFilename,
+				inputStream,
+				metadata).withCannedAcl(CannedAccessControlList.PublicRead);
 
-            amazonS3Client.putObject(putObjectRequest);
-        } catch (IOException e) {
-            throw CommerceException.of(UPLOAD_FAIL);
-        }
+			amazonS3Client.putObject(putObjectRequest);
+		} catch (IOException e) {
+			throw CommerceException.of(UPLOAD_FAIL);
+		}
 
-        return amazonS3Client.getUrl(bucketName, storeFilename).toString();
-    }
+		return amazonS3Client.getUrl(bucketName, storeFilename).toString();
+	}
 
-    private void validateFileExist(MultipartFile file) {
-        if (file.isEmpty()) {
-            throw CommerceException.of(EMPTY_FILE);
-        }
-    }
+	private void validateFileExist(MultipartFile file) {
+		if (file.isEmpty()) {
+			throw CommerceException.of(EMPTY_FILE);
+		}
+	}
 
-    private String createStoreFilename(String originalFilename, String type) {
-        String ext = extractExt(originalFilename);
-        String filename = UUID.randomUUID() + ext;
+	private String createStoreFilename(String originalFilename, String type) {
+		String ext = extractExt(originalFilename);
+		String filename = UUID.randomUUID() + ext;
 
-        return BucketMetadata.generateFilename(filename, type);
-    }
+		return BucketMetadata.generateFilename(filename, type);
+	}
 
-    private String extractExt(String originalFilename) {
-        int index = originalFilename.lastIndexOf(".");
-        return originalFilename.substring(index);
-    }
+	private String extractExt(String originalFilename) {
+		int index = originalFilename.lastIndexOf(".");
+		return originalFilename.substring(index);
+	}
 }
 

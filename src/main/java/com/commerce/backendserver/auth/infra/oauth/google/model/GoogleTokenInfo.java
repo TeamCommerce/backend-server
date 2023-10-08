@@ -6,10 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @JsonNaming(value = SnakeCaseStrategy.class)
 public record GoogleTokenInfo(
-        String tokenType,
-        String accessToken,
-        String refreshToken,
-        long expiresIn
+	String tokenType,
+	String accessToken,
+	String refreshToken,
+	long expiresIn
 ) implements OAuthTokenInfo {
 
 }

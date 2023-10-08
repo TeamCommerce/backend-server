@@ -1,45 +1,46 @@
 package com.commerce.backendserver.review.domain.additionalinfo;
 
-import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
+import static com.commerce.backendserver.common.fixture.ReviewFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.commerce.backendserver.common.fixture.ReviewFixture.A;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import com.commerce.backendserver.review.domain.Review;
+import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
 
 @DisplayName("[AdditionalInfo Test] - Domain layer")
 public class AdditionalInfoTest {
 
-    @Test
-    @DisplayName("[of]")
-    void ofTest() {
-        //given
-        final InfoName infoName = InfoName.SIZE;
-        final String infoValue = "Large";
+	@Test
+	@DisplayName("[of]")
+	void ofTest() {
+		//given
+		final InfoName infoName = InfoName.SIZE;
+		final String infoValue = "Large";
 
-        //when
-        AdditionalInfo result = AdditionalInfo.of(infoName, infoValue);
+		//when
+		AdditionalInfo result = AdditionalInfo.of(infoName, infoValue);
 
-        //then
-        assertAll(
-                () -> assertThat(result.getInfoName()).isEqualTo(infoName),
-                () -> assertThat(result.getInfoValue()).isEqualTo(infoValue)
-        );
-    }
+		//then
+		assertAll(
+			() -> assertThat(result.getInfoName()).isEqualTo(infoName),
+			() -> assertThat(result.getInfoValue()).isEqualTo(infoValue)
+		);
+	}
 
-    @Test
-    @DisplayName("[registerReview method]")
-    void registerReview() {
-        //given
-        final Review review = A.toEntity(null, null, null);
-        final AdditionalInfo additionalInfo = AdditionalInfo.of(InfoName.SIZE, "Large");
+	@Test
+	@DisplayName("[registerReview method]")
+	void registerReview() {
+		//given
+		final Review review = A.toEntity(null, null, null);
+		final AdditionalInfo additionalInfo = AdditionalInfo.of(InfoName.SIZE, "Large");
 
-        //when
-        additionalInfo.registerReview(review);
+		//when
+		additionalInfo.registerReview(review);
 
-        //then
-        assertThat(additionalInfo.getReview()).isEqualTo(review);
-    }
+		//then
+		assertThat(additionalInfo.getReview()).isEqualTo(review);
+	}
 }

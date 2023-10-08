@@ -1,12 +1,17 @@
 package com.commerce.backendserver.review.domain.likereview;
 
-import jakarta.persistence.*;
+import static lombok.AccessLevel.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import static lombok.AccessLevel.PRIVATE;
 
 @Entity
 @Getter
@@ -14,27 +19,27 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LikeReview {
 
-    @Id
-    @Column(name = "like_review_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@Column(name = "like_review_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false, updatable = false)
-    private Long memberId;
+	@Column(nullable = false, updatable = false)
+	private Long memberId;
 
-    @Column(nullable = false, updatable = false)
-    private Long reviewId;
+	@Column(nullable = false, updatable = false)
+	private Long reviewId;
 
-    @Builder(access = PRIVATE)
-    private LikeReview(Long memberId, Long reviewId) {
-        this.memberId = memberId;
-        this.reviewId = reviewId;
-    }
+	@Builder(access = PRIVATE)
+	private LikeReview(Long memberId, Long reviewId) {
+		this.memberId = memberId;
+		this.reviewId = reviewId;
+	}
 
-    public static LikeReview of(Long memberId, Long reviewId) {
-        return LikeReview.builder()
-                .memberId(memberId)
-                .reviewId(reviewId)
-                .build();
-    }
+	public static LikeReview of(Long memberId, Long reviewId) {
+		return LikeReview.builder()
+			.memberId(memberId)
+			.reviewId(reviewId)
+			.build();
+	}
 }

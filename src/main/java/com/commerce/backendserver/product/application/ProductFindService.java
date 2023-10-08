@@ -22,27 +22,27 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class ProductFindService {
 
-    private final ProductRepository productRepository;
+	private final ProductRepository productRepository;
 
-    public ProductDetailResponse toSingleDetailResponse(Long id) {
-        Product product = productRepository.findProductInfoById(id)
-            .orElseThrow(() -> CommerceException.of(PRODUCT_NOT_FOUND));
+	public ProductDetailResponse toSingleDetailResponse(Long id) {
+		Product product = productRepository.findProductInfoById(id)
+			.orElseThrow(() -> CommerceException.of(PRODUCT_NOT_FOUND));
 
-        return ProductResponseAssembler.transferToDetailResponse(product);
-    }
+		return ProductResponseAssembler.transferToDetailResponse(product);
+	}
 
-    public ResponseWrapper<ProductSimpleResponse> toBestProductsResponse() {
-        List<Product> bestProducts = productRepository.findBestProducts();
-        validateProducts(bestProducts);
+	public ResponseWrapper<ProductSimpleResponse> toBestProductsResponse() {
+		List<Product> bestProducts = productRepository.findBestProducts();
+		validateProducts(bestProducts);
 
-        return ProductResponseAssembler.wrapSimpleResponses(bestProducts);
-    }
+		return ProductResponseAssembler.wrapSimpleResponses(bestProducts);
+	}
 
-    //== Validation Method ==//
-    private void validateProducts(List<Product> products) {
-        if (products.isEmpty()) {
-            throw CommerceException.of(PRODUCT_NOT_FOUND);
-        }
-    }
+	//== Validation Method ==//
+	private void validateProducts(List<Product> products) {
+		if (products.isEmpty()) {
+			throw CommerceException.of(PRODUCT_NOT_FOUND);
+		}
+	}
 }
 

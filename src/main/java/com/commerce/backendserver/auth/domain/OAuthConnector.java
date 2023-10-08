@@ -6,9 +6,9 @@ import com.commerce.backendserver.auth.domain.model.OAuthTokenInfo;
 
 public interface OAuthConnector {
 
-    boolean isSupported(final OAuthProvider provider);
+	boolean isSupported(final OAuthProvider provider);
 
-    OAuthTokenInfo fetchToken(final String code, final String state);
+	OAuthTokenInfo fetchToken(final String code, final String state);
 
-    OAuthMemberInfo fetchMemberInfo(final String accessToken);
+	OAuthMemberInfo fetchMemberInfo(final String accessToken);
 }

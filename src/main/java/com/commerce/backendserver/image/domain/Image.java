@@ -1,12 +1,18 @@
 package com.commerce.backendserver.image.domain;
 
-import jakarta.persistence.*;
+import static jakarta.persistence.GenerationType.*;
+import static jakarta.persistence.InheritanceType.*;
+import static lombok.AccessLevel.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import static jakarta.persistence.GenerationType.IDENTITY;
-import static jakarta.persistence.InheritanceType.SINGLE_TABLE;
-import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Entity
@@ -16,14 +22,14 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "t_image")
 public abstract class Image {
 
-    @Id
-    @Column(name = "image_id")
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+	@Id
+	@Column(name = "image_id")
+	@GeneratedValue(strategy = IDENTITY)
+	private Long id;
 
-    private String url;
+	private String url;
 
-    protected Image(String url) {
-        this.url = url;
-    }
+	protected Image(String url) {
+		this.url = url;
+	}
 }

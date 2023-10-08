@@ -32,6 +32,23 @@ jobs:
       - name: (Set Up) Grant Execute permission for gradlew
         run: chmod 777 gradlew
 
+      - name: (Check) Check Convention Main Dir.
+        run: ./gradlew check
+
+      - name: (Check) Add Comment on PR when Check Failure
+        if: failure()
+        run: |
+          echo "Checkstyle 검사에서 실패!\n코드 스타일을 수정해주세요." > comment.txt
+          cat comment.txt
+          PR_NUMBER=$(curl -s -X GET -G -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls" | jq -r ".[] | select(.head.ref == \"${{ github.head_ref }}\") | .number")
+          echo "PR 번호: $PR_NUMBER"
+          curl -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d @comment.txt \
+            "https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUMBER/comments"
+
       - name: (Build) Build with Gradle
         run: ./gradlew clean build -i
 
@@ -103,7 +120,7 @@ jobs:
             
             echo "#### RUN $SOURCE_DIR/$FILE_NAME ####"
             sudo java -jar -Dspring.profiles.active=db $SOURCE_DIR/$FILE_NAME > /dev/null 2>&1 &
-            
+
 
       - name: (Docs) Release Drafter
         if: github.ref == 'refs/heads/master' && github.event_name == 'push' && steps.deploy.outcome == 'success'

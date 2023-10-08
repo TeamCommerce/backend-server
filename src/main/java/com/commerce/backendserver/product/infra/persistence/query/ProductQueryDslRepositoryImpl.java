@@ -1,7 +1,8 @@
 package com.commerce.backendserver.product.infra.persistence.query;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

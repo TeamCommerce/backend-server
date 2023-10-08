@@ -1,21 +1,22 @@
 package com.commerce.backendserver.product.domain;
 
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository {
 
-    // Query
-    Optional<Product> findProductInfoById(Long id);
+	// Query
+	Optional<Product> findProductInfoById(Long id);
 
-    List<Product> findBestProducts();
+	List<Product> findBestProducts();
 
-    Optional<Product> findDistinctWithOptionsById(Long id);
+	Optional<Product> findById(Long id);
 
-    // Command
-    Product save(Product product);
+	Optional<Product> findDistinctWithOptionsById(Long id);
+
+	// Command
+	Product save(Product product);
 }

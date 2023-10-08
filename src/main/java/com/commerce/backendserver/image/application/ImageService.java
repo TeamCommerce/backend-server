@@ -1,19 +1,21 @@
 package com.commerce.backendserver.image.application;
 
-import com.commerce.backendserver.image.infra.ImageManager;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import com.commerce.backendserver.image.infra.ImageManager;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ImageService {
 
-    private final ImageManager imageManager;
+	private final ImageManager imageManager;
 
-    public List<String> uploadImages(List<MultipartFile> files, String type) {
-        return imageManager.uploadFiles(files, type);
-    }
+	public List<String> uploadImages(List<MultipartFile> files, String type) {
+		return imageManager.uploadFiles(files, type);
+	}
 }

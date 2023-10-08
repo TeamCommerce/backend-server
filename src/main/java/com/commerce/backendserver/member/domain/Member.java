@@ -1,13 +1,18 @@
 package com.commerce.backendserver.member.domain;
 
+import static jakarta.persistence.GenerationType.*;
+import static lombok.AccessLevel.*;
+
 import com.commerce.backendserver.global.auditing.BaseEntity;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import static jakarta.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
@@ -15,44 +20,44 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "t_member")
 public class Member extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "member_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "member_id")
+	private Long id;
 
-    @Column(unique = true)
-    private String oauthId;
+	@Column(unique = true)
+	private String oauthId;
 
-    private String oauthType;
+	private String oauthType;
 
-    private String nickname;
+	private String nickname;
 
-    //== Constructor Method ==//
-    @Builder
-    private Member(
-            String nickName,
-            String oauthId,
-            String oauthType
-    ) {
-        this.nickname = nickName;
-        this.oauthId = oauthId;
-        this.oauthType = oauthType;
-    }
+	//== Constructor Method ==//
+	@Builder
+	private Member(
+		String nickName,
+		String oauthId,
+		String oauthType
+	) {
+		this.nickname = nickName;
+		this.oauthId = oauthId;
+		this.oauthType = oauthType;
+	}
 
-    public static Member createMember(
-            String nickName,
-            String oauthId,
-            String oauthType
-    ) {
-        return Member.builder()
-                .nickName(nickName)
-                .oauthId(oauthId)
-                .oauthType(oauthType)
-                .build();
-    }
+	public static Member createMember(
+		String nickName,
+		String oauthId,
+		String oauthType
+	) {
+		return Member.builder()
+			.nickName(nickName)
+			.oauthId(oauthId)
+			.oauthType(oauthType)
+			.build();
+	}
 
-    ////== Business Method ==//
-    public void updateFromOAuth(String nickname) {
-        this.nickname = nickname;
-    }
+	////== Business Method ==//
+	public void updateFromOAuth(String nickname) {
+		this.nickname = nickname;
+	}
 }
