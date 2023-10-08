@@ -1,13 +1,14 @@
 package com.commerce.backendserver.member.infra.persistence;
 
-import com.commerce.backendserver.member.domain.Member;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import com.commerce.backendserver.member.domain.Member;
 
 @Transactional(readOnly = true)
 public interface MemberQueryRepository extends JpaRepository<Member, Long> {
 
-    Optional<Member> findByOauthId(String oauthId);
+	Optional<Member> findByOauthId(String oauthId);
 }

@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SimpleResponseWrapper<T> {
 
-    private T result;
+	private T result;
 }

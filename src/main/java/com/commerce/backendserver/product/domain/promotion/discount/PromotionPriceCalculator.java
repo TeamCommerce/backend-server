@@ -4,5 +4,5 @@ import com.commerce.backendserver.product.domain.ProductPriceAttribute;
 
 public interface PromotionPriceCalculator {
 
-    Integer getPromotionDiscountedAmount(ProductPriceAttribute attribute);
+	Integer getPromotionDiscountedAmount(ProductPriceAttribute attribute);
 }

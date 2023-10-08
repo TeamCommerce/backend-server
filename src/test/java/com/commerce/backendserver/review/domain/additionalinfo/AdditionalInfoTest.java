@@ -1,13 +1,14 @@
 package com.commerce.backendserver.review.domain.additionalinfo;
 
-import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
+import static com.commerce.backendserver.common.fixture.ReviewFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.commerce.backendserver.common.fixture.ReviewFixture.A;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import com.commerce.backendserver.review.domain.Review;
+import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
 
 @DisplayName("[AdditionalInfo Test] - Domain layer")
 public class AdditionalInfoTest {

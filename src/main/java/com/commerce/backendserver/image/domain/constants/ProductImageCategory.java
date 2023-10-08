@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public enum ProductImageCategory {
-    MAIN,
-    SPECIFIC;
+	MAIN,
+	SPECIFIC
 }

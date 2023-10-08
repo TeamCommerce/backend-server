@@ -1,14 +1,13 @@
 package com.commerce.backendserver.review.application.dto.response;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public record ReviewStatistics(
-	int totalReviewers,
-	Set<String> existSizes,
-	Map<Integer, RatioStatistic> scoreStatistics,
+	int totalReviewCount,
 	double averageScore,
-	List<AdditionalInfoStatistic> additionalInfoStatistics
+	Set<String> existSizes,
+	Map<String, RatioStatistic> scoreStatistics,
+	Map<String, Map<String, RatioStatistic>> additionalInfoStatistics
 ) {
 }

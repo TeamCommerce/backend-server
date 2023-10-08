@@ -14,14 +14,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum BucketMetadata {
 	REVIEW(
-		"review",
-		filename -> String.format("review/%s", filename)
+		"review", filename -> String.format("review/%s", filename)
 	),
 	PRODUCT(
-		"product",
-		filename -> String.format("product/%s", filename)
-	),
-	;
+		"product", filename -> String.format("product/%s", filename)
+	);
 
 	private final String type;
 	private final Function<String, String> of;

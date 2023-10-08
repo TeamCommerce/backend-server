@@ -46,32 +46,37 @@ public class ReviewQueryDslRepositoryImpl implements ReviewQueryDslRepository {
 	}
 
 	private BooleanExpression engColorNameIn(Set<String> engColorNames) {
-		if (engColorNames != null)
+		if (engColorNames != null) {
 			return productOption.color.engColorName.in(engColorNames);
+		}
 		return null;
 	}
 
 	private BooleanExpression sizeIn(Set<ProductSize> sizes) {
-		if (sizes != null)
+		if (sizes != null) {
 			return productOption.size.in(sizes);
+		}
 		return null;
 	}
 
 	private BooleanExpression selectionOptionIn(Set<String> selectionOptionValues) {
-		if (selectionOptionValues != null)
+		if (selectionOptionValues != null) {
 			return productOption.additionalOption.value.in(selectionOptionValues);
+		}
 		return null;
 	}
 
 	private BooleanExpression scoreIn(Set<Integer> scores) {
-		if (scores != null)
+		if (scores != null) {
 			return review.score.in(scores);
+		}
 		return null;
 	}
 
 	private BooleanExpression additionalInfoIn(Set<String> additionalInfoValues) {
-		if (additionalInfoValues != null)
+		if (additionalInfoValues != null) {
 			return additionalInfo.infoValue.in(additionalInfoValues);
+		}
 		return null;
 	}
 }

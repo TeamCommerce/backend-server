@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.commerce.backendserver.common.base.RepositoryTestBase;
 import com.commerce.backendserver.common.fixture.ReviewFixture;
 import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.product.domain.option.ProductOption;
 import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.infra.persistence.ProductCommandRepository;
@@ -26,20 +27,19 @@ import com.commerce.backendserver.product.infra.persistence.promotion.PromotionC
 import com.commerce.backendserver.review.domain.Review;
 import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
 
+/**
+ * ReviewFixture, Product 도메인 관련 Fixture 의 데이터가 바뀌면 테스트가 실패할 수 있음!! 주의!!
+ */
 @DisplayName("[ReviewQueryRepository Test] - Infra layer")
 class ReviewQueryRepositoryTest extends RepositoryTestBase {
 
+	private final Set<Review> reviews = new HashSet<>();
 	@Autowired
 	private ReviewQueryRepository reviewQueryRepository;
-
 	@Autowired
 	private ProductCommandRepository productRepository;
-
 	@Autowired
 	private PromotionCommandRepository promotionRepository;
-
-	private final Set<Review> reviews = new HashSet<>();
-
 	private List<Product> products;
 
 	@BeforeEach
@@ -59,6 +59,23 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 
 			reviews.add(reviewQueryRepository.save(reviewFixtures[i].toEntity(product, 1L, optionId)));
 		}
+	}
+
+	private List<Review> fetchExpectedReviews(List<Long> expectedOptionIds) {
+		return reviews.stream()
+			.filter(review -> expectedOptionIds.contains(review.getProductOptionId()))
+			.toList();
+	}
+
+	private List<Long> generateExpectedOptionIds(
+		final Predicate<ProductOption> hasConditionCommand
+	) {
+		return products.stream()
+			.map(Product::getOptions)
+			.flatMap(List::stream)
+			.filter(hasConditionCommand)
+			.map(ProductOption::getId)
+			.toList();
 	}
 
 	@Nested
@@ -89,17 +106,10 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 			);
 
 			//then
-			assertThat(result).hasSize(2);
-
-			List<Long> expectedOptionIds = generateExpectedOptionIds(
-				product -> {
-					String engColorName = product.getOptions().get(0).getColor().getEngColorName();
-					return engColorNames.contains(engColorName);
-				});
-
-			List<Review> expectedReviews = fetchExpectedReviews(expectedOptionIds);
-
-			assertThat(result).containsAll(expectedReviews);
+			assertQueryResultByProductCondition(
+				option -> engColorNames.contains(option.getColor().getEngColorName()),
+				result
+			);
 		}
 
 		@Test
@@ -115,9 +125,8 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 
 			//then
 			assertQueryResultByProductCondition(
-				product -> sizes.contains(product.getOptions().get(0).getSize()),
-				result,
-				2
+				option -> sizes.contains(option.getSize()),
+				result
 			);
 		}
 
@@ -134,12 +143,8 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 
 			//then
 			assertQueryResultByProductCondition(
-				product -> {
-					String optionValue = product.getOptions().get(0).getAdditionalOption().getValue();
-					return additionalOptionValues.contains(optionValue);
-				},
-				result,
-				2
+				option -> additionalOptionValues.contains(option.getAdditionalOption().getValue()),
+				result
 			);
 		}
 
@@ -157,8 +162,7 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 			//then
 			assertQueryResultByReviewCondition(
 				review -> scores.contains(review.getScore()),
-				result,
-				2
+				result
 			);
 		}
 
@@ -180,52 +184,32 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 						.map(AdditionalInfo::getInfoValue).toList();
 					return targetInfoValues.stream().anyMatch(additionalInfoValues::contains);
 				},
-				result,
-				2
+				result
 			);
 		}
 
 		private void assertQueryResultByProductCondition(
-			final Predicate<Product> hasConditionCommand,
-			final List<Review> result,
-			final int expectedSize
+			final Predicate<ProductOption> hasConditionCommand,
+			final List<Review> result
 		) {
-			assertThat(result).hasSize(expectedSize);
-
 			List<Long> expectedOptionIds = generateExpectedOptionIds(hasConditionCommand);
 
 			List<Review> expectedReviews = fetchExpectedReviews(expectedOptionIds);
 
+			assertThat(result).hasSameSizeAs(expectedReviews);
 			assertThat(result).containsAll(expectedReviews);
 		}
 
 		private void assertQueryResultByReviewCondition(
 			final Predicate<Review> hasConditionCommand,
-			final List<Review> result,
-			final int expectedSize
+			final List<Review> result
 		) {
-			assertThat(result).hasSize(expectedSize);
-
 			List<Review> expectedReviews = reviews.stream()
 				.filter(hasConditionCommand)
 				.toList();
 
+			assertThat(result).hasSameSizeAs(expectedReviews);
 			assertThat(result).containsAll(expectedReviews);
 		}
-	}
-
-	private List<Review> fetchExpectedReviews(List<Long> expectedOptionIds) {
-		return reviews.stream()
-			.filter(review -> expectedOptionIds.contains(review.getProductOptionId()))
-			.toList();
-	}
-
-	private List<Long> generateExpectedOptionIds(
-		final Predicate<Product> hasConditionCommand
-	) {
-		return products.stream()
-			.filter(hasConditionCommand)
-			.map(product -> product.getOptions().get(0).getId())
-			.toList();
 	}
 }

@@ -1,21 +1,22 @@
 package com.commerce.backendserver.image.application;
 
-import com.commerce.backendserver.common.base.MockTestBase;
-import com.commerce.backendserver.image.infra.ImageManager;
+import static com.commerce.backendserver.common.utils.FileMockingUtils.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.IntStream;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.IntStream;
-
-import static com.commerce.backendserver.common.utils.FileMockingUtils.createMockMultipartFiles;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.BDDMockito.given;
+import com.commerce.backendserver.common.base.MockTestBase;
+import com.commerce.backendserver.image.infra.ImageManager;
 
 @DisplayName("[ImageService Test] - Application layer")
 class ImageServiceTest extends MockTestBase {

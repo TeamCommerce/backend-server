@@ -1,16 +1,16 @@
 package com.commerce.backendserver.review.application.utils.validator;
 
-import com.commerce.backendserver.global.exception.CommerceException;
+import static com.commerce.backendserver.common.fixture.ReviewFixture.*;
+import static com.commerce.backendserver.review.exception.ReviewError.*;
+import static org.assertj.core.api.Assertions.*;
+
+import java.util.Set;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
-
-import static com.commerce.backendserver.common.fixture.ReviewFixture.A;
-import static com.commerce.backendserver.review.exception.ReviewError.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import com.commerce.backendserver.global.exception.CommerceException;
 
 @DisplayName("[AdditionalInfoValidator Test] - Application layer")
 class AdditionalInfoValidatorTest {
@@ -52,8 +52,8 @@ class AdditionalInfoValidatorTest {
 
 			//when, then
 			assertThatThrownBy(() -> validator.isValid(invalidValue, null))
-					.isInstanceOf(CommerceException.class)
-					.hasMessageContaining(INVALID_ADDITIONAL_INFO.getMessage());
+				.isInstanceOf(CommerceException.class)
+				.hasMessageContaining(INVALID_ADDITIONAL_INFO.getMessage());
 		}
 
 		@Test
@@ -64,8 +64,8 @@ class AdditionalInfoValidatorTest {
 
 			//when, then
 			assertThatThrownBy(() -> validator.isValid(invalidValue, null))
-					.isInstanceOf(CommerceException.class)
-					.hasMessageContaining(INVALID_INTEGER_INFO_VALUE.getMessage());
+				.isInstanceOf(CommerceException.class)
+				.hasMessageContaining(INVALID_INTEGER_INFO_VALUE.getMessage());
 		}
 
 		@Test
@@ -76,8 +76,8 @@ class AdditionalInfoValidatorTest {
 
 			//when, then
 			assertThatThrownBy(() -> validator.isValid(invalidValue, null))
-					.isInstanceOf(CommerceException.class)
-					.hasMessageContaining(NOT_EXIST_INFO_NAME.getMessage());
+				.isInstanceOf(CommerceException.class)
+				.hasMessageContaining(NOT_EXIST_INFO_NAME.getMessage());
 		}
 	}
 }
