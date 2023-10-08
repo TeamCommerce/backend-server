@@ -22,37 +22,6 @@ import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoNam
 @DisplayName("[Review Test] - Domain layer")
 public class ReviewTest {
 
-	private List<AdditionalInfo> generateExpectedAdditionalInfo(Set<String> stringInfoSet) {
-		List<AdditionalInfo> expected = new ArrayList<>(
-			stringInfoSet.stream()
-				.map(info -> {
-					String[] split = info.split("/");
-					return AdditionalInfo.of(InfoName.valueOf(split[0]), split[1]);
-				}).toList()
-		);
-
-		expected.sort(comparingInt(info -> info.getInfoName().getOrder()));
-
-		return expected;
-	}
-
-	private void assertAdditionalInfoMatching(
-		List<AdditionalInfo> actual,
-		List<AdditionalInfo> expected
-	) {
-		assertThat(actual).hasSameSizeAs(expected);
-
-		IntStream.range(0, actual.size())
-			.forEach(i -> {
-				AdditionalInfo actualInfo = actual.get(i);
-				AdditionalInfo expectedInfo = expected.get(i);
-				assertAll(
-					() -> assertThat(actualInfo.getInfoName()).isEqualTo(expectedInfo.getInfoName()),
-					() -> assertThat(actualInfo.getInfoValue()).isEqualTo(expectedInfo.getInfoValue())
-				);
-			});
-	}
-
 	@Nested
 	@DisplayName("[createReview]")
 	class createReviewTest {
@@ -62,7 +31,8 @@ public class ReviewTest {
 			new ArrayList<>(),
 			new ArrayList<>(),
 			null,
-			null);
+			null
+		);
 		private final Long writerId = 1L;
 		private final Long productOptionId = 1L;
 
@@ -113,5 +83,36 @@ public class ReviewTest {
 			//then
 			assertThat(result.getImages()).isEmpty();
 		}
+	}
+
+	private List<AdditionalInfo> generateExpectedAdditionalInfo(Set<String> stringInfoSet) {
+		List<AdditionalInfo> expected = new ArrayList<>(
+			stringInfoSet.stream()
+				.map(info -> {
+					String[] split = info.split("/");
+					return AdditionalInfo.of(InfoName.valueOf(split[0]), split[1]);
+				}).toList()
+		);
+
+		expected.sort(comparingInt(info -> info.getInfoName().getOrder()));
+
+		return expected;
+	}
+
+	private void assertAdditionalInfoMatching(
+		List<AdditionalInfo> actual,
+		List<AdditionalInfo> expected
+	) {
+		assertThat(actual).hasSameSizeAs(expected);
+
+		IntStream.range(0, actual.size())
+			.forEach(i -> {
+				AdditionalInfo actualInfo = actual.get(i);
+				AdditionalInfo expectedInfo = expected.get(i);
+				assertAll(
+					() -> assertThat(actualInfo.getInfoName()).isEqualTo(expectedInfo.getInfoName()),
+					() -> assertThat(actualInfo.getInfoValue()).isEqualTo(expectedInfo.getInfoValue())
+				);
+			});
 	}
 }

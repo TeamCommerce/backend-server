@@ -67,7 +67,7 @@ public class ReviewQueryDslRepository {
 
 	private BooleanExpression scoreIn(Set<Integer> scores) {
 		if (scores != null) {
-			return review.score.in(scores);
+			return review.score.value.in(scores);
 		}
 		return null;
 	}
