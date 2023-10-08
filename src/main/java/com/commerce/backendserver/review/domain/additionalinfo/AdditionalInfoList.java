@@ -1,6 +1,7 @@
 package com.commerce.backendserver.review.domain.additionalinfo;
 
 import static com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName.*;
+import static com.commerce.backendserver.review.exception.ReviewError.*;
 import static jakarta.persistence.CascadeType.*;
 import static java.util.Comparator.*;
 import static lombok.AccessLevel.*;
@@ -13,7 +14,9 @@ import java.util.Set;
 
 import org.hibernate.annotations.OnDelete;
 
+import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.review.domain.Review;
+import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
@@ -39,46 +42,67 @@ public class AdditionalInfoList {
 	////== Construct Method ==//
 	@Builder
 	private AdditionalInfoList(
-		Set<String> stringInfoSet,
-		Review review
+		final Set<String> infoSet,
+		final Review review
 	) {
-		List<AdditionalInfo> additionalInfoList = toAdditionalInfoList(stringInfoSet);
+		//null inSet 이 null 인 경우는 예외가 아닌 통과
+		if (infoSet == null) {
+			return;
+		}
+
+		validateAdditionalInfo(infoSet);
+		List<AdditionalInfo> additionalInfoList = toAdditionalInfoList(infoSet);
 		applyAdditionalInfo(additionalInfoList, review);
 	}
 
 	public static AdditionalInfoList of(
-		Set<String> stringInfoSet,
-		Review review
+		final Set<String> infoSet,
+		final Review review
 	) {
 		return AdditionalInfoList.builder()
-			.stringInfoSet(stringInfoSet)
+			.infoSet(infoSet)
 			.review(review)
 			.build();
 	}
 
-	private List<AdditionalInfo> toAdditionalInfoList(Set<String> stringInfoSet) {
-		if (stringInfoSet == null) {
-			return new ArrayList<>();
-		}
-		List<AdditionalInfo> additionalInfoList = new ArrayList<>(
-			stringInfoSet.stream()
-				.map(info -> {
-					String[] splitInfo = info.split("/");
+	private List<AdditionalInfo> toAdditionalInfoList(final Set<String> infoSet) {
+		return infoSet.stream()
+			.map(info -> {
+				String[] splitInfo = info.split("/");
+				validateInfoFormat(splitInfo);
 
-					return AdditionalInfo.of(
-						matchInfoName(splitInfo[0]),
-						splitInfo[1]);
-				}).toList());
+				InfoName infoName = getInfoName(splitInfo[0]);
+				String infoValue = splitInfo[1];
+				infoName.validateInfoNameType(infoValue);
 
-		additionalInfoList.sort(COMPARATOR);
-		return additionalInfoList;
+				return AdditionalInfo.of(infoName, infoValue);
+			})
+			.sorted(COMPARATOR)
+			.toList();
 	}
 
 	private void applyAdditionalInfo(
-		List<AdditionalInfo> additionalInfoList,
-		Review review
+		final List<AdditionalInfo> additionalInfoList,
+		final Review review
 	) {
 		additionalInfoList.forEach(additionalInfo -> additionalInfo.registerReview(review));
 		this.list.addAll(additionalInfoList);
+	}
+
+	private void validateAdditionalInfo(final Set<String> infoSet) {
+		infoSet.forEach(target -> {
+			String[] splitInfo = target.split("/");
+			validateInfoFormat(splitInfo);
+
+			InfoName infoName = getInfoName(splitInfo[0]);
+			String infoValue = splitInfo[1];
+			infoName.validateInfoNameType(infoValue);
+		});
+	}
+
+	private void validateInfoFormat(final String[] splitInfo) {
+		if (splitInfo.length != 2) {
+			throw CommerceException.of(INVALID_ADDITIONAL_INFO);
+		}
 	}
 }
