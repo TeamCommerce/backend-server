@@ -5,17 +5,17 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class ContentsLengthValidator implements ConstraintValidator<ValidContentsLength, String> {
 
-    private int min;
+	private int min;
 
-    @Override
-    public void initialize(ValidContentsLength constraintAnnotation) {
-        this.min = constraintAnnotation.min();
-    }
+	@Override
+	public void initialize(ValidContentsLength constraintAnnotation) {
+		this.min = constraintAnnotation.min();
+	}
 
-    @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
-        String trimValue = value.replaceAll(" ", "");
+	@Override
+	public boolean isValid(String value, ConstraintValidatorContext context) {
+		String trimValue = value.replaceAll(" ", "");
 
-        return trimValue.length() >= min;
-    }
+		return trimValue.length() >= min;
+	}
 }

@@ -25,8 +25,8 @@ import com.commerce.backendserver.common.base.MockTestBase;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.image.application.ImageService;
 import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.product.domain.ProductRepository;
 import com.commerce.backendserver.product.domain.option.ProductOption;
-import com.commerce.backendserver.product.infra.persistence.ProductQueryRepository;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import com.commerce.backendserver.review.domain.Review;
 import com.commerce.backendserver.review.infra.persistence.ReviewRepository;
@@ -34,108 +34,108 @@ import com.commerce.backendserver.review.infra.persistence.ReviewRepository;
 @DisplayName("[ReviewService Test] - Application layer")
 class ReviewServiceTest extends MockTestBase {
 
-    @InjectMocks
-    private ReviewService reviewService;
+	@InjectMocks
+	private ReviewService reviewService;
 
-    @Mock
-    private ProductQueryRepository productQueryRepository;
-    @Mock
-    private ReviewRepository reviewRepository;
-    @Mock
-    private ImageService imageService;
+	@Mock
+	private ProductRepository productRepository;
+	@Mock
+	private ReviewRepository reviewRepository;
+	@Mock
+	private ImageService imageService;
 
-    @Nested
-    @DisplayName("[createReview]")
-    class createReview {
+	private Review generateReviewHasId() {
+		Review review = A.toEntity(null, null, null);
+		setField(review, "id", 1L);
 
-        private CreateReviewRequest request;
+		return review;
+	}
 
-        @BeforeEach
-        void setUp() throws IOException {
-            //given
-            request = A.toCreateRequest();
+	private Optional<Product> generateProductOf(final Consumer<Product> productOptionManager) {
+		Product product = VALID_PRODUCT.toEntity(null);
+		productOptionManager.accept(product);
 
-            given(imageService.uploadImages(anyList(), anyString()))
-                .willReturn(generateImageUrls());
-        }
+		return Optional.of(product);
+	}
 
-        @Test
-        @DisplayName("[success]")
-        void success() {
-            //given
-            given(productQueryRepository.findDistinctWithOptionsById(1L))
-                .willReturn(generateProductOf(
-                    product -> setProductOptionsId(product.getOptions(), request.productOptionId()))
-                );
+	private Optional<Product> generateProductEmpty() {
+		return Optional.empty();
+	}
 
-            given(reviewRepository.save(any(Review.class)))
-                .willReturn(generateReviewHasId());
+	private List<String> generateImageUrls() {
+		return List.of("hello1.jpg", "hello2.jpg");
+	}
 
-            //when
-            Long result = reviewService.createReview(request, 1L);
+	private void setProductOptionsId(final List<ProductOption> options, final Long id) {
+		for (int i = 0; i < options.size(); i++) {
+			setField(options.get(i), "id", i + id);
+		}
+	}
 
-            //then
-            assertThat(result).isEqualTo(1L);
-        }
+	@Nested
+	@DisplayName("[createReview]")
+	class createReview {
 
-        @Test
-        @DisplayName("[Fail] 해당 Id의 상품이 존재하지 않아 실패")
-        void failWhenProductNotFound() {
-            //given
-            given(productQueryRepository.findDistinctWithOptionsById(1L))
-                .willReturn(generateProductEmpty());
+		private CreateReviewRequest request;
 
-            //when, then
-            assertThatThrownBy(() -> reviewService.createReview(request, 1L))
-                .isInstanceOf(CommerceException.class)
-                .hasMessageContaining(GLOBAL_NOT_FOUND.getMessage());
-        }
+		@BeforeEach
+		void setUp() throws IOException {
+			//given
+			request = A.toCreateRequest();
 
-        @Test
-        @DisplayName("[Fail] 입력한 ProductOptionId 가 입력한 Product 의 옵션에 존재하지 않아 실패한다")
-        void failWhenNoProductOptionIdInProduct() {
-            //given
-            final Long invalidProductOptionId = 1000L;
-            given(productQueryRepository.findDistinctWithOptionsById(1L))
-                .willReturn(generateProductOf(
-                    product -> setProductOptionsId(product.getOptions(), invalidProductOptionId))
-                );
+			given(imageService.uploadImages(anyList(), anyString()))
+				.willReturn(generateImageUrls());
+		}
 
-            //when
-            ThrowingCallable throwingCallable = () -> reviewService.createReview(request, 1L);
+		@Test
+		@DisplayName("[success]")
+		void success() {
+			//given
+			given(productRepository.findDistinctWithOptionsById(1L))
+				.willReturn(generateProductOf(
+					product -> setProductOptionsId(product.getOptions(), request.productOptionId()))
+				);
 
-            //then
-            assertThatThrownBy(throwingCallable)
-                .isInstanceOf(CommerceException.class)
-                .hasMessageContaining(NOT_MATCH_PRODUCT_OPTION_ID.getMessage());
-        }
-    }
+			given(reviewRepository.save(any(Review.class)))
+				.willReturn(generateReviewHasId());
 
-    private Review generateReviewHasId() {
-        Review review = A.toEntity(null, null, null);
-        setField(review, "id", 1L);
+			//when
+			Long result = reviewService.createReview(request, 1L);
 
-        return review;
-    }
+			//then
+			assertThat(result).isEqualTo(1L);
+		}
 
-    private Optional<Product> generateProductOf(final Consumer<Product> productOptionManager) {
-        Product product = VALID_PRODUCT.toEntity(null);
-        productOptionManager.accept(product);
+		@Test
+		@DisplayName("[Fail] 해당 Id의 상품이 존재하지 않아 실패")
+		void failWhenProductNotFound() {
+			//given
+			given(productRepository.findDistinctWithOptionsById(1L))
+				.willReturn(generateProductEmpty());
 
-        return Optional.of(product);
-    }
+			//when, then
+			assertThatThrownBy(() -> reviewService.createReview(request, 1L))
+				.isInstanceOf(CommerceException.class)
+				.hasMessageContaining(GLOBAL_NOT_FOUND.getMessage());
+		}
 
-    private Optional<Product> generateProductEmpty() {
-        return Optional.empty();
-    }
+		@Test
+		@DisplayName("[Fail] 입력한 ProductOptionId 가 입력한 Product 의 옵션에 존재하지 않아 실패한다")
+		void failWhenNoProductOptionIdInProduct() {
+			//given
+			final Long invalidProductOptionId = 1000L;
+			given(productRepository.findDistinctWithOptionsById(1L))
+				.willReturn(generateProductOf(
+					product -> setProductOptionsId(product.getOptions(), invalidProductOptionId))
+				);
 
-    private List<String> generateImageUrls() {
-        return List.of("hello1.jpg", "hello2.jpg");
-    }
+			//when
+			ThrowingCallable throwingCallable = () -> reviewService.createReview(request, 1L);
 
-    private void setProductOptionsId(final List<ProductOption> options, final Long id) {
-        for (int i = 0; i < options.size(); i++) {
-            setField(options.get(i), "id", i + id);
-        }
-    }
+			//then
+			assertThatThrownBy(throwingCallable)
+				.isInstanceOf(CommerceException.class)
+				.hasMessageContaining(NOT_MATCH_PRODUCT_OPTION_ID.getMessage());
+		}
+	}
 }

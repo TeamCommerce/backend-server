@@ -7,6 +7,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ProductBrand {
 
-    ADADIS,
-    IUP_STUDIO
+	ADADIS,
+	IUP_STUDIO
 }

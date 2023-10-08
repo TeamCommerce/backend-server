@@ -78,8 +78,7 @@ public class JwtTokenProvider {
 				.parseClaimsJws(token);
 		} catch (final ExpiredJwtException e) {
 			throw CommerceException.of(TOKEN_EXPIRED);
-		} catch (final SecurityException | MalformedJwtException |
-					   UnsupportedJwtException | IllegalArgumentException e
+		} catch (final SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e
 		) {
 			throw CommerceException.of(TOKEN_INVALID);
 		}

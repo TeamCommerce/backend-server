@@ -6,11 +6,11 @@ import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.product.domain.option.constants.ProductStatus;
 
 public record ProductOptionResponse(
-        Long optionId,
-        ProductColor color,
-        ProductAdditionalOption additionalOption,
-        Integer inventory,
-        ProductStatus status,
-        ProductSize size
+	Long optionId,
+	ProductColor color,
+	ProductAdditionalOption additionalOption,
+	Integer inventory,
+	ProductStatus status,
+	ProductSize size
 ) {
 }

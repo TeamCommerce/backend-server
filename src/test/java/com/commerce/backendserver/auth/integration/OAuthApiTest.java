@@ -39,6 +39,25 @@ class OAuthApiTest extends IntegrationTestBase {
 	@MockBean
 	private RestTemplate restTemplate;
 
+	private RestDocumentationFilter redirectToOAuthAuthorizationDocuments() {
+		return document(
+			DEFAULT_PATH,
+			customOAuthApiSwagger(),
+			pathParameters(
+				parameterWithName("provider").description("소셜로그인 제공자")
+					.attributes(constraint("구글, 카카오만 지원함"))
+			)
+		);
+	}
+
+	private ResourceSnippetParametersBuilder customOAuthApiSwagger() {
+		return ResourceSnippetParameters.builder()
+			.tag("인증 API")
+			.summary("소셜 로그인 API - @eunchannam")
+			.links()
+			.description("provider 로 지정한 소셜로그인 제공자의 소셜로그인 페이지로 리다이랙트한다");
+	}
+
 	@Nested
 	@DisplayName("[redirectToOAuthAuthorization]")
 	class 소셜로그인_페이지로_리다이렉트 {
@@ -108,24 +127,5 @@ class OAuthApiTest extends IntegrationTestBase {
 				.body("accessToken", notNullValue())
 				.body("refreshToken", notNullValue());
 		}
-	}
-
-	private RestDocumentationFilter redirectToOAuthAuthorizationDocuments() {
-		return document(
-			DEFAULT_PATH,
-			customOAuthApiSwagger(),
-			pathParameters(
-				parameterWithName("provider").description("소셜로그인 제공자")
-					.attributes(constraint("구글, 카카오만 지원함"))
-			)
-		);
-	}
-
-	private ResourceSnippetParametersBuilder customOAuthApiSwagger() {
-		return ResourceSnippetParameters.builder()
-			.tag("인증 API")
-			.summary("소셜 로그인 API - @eunchannam")
-			.links()
-			.description("provider 로 지정한 소셜로그인 제공자의 소셜로그인 페이지로 리다이랙트한다");
 	}
 }

@@ -7,6 +7,7 @@ buildscript {
 plugins {
     id 'java'
     id 'jacoco'
+    id 'checkstyle'
     id 'org.springframework.boot' version '3.1.2'
     id 'io.spring.dependency-management' version '1.1.2'
     id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}" //RestDocs
@@ -16,19 +17,39 @@ plugins {
 group = 'com.commerce'
 version = '0.0.1-SNAPSHOT'
 
+java {
+    sourceCompatibility = '17'
+}
+
 jacoco {
     toolVersion = "0.8.10"
     reportsDirectory = layout.buildDirectory.dir('JacocoReportDir')
 }
 
-java {
-    sourceCompatibility = '17'
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+checkstyleMain.source = fileTree('src/main/java')
+
+checkstyle {
+    // To Occur Build Exception When
+    maxWarnings = 0
+    configFile = file("config/checkstyle/naver-checkstyle-rules.xml")
+    configProperties = ["suppressionFile": "config/checkstyle/naver-checkstyle-suppresions.xml"]
+    sourceSets = [sourceSets.main] // To Avoid compileQueryDsl Error
 }
 
 def querydslDir = "src/main/generated"
 
 sourceSets {
-    main.java.srcDirs += [ querydslDir ]
+    main.java.srcDirs += [querydslDir]
 }
 
 tasks.withType(JavaCompile) {
@@ -135,26 +156,29 @@ processResources {
     dependsOn copyGitSubmodule
 }
 
-tasks.register('copySwaggerUI', Copy) {
-    dependsOn 'openapi3'
-
-    delete file('src/main/resources/static/docs/')
-
-    from "$buildDir/api-spec/openapi3.yaml"
-    into "src/main/resources/static/docs/"
-}
-
-//openAPI 작성 자동화를 위해 패키징 전에 openapi3 테스크 선실행을 유발
-bootJar{
-    dependsOn('copySwaggerUI')
-}
-
 openapi3 {
-    server = "http://115.85.182.164:8080"
-    title = "API 문서"
+    server = "http://www.rheefine.com:8080"
+    title = "Commerce API 문서"
     description = "Spring REST Docs with SwaggerUI."
     version = "0.0.1"
-    format = 'yaml'
+    outputFileNamePrefix = 'commerce'
+    format = 'json'
 
-    outputDirectory = "build/api-spec"
+    outputDirectory = 'build/resources/main/static'
 }
+
+task copyDocs {
+    dependsOn(':openapi3')
+    doLast {
+        delete 'src/main/resources/static/backlog.json'
+        copy {
+            from "build/resources/main/static/commerce.json"
+            into "src/main/resources/static/"
+        }
+    }
+}
+
+bootJar {
+    dependsOn(':copyDocs')
+}
+

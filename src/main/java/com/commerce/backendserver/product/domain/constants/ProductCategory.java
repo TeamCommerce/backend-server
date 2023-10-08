@@ -5,6 +5,6 @@ import lombok.Getter;
 @Getter
 public enum ProductCategory {
 
-    TOP,
-    BOT
+	TOP,
+	BOT
 }

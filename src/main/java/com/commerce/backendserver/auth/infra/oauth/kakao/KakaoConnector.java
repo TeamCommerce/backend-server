@@ -12,13 +12,13 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.auth.domain.OAuthConnector;
 import com.commerce.backendserver.auth.domain.model.OAuthMemberInfo;
 import com.commerce.backendserver.auth.domain.model.OAuthProvider;
 import com.commerce.backendserver.auth.domain.model.OAuthTokenInfo;
 import com.commerce.backendserver.auth.infra.oauth.kakao.model.KakaoMemberInfo;
 import com.commerce.backendserver.auth.infra.oauth.kakao.model.KakaoTokenInfo;
+import com.commerce.backendserver.global.exception.CommerceException;
 
 import lombok.RequiredArgsConstructor;
 

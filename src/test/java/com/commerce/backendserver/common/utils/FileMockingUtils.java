@@ -39,7 +39,7 @@ public abstract class FileMockingUtils {
 			"file",
 			"hello.png",
 			"image/png",
-			new byte[]{}
+			new byte[] {}
 		);
 	}
 }

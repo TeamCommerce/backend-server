@@ -6,9 +6,9 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.commerce.backendserver.auth.domain.AuthTokenManager;
 import com.commerce.backendserver.global.annotation.FetchAuthInfo;
 import com.commerce.backendserver.global.resolver.dto.AuthInfo;
-import com.commerce.backendserver.auth.domain.AuthTokenManager;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

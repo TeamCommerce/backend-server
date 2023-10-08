@@ -1,22 +1,22 @@
 package com.commerce.backendserver.review.application.utils.validator;
 
-import com.commerce.backendserver.common.base.MockTestBase;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
+import com.commerce.backendserver.common.base.MockTestBase;
 
 @DisplayName("[ContentsLengthValidator Test] - Application layer")
 class ContentsLengthValidatorTest extends MockTestBase {
 
+	private final ContentsLengthValidator validator = new ContentsLengthValidator();
 	@Mock
 	private ValidContentsLength validContentsLength;
-
-	private final ContentsLengthValidator validator = new ContentsLengthValidator();
 
 	@BeforeEach
 	void setUp() {

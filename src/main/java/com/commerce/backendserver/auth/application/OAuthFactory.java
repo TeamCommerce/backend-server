@@ -6,10 +6,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.auth.domain.OAuthConnector;
 import com.commerce.backendserver.auth.domain.OAuthUriGenerator;
 import com.commerce.backendserver.auth.domain.model.OAuthProvider;
+import com.commerce.backendserver.global.exception.CommerceException;
 
 import lombok.RequiredArgsConstructor;
 

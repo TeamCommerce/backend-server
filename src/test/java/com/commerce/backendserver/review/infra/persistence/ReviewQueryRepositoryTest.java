@@ -33,17 +33,13 @@ import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
 @DisplayName("[ReviewQueryRepository Test] - Infra layer")
 class ReviewQueryRepositoryTest extends RepositoryTestBase {
 
+	private final Set<Review> reviews = new HashSet<>();
 	@Autowired
 	private ReviewQueryRepository reviewQueryRepository;
-
 	@Autowired
 	private ProductCommandRepository productRepository;
-
 	@Autowired
 	private PromotionCommandRepository promotionRepository;
-
-	private final Set<Review> reviews = new HashSet<>();
-
 	private List<Product> products;
 
 	@BeforeEach
@@ -63,6 +59,23 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 
 			reviews.add(reviewQueryRepository.save(reviewFixtures[i].toEntity(product, 1L, optionId)));
 		}
+	}
+
+	private List<Review> fetchExpectedReviews(List<Long> expectedOptionIds) {
+		return reviews.stream()
+			.filter(review -> expectedOptionIds.contains(review.getProductOptionId()))
+			.toList();
+	}
+
+	private List<Long> generateExpectedOptionIds(
+		final Predicate<ProductOption> hasConditionCommand
+	) {
+		return products.stream()
+			.map(Product::getOptions)
+			.flatMap(List::stream)
+			.filter(hasConditionCommand)
+			.map(ProductOption::getId)
+			.toList();
 	}
 
 	@Nested
@@ -198,22 +211,5 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 			assertThat(result).hasSameSizeAs(expectedReviews);
 			assertThat(result).containsAll(expectedReviews);
 		}
-	}
-
-	private List<Review> fetchExpectedReviews(List<Long> expectedOptionIds) {
-		return reviews.stream()
-			.filter(review -> expectedOptionIds.contains(review.getProductOptionId()))
-			.toList();
-	}
-
-	private List<Long> generateExpectedOptionIds(
-		final Predicate<ProductOption> hasConditionCommand
-	) {
-		return products.stream()
-			.map(Product::getOptions)
-			.flatMap(List::stream)
-			.filter(hasConditionCommand)
-			.map(ProductOption::getId)
-			.toList();
 	}
 }

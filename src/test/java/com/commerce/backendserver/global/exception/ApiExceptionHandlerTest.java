@@ -20,20 +20,32 @@ import com.commerce.backendserver.common.controller.TestController;
 @DisplayName("ApiExceptionHandler Test")
 class ApiExceptionHandlerTest extends WebMvcTestBase {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Nested
-    @DisplayName("Exception Handling Test")
-    class exceptionHandler {
+	private static void assertErrorResponse(
+		ResultActions actions,
+		ResultMatcher statusMather,
+		String errorMessage
+	) throws Exception {
+		actions.andExpectAll(
+			statusMather,
+			jsonPath("$.errorMessage").value(errorMessage),
+			jsonPath("$.errorCode").isNotEmpty()
+		);
+	}
 
-        private static final String BASE_URL = "/test";
+	@Nested
+	@DisplayName("Exception Handling Test")
+	class exceptionHandler {
 
-        @Test
-        @DisplayName("[MethodArgumentNotValidException]")
-        void handleMethodArgumentNotValidException() throws Exception {
-            //given
-            String emptyString = "";
+		private static final String BASE_URL = "/test";
+
+		@Test
+		@DisplayName("[MethodArgumentNotValidException]")
+		void handleMethodArgumentNotValidException() throws Exception {
+			//given
+			String emptyString = "";
 
 			MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
 				.get(BASE_URL + "/method-param-ex")
@@ -46,15 +58,15 @@ class ApiExceptionHandlerTest extends WebMvcTestBase {
 			assertErrorResponse(actions, status().isBadRequest(), "Not Blank");
 		}
 
-        @Test
-        @DisplayName("[CommerceException]")
-        void handleCommerceException() throws Exception {
-            //given
-            MockHttpServletRequestBuilder badRequest = MockMvcRequestBuilders
-                .get(BASE_URL + "/commerce-ex?isServerError=false");
+		@Test
+		@DisplayName("[CommerceException]")
+		void handleCommerceException() throws Exception {
+			//given
+			MockHttpServletRequestBuilder badRequest = MockMvcRequestBuilders
+				.get(BASE_URL + "/commerce-ex?isServerError=false");
 
-            MockHttpServletRequestBuilder internalServerError = MockMvcRequestBuilders
-                .get(BASE_URL + "/commerce-ex?isServerError=true");
+			MockHttpServletRequestBuilder internalServerError = MockMvcRequestBuilders
+				.get(BASE_URL + "/commerce-ex?isServerError=true");
 
 			//when
 			ResultActions badRequestActions = mockMvc.perform(badRequest);
@@ -64,17 +76,5 @@ class ApiExceptionHandlerTest extends WebMvcTestBase {
 			assertErrorResponse(badRequestActions, status().isBadRequest(), "error");
 			assertErrorResponse(serverErrorActions, status().is5xxServerError(), "error");
 		}
-    }
-
-	private static void assertErrorResponse(
-		ResultActions actions,
-		ResultMatcher statusMather,
-		String errorMessage
-	) throws Exception {
-		actions.andExpectAll(
-			statusMather,
-			jsonPath("$.errorMessage").value(errorMessage),
-			jsonPath("$.errorCode").isNotEmpty()
-		);
 	}
 }

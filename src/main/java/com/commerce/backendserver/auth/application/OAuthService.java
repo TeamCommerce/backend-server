@@ -6,15 +6,15 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.commerce.backendserver.member.domain.Member;
-import com.commerce.backendserver.member.infra.persistence.MemberQueryRepository;
-import com.commerce.backendserver.member.infra.persistence.MemberRepository;
 import com.commerce.backendserver.auth.application.dto.AuthTokenResponse;
 import com.commerce.backendserver.auth.domain.AuthTokenManager;
 import com.commerce.backendserver.auth.domain.OAuthConnector;
 import com.commerce.backendserver.auth.domain.model.AuthToken;
 import com.commerce.backendserver.auth.domain.model.OAuthMemberInfo;
 import com.commerce.backendserver.auth.domain.model.OAuthTokenInfo;
+import com.commerce.backendserver.member.domain.Member;
+import com.commerce.backendserver.member.infra.persistence.MemberQueryRepository;
+import com.commerce.backendserver.member.infra.persistence.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 

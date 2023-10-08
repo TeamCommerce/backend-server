@@ -32,43 +32,6 @@ class ProductQueryRepositoryTest extends RepositoryTestBase {
 	@Autowired
 	private PromotionCommandRepository promotionCommandRepository;
 
-	@Nested
-	@DisplayName("[findWithOptionsById]")
-	class findWithOptionsByIdTest {
-
-		@Test
-		@DisplayName("[Success]")
-		void success() {
-			//given
-			Promotion promotion = promotionCommandRepository.save(VALID_FIX_PROMOTION.toEntity());
-			Product expected = productQueryRepository.save(VALID_PRODUCT.toEntity(promotion));
-
-			//when
-			Optional<Product> result = productQueryRepository.findDistinctWithOptionsById(expected.getId());
-
-			//then
-			assertThat(result).isPresent();
-
-			Product actual = result.get();
-			assertAll(
-				() -> assertImagesMatching(actual.getImages(), expected.getImages()),
-				() -> assertOptionsMatching(actual.getOptions(), expected.getOptions()),
-				() -> assertProductCommonInfoMatching(actual.getCommonInfo(), expected.getCommonInfo()),
-				() -> assertProductPriceAttributeMatching(actual.getPriceAttribute(), expected.getPriceAttribute())
-			);
-		}
-
-		@Test
-		@DisplayName("[Fail] 해당 id 에 맞는 상품이 없을 경우 null optional 을 리턴한다")
-		void failWhenNoProductHasInputId() {
-			//when
-			Optional<Product> result = productQueryRepository.findDistinctWithOptionsById(1L);
-
-			//then
-			assertThat(result).isEmpty();
-		}
-	}
-
 	private void assertImagesMatching(List<ProductImage> actual, List<ProductImage> expected) {
 		assertThat(actual).hasSameSizeAs(expected);
 		IntStream.range(0, actual.size())
@@ -132,5 +95,42 @@ class ProductQueryRepositoryTest extends RepositoryTestBase {
 				.isEqualTo(expected.getPromotionValue()),
 			() -> assertThat(actual.getName()).isEqualTo(expected.getName())
 		);
+	}
+
+	@Nested
+	@DisplayName("[findWithOptionsById]")
+	class findWithOptionsByIdTest {
+
+		@Test
+		@DisplayName("[Success]")
+		void success() {
+			//given
+			Promotion promotion = promotionCommandRepository.save(VALID_FIX_PROMOTION.toEntity());
+			Product expected = productQueryRepository.save(VALID_PRODUCT.toEntity(promotion));
+
+			//when
+			Optional<Product> result = productQueryRepository.findDistinctWithOptionsById(expected.getId());
+
+			//then
+			assertThat(result).isPresent();
+
+			Product actual = result.get();
+			assertAll(
+				() -> assertImagesMatching(actual.getImages(), expected.getImages()),
+				() -> assertOptionsMatching(actual.getOptions(), expected.getOptions()),
+				() -> assertProductCommonInfoMatching(actual.getCommonInfo(), expected.getCommonInfo()),
+				() -> assertProductPriceAttributeMatching(actual.getPriceAttribute(), expected.getPriceAttribute())
+			);
+		}
+
+		@Test
+		@DisplayName("[Fail] 해당 id 에 맞는 상품이 없을 경우 null optional 을 리턴한다")
+		void failWhenNoProductHasInputId() {
+			//when
+			Optional<Product> result = productQueryRepository.findDistinctWithOptionsById(1L);
+
+			//then
+			assertThat(result).isEmpty();
+		}
 	}
 }

@@ -11,19 +11,6 @@ public record KakaoMemberInfo(
 	KakaoAccount kakaoAccount
 ) implements OAuthMemberInfo {
 
-	@JsonNaming(value = SnakeCaseStrategy.class)
-	public record KakaoAccount(
-		Profile profile,
-		String email
-	) {
-	}
-
-	@JsonNaming(value = SnakeCaseStrategy.class)
-	public record Profile(
-		String nickname
-	) {
-	}
-
 	@Override
 	public String oauthId() {
 		return id;
@@ -37,5 +24,18 @@ public record KakaoMemberInfo(
 	@Override
 	public String email() {
 		return kakaoAccount.email;
+	}
+
+	@JsonNaming(value = SnakeCaseStrategy.class)
+	public record KakaoAccount(
+		Profile profile,
+		String email
+	) {
+	}
+
+	@JsonNaming(value = SnakeCaseStrategy.class)
+	public record Profile(
+		String nickname
+	) {
 	}
 }

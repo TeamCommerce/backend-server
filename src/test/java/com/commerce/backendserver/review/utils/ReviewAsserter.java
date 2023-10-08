@@ -58,8 +58,8 @@ public abstract class ReviewAsserter {
 	}
 
 	/**
-	 * @param actual : 실제 결과값
-	 * @param keyList : 기댓값 AdditionalInfoStatistic 의 key list
+	 * @param actual     : 실제 결과값
+	 * @param keyList    : 기댓값 AdditionalInfoStatistic 의 key list
 	 * @param dtoSetList : 기댓값 AdditionalInfoStatistic 의 value 인 Map 의 key, key 각각의 count(개수) 를 담은 list
 	 */
 	public static void assertAdditionalInfoStatistic(
@@ -83,7 +83,7 @@ public abstract class ReviewAsserter {
 	}
 
 	/**
-	 * @param actual : 실제 결과값
+	 * @param actual  : 실제 결과값
 	 * @param reviews : 기댓값 제작을 위한 review
 	 */
 	public static void assertReviewStatistic(

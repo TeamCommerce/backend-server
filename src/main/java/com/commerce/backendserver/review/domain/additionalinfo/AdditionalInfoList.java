@@ -1,25 +1,25 @@
 package com.commerce.backendserver.review.domain.additionalinfo;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.OneToMany;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import org.hibernate.annotations.OnDelete;
+import static com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName.*;
+import static jakarta.persistence.CascadeType.*;
+import static java.util.Comparator.*;
+import static lombok.AccessLevel.*;
+import static org.hibernate.annotations.OnDeleteAction.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-import static com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName.*;
-import static jakarta.persistence.CascadeType.PERSIST;
-import static java.util.Comparator.*;
-import static lombok.AccessLevel.PROTECTED;
-import static org.hibernate.annotations.OnDeleteAction.CASCADE;
+import org.hibernate.annotations.OnDelete;
 
 import com.commerce.backendserver.review.domain.Review;
+
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.OneToMany;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
@@ -57,9 +57,9 @@ public class AdditionalInfoList {
 	}
 
 	private List<AdditionalInfo> toAdditionalInfoList(Set<String> stringInfoSet) {
-		if (stringInfoSet == null)
+		if (stringInfoSet == null) {
 			return new ArrayList<>();
-
+		}
 		List<AdditionalInfo> additionalInfoList = new ArrayList<>(
 			stringInfoSet.stream()
 				.map(info -> {

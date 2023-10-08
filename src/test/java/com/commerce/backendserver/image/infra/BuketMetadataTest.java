@@ -1,6 +1,9 @@
 package com.commerce.backendserver.image.infra;
 
-import com.commerce.backendserver.global.exception.CommerceException;
+import static com.commerce.backendserver.image.exception.ImageError.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -8,10 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static com.commerce.backendserver.image.exception.ImageError.INVALID_IMAGE_TYPE;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import com.commerce.backendserver.global.exception.CommerceException;
 
 @DisplayName("[BuketMetadata Test] - Infra layer")
 class BuketMetadataTest {
@@ -46,8 +46,8 @@ class BuketMetadataTest {
 
 			//then
 			assertThatThrownBy(throwingCallable)
-					.isInstanceOf(CommerceException.class)
-					.hasMessageContaining(INVALID_IMAGE_TYPE.getMessage());
+				.isInstanceOf(CommerceException.class)
+				.hasMessageContaining(INVALID_IMAGE_TYPE.getMessage());
 		}
 	}
 }
