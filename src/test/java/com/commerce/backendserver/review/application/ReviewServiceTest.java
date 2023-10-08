@@ -4,6 +4,7 @@ import com.commerce.backendserver.common.base.MockTestBase;
 import com.commerce.backendserver.global.exception.CommerceException;
 import com.commerce.backendserver.image.application.ImageService;
 import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.product.domain.ProductRepository;
 import com.commerce.backendserver.product.domain.option.ProductOption;
 import com.commerce.backendserver.product.infra.persistence.ProductQueryRepository;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
@@ -38,7 +39,7 @@ class ReviewServiceTest extends MockTestBase {
     private ReviewService reviewService;
 
     @Mock
-    private ProductQueryRepository productQueryRepository;
+    private ProductRepository productRepository;
     @Mock
     private ReviewRepository reviewRepository;
     @Mock
@@ -91,7 +92,7 @@ class ReviewServiceTest extends MockTestBase {
         @DisplayName("[success]")
         void success() {
             //given
-            given(productQueryRepository.findDistinctWithOptionsById(1L))
+            given(productRepository.findDistinctWithOptionsById(1L))
                     .willReturn(generateProductOf(
                             product -> setProductOptionsId(product.getOptions(), request.productOptionId()))
                     );
@@ -110,7 +111,7 @@ class ReviewServiceTest extends MockTestBase {
         @DisplayName("[Fail] 해당 Id의 상품이 존재하지 않아 실패")
         void failWhenProductNotFound() {
             //given
-            given(productQueryRepository.findDistinctWithOptionsById(1L))
+            given(productRepository.findDistinctWithOptionsById(1L))
                     .willReturn(generateProductEmpty());
 
             //when, then
@@ -124,7 +125,7 @@ class ReviewServiceTest extends MockTestBase {
         void failWhenNoProductOptionIdInProduct() {
             //given
             final Long invalidProductOptionId = 1000L;
-            given(productQueryRepository.findDistinctWithOptionsById(1L))
+            given(productRepository.findDistinctWithOptionsById(1L))
                     .willReturn(generateProductOf(
                             product -> setProductOptionsId(product.getOptions(), invalidProductOptionId))
                     );

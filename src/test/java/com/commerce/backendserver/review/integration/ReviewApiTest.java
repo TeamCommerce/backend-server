@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.commerce.backendserver.common.base.IntegrationTestBase;
 import com.commerce.backendserver.member.infra.persistence.MemberRepository;
+import com.commerce.backendserver.product.domain.ProductRepository;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.infra.persistence.ProductCommandRepository;
 import com.commerce.backendserver.product.infra.persistence.promotion.PromotionCommandRepository;
@@ -43,7 +44,7 @@ class ReviewApiTest extends IntegrationTestBase {
     private AmazonS3Client amazonS3Client;
 
     @Autowired
-    private ProductCommandRepository productCommandRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private PromotionCommandRepository promotionCommandRepository;
@@ -61,7 +62,7 @@ class ReviewApiTest extends IntegrationTestBase {
                 .willReturn(mockUrl);
 
         Promotion savedPromotion = promotionCommandRepository.save(VALID_FIX_PROMOTION.toEntity());
-        productCommandRepository.save(VALID_PRODUCT.toEntity(savedPromotion));
+        productRepository.save(VALID_PRODUCT.toEntity(savedPromotion));
 
     }
 

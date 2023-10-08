@@ -2,6 +2,7 @@ package com.commerce.backendserver.product.integration;
 
 import com.commerce.backendserver.common.base.IntegrationTestBase;
 import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.product.domain.ProductRepository;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.infra.persistence.ProductCommandRepository;
 import com.commerce.backendserver.product.infra.persistence.promotion.PromotionCommandRepository;
@@ -36,14 +37,14 @@ class ProductFindApiTest extends IntegrationTestBase {
     Promotion savedPromotion;
 
     @Autowired
-    private ProductCommandRepository productCommandRepository;
+    private ProductRepository productRepository;
     @Autowired
     private PromotionCommandRepository promotionCommandRepository;
 
     @BeforeEach
     void setUp() {
         savedPromotion = promotionCommandRepository.save(VALID_FIX_PROMOTION.toEntity());
-        savedProduct = productCommandRepository.save(VALID_PRODUCT.toEntity(savedPromotion));
+        savedProduct = productRepository.save(VALID_PRODUCT.toEntity(savedPromotion));
         id = savedProduct.getId();
     }
 
@@ -141,7 +142,7 @@ class ProductFindApiTest extends IntegrationTestBase {
         void 정가보다_정액_할인_프로모션_가격이_크므로_실패() {
             //given
             Promotion tooHighPromotion = promotionCommandRepository.save(TOO_HIGH_PROMOTION.toEntity());
-            Product minusPriceProduct = productCommandRepository.save(VALID_PRODUCT.toEntity(tooHighPromotion));
+            Product minusPriceProduct = productRepository.save(VALID_PRODUCT.toEntity(tooHighPromotion));
 
             //when && then
             given(spec)
@@ -165,7 +166,7 @@ class ProductFindApiTest extends IntegrationTestBase {
         void 정액_할인_프로모션_값이_음수면_실패() {
             //given
             Promotion minusPromotion = promotionCommandRepository.save(MINUS_FIX_PROMOTION.toEntity());
-            Product product = productCommandRepository.save(VALID_PRODUCT.toEntity(minusPromotion));
+            Product product = productRepository.save(VALID_PRODUCT.toEntity(minusPromotion));
 
             //when && then
             given(spec)

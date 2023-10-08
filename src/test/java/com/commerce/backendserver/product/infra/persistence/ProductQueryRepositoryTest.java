@@ -5,6 +5,7 @@ import com.commerce.backendserver.image.domain.ProductImage;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.ProductCommonInfo;
 import com.commerce.backendserver.product.domain.ProductPriceAttribute;
+import com.commerce.backendserver.product.domain.ProductRepository;
 import com.commerce.backendserver.product.domain.option.ProductOption;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.infra.persistence.promotion.PromotionCommandRepository;
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class ProductQueryRepositoryTest extends RepositoryTestBase {
 
     @Autowired
-    private ProductQueryRepository productQueryRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private PromotionCommandRepository promotionCommandRepository;
@@ -105,10 +106,10 @@ class ProductQueryRepositoryTest extends RepositoryTestBase {
         void success() {
             //given
             Promotion promotion = promotionCommandRepository.save(VALID_FIX_PROMOTION.toEntity());
-            Product expected = productQueryRepository.save(VALID_PRODUCT.toEntity(promotion));
+            Product expected = productRepository.save(VALID_PRODUCT.toEntity(promotion));
 
             //when
-            Optional<Product> result = productQueryRepository.findDistinctWithOptionsById(expected.getId());
+            Optional<Product> result = productRepository.findDistinctWithOptionsById(expected.getId());
 
             //then
             assertThat(result).isPresent();
@@ -126,7 +127,7 @@ class ProductQueryRepositoryTest extends RepositoryTestBase {
         @DisplayName("[Fail] 해당 id 에 맞는 상품이 없을 경우 null optional 을 리턴한다")
         void failWhenNoProductHasInputId() {
             //when
-            Optional<Product> result = productQueryRepository.findDistinctWithOptionsById(1L);
+            Optional<Product> result = productRepository.findDistinctWithOptionsById(1L);
 
             //then
             assertThat(result).isEmpty();
