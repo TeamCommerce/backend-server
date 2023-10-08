@@ -1,4 +1,4 @@
-package com.commerce.backendserver.review.infra.persistence;
+package com.commerce.backendserver.review.domain;
 
 import static com.commerce.backendserver.product.domain.option.constants.ProductSize.*;
 import static com.commerce.backendserver.product.fixture.ProductFixture.*;
@@ -24,15 +24,13 @@ import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.infra.persistence.ProductCommandRepository;
 import com.commerce.backendserver.product.infra.persistence.promotion.PromotionCommandRepository;
-import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.domain.ReviewRepository;
 import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
 
 /**
  * ReviewFixture, Product 도메인 관련 Fixture 의 데이터가 바뀌면 테스트가 실패할 수 있음!! 주의!!
  */
-@DisplayName("[ReviewQueryRepository Test] - Infra layer")
-class ReviewQueryRepositoryTest extends RepositoryTestBase {
+@DisplayName("[ReviewRepository Test] - Domain layer")
+class ReviewRepositoryTest extends RepositoryTestBase {
 
 	private final Set<Review> reviews = new HashSet<>();
 

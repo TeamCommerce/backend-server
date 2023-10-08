@@ -3,7 +3,7 @@ package com.commerce.backendserver.review.infra.persistence;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.review.domain.Review;
@@ -12,7 +12,7 @@ import com.commerce.backendserver.review.infra.persistence.query.ReviewQueryDslR
 
 import lombok.RequiredArgsConstructor;
 
-@Component
+@Repository
 @RequiredArgsConstructor
 public class ReviewRepositoryAdapter implements ReviewRepository {
 

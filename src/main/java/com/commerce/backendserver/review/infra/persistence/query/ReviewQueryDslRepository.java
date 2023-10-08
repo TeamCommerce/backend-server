@@ -7,6 +7,8 @@ import static com.commerce.backendserver.review.domain.additionalinfo.QAdditiona
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.stereotype.Repository;
+
 import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.review.domain.Review;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -14,6 +16,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
 
+@Repository
 @RequiredArgsConstructor
 public class ReviewQueryDslRepository {
 
