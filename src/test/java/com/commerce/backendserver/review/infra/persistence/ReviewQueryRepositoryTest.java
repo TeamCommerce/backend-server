@@ -25,6 +25,7 @@ import com.commerce.backendserver.product.domain.promotion.Promotion;
 import com.commerce.backendserver.product.infra.persistence.ProductCommandRepository;
 import com.commerce.backendserver.product.infra.persistence.promotion.PromotionCommandRepository;
 import com.commerce.backendserver.review.domain.Review;
+import com.commerce.backendserver.review.domain.ReviewRepository;
 import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
 
 /**
@@ -34,12 +35,16 @@ import com.commerce.backendserver.review.domain.additionalinfo.AdditionalInfo;
 class ReviewQueryRepositoryTest extends RepositoryTestBase {
 
 	private final Set<Review> reviews = new HashSet<>();
+
 	@Autowired
-	private ReviewQueryRepository reviewQueryRepository;
+	private ReviewRepository reviewRepository;
+
 	@Autowired
 	private ProductCommandRepository productRepository;
+
 	@Autowired
 	private PromotionCommandRepository promotionRepository;
+
 	private List<Product> products;
 
 	@BeforeEach
@@ -57,7 +62,7 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 			Product product = products.get(i);
 			Long optionId = product.getOptions().get(0).getId();
 
-			reviews.add(reviewQueryRepository.save(reviewFixtures[i].toEntity(product, 1L, optionId)));
+			reviews.add(reviewRepository.save(reviewFixtures[i].toEntity(product, 1L, optionId)));
 		}
 	}
 
@@ -86,7 +91,7 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 		@DisplayName("[Success] 조건이 없을때 모든 리뷰를 조회한다")
 		void successWhenNoCondition() {
 			//when
-			List<Review> result = reviewQueryRepository.findReviewByStatisticCondition(
+			List<Review> result = reviewRepository.findReviewByStatisticCondition(
 				null, null, null, null, null
 			);
 
@@ -101,7 +106,7 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 			Set<String> engColorNames = Set.of("blue", "red");
 
 			//when
-			List<Review> result = reviewQueryRepository.findReviewByStatisticCondition(
+			List<Review> result = reviewRepository.findReviewByStatisticCondition(
 				engColorNames, null, null, null, null
 			);
 
@@ -119,7 +124,7 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 			Set<ProductSize> sizes = Set.of(TWO_XS, L);
 
 			//when
-			List<Review> result = reviewQueryRepository.findReviewByStatisticCondition(
+			List<Review> result = reviewRepository.findReviewByStatisticCondition(
 				null, sizes, null, null, null
 			);
 
@@ -137,7 +142,7 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 			Set<String> additionalOptionValues = Set.of("O");
 
 			//when
-			List<Review> result = reviewQueryRepository.findReviewByStatisticCondition(
+			List<Review> result = reviewRepository.findReviewByStatisticCondition(
 				null, null, additionalOptionValues, null, null
 			);
 
@@ -155,7 +160,7 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 			Set<Integer> scores = Set.of(4, 2);
 
 			//when
-			List<Review> result = reviewQueryRepository.findReviewByStatisticCondition(
+			List<Review> result = reviewRepository.findReviewByStatisticCondition(
 				null, null, null, scores, null
 			);
 
@@ -173,7 +178,7 @@ class ReviewQueryRepositoryTest extends RepositoryTestBase {
 			Set<String> additionalInfoValues = Set.of("Large", "Small");
 
 			//when
-			List<Review> result = reviewQueryRepository.findReviewByStatisticCondition(
+			List<Review> result = reviewRepository.findReviewByStatisticCondition(
 				null, null, null, null, additionalInfoValues
 			);
 

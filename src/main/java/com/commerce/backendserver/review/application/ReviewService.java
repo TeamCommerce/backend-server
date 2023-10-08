@@ -15,7 +15,7 @@ import com.commerce.backendserver.product.domain.ProductRepository;
 import com.commerce.backendserver.product.domain.option.ProductOption;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.infra.persistence.ReviewRepository;
+import com.commerce.backendserver.review.domain.ReviewRepository;
 
 import lombok.RequiredArgsConstructor;
 
