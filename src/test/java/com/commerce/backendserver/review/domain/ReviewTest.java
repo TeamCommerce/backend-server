@@ -71,8 +71,8 @@ public class ReviewTest {
 		void SuccessWhenImageUrlsNull() {
 			//when
 			Review result = Review.createReview(
-				null,
-				null,
+				"contents",
+				1,
 				null,
 				null,
 				null,

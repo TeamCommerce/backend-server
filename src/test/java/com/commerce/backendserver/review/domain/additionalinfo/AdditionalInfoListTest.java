@@ -14,7 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import com.commerce.backendserver.review.domain.Review;
 import com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName;
 
 @DisplayName("[AdditionalInfoList Test] (Domain layer)")
@@ -55,15 +54,6 @@ class AdditionalInfoListTest {
 	@DisplayName("[of]")
 	class ofTest {
 
-		private final Review review = Review.createReview(
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null);
-
 		@Test
 		@DisplayName("[Success] StringInfoSet이 Null이 아닐 때 성공")
 		void SuccessWhenPresentNotNullStringInfoSet() {
@@ -71,7 +61,7 @@ class AdditionalInfoListTest {
 			Set<String> stringInfoSet = A.getStringInfoSet();
 
 			//when
-			AdditionalInfoList result = AdditionalInfoList.of(stringInfoSet, review);
+			AdditionalInfoList result = AdditionalInfoList.of(stringInfoSet, null);
 
 			//then
 			List<AdditionalInfo> expected = generateExpectedAdditionalInfo(stringInfoSet);
@@ -83,7 +73,7 @@ class AdditionalInfoListTest {
 		@DisplayName("[Success] StringInfoSet이 Null일 때 성공")
 		void SuccessWhenPresentNullStringInfoSet() {
 			//when
-			AdditionalInfoList result = AdditionalInfoList.of(null, review);
+			AdditionalInfoList result = AdditionalInfoList.of(null, null);
 
 			//then
 			assertThat(result.getList()).isEmpty();
