@@ -5,7 +5,6 @@ import static com.commerce.backendserver.review.exception.ReviewError.*;
 
 import java.util.List;
 
-import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +13,7 @@ import com.commerce.backendserver.image.application.ImageService;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.ProductRepository;
 import com.commerce.backendserver.product.domain.option.ProductOption;
+import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
 import com.commerce.backendserver.review.domain.Review;
 import com.commerce.backendserver.review.infra.persistence.ReviewRepository;
 

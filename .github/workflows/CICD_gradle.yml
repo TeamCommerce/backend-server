@@ -42,9 +42,9 @@ jobs:
         if: always()  # 항상 실행
         run: |
           if [ ${{ job.status }} == "success" ]; then
-            MESSAGE="코드 스타일 검사 성공!"
+            MESSAGE="Checkstyle 검사 성공!"
           else
-            MESSAGE="Checkstyle 검사에서 실패!\n코드 스타일을 수정해주세요."
+            MESSAGE="Checkstyle 검사 실패!\n코드 스타일을 수정해주세요.\nCI 빌드를 종료합니다."
           fi
           
           echo '{"body": "'"$MESSAGE"'"}' > comment.json
