@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ProductRepository {
 
     // Query
-    Optional<Product> findProductInfoById(@Param("id") Long id);
+    Optional<Product> findProductInfoById(Long id);
 
     List<Product> findBestProducts();
 
