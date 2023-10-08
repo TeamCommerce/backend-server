@@ -17,7 +17,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public abstract class ReviewAsserter {
+public final class ReviewAsserter {
 
 	public static void assertScoreStatistic(
 		Map<String, RatioStatistic> result,

@@ -1,4 +1,4 @@
-package com.commerce.backendserver.review.integration;
+package com.commerce.backendserver.review.fixture;
 
 import static com.commerce.backendserver.common.fixture.CommonRequestFixture.*;
 import static lombok.AccessLevel.*;
@@ -23,7 +23,7 @@ import io.restassured.specification.RequestSpecification;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = PRIVATE)
-public abstract class ReviewAcceptanceFixture {
+public final class ReviewRequestFixture {
 	private static final String BASE_URL = "/api/reviews";
 
 	public static ValidatableResponse 리뷰_등록_성공(
@@ -40,7 +40,7 @@ public abstract class ReviewAcceptanceFixture {
 		);
 	}
 
-	public static ValidatableResponse failByInvalidRangeScope(
+	public static ValidatableResponse 잘못된_리뷰점수_범위로_실패한다(
 		final RequestSpecification spec,
 		final Set<RestDocumentationFilter> documentations,
 		final String accessToken
@@ -53,7 +53,7 @@ public abstract class ReviewAcceptanceFixture {
 		);
 	}
 
-	public static ValidatableResponse failWhenPresentInvalidContentLength(
+	public static ValidatableResponse 콘텐츠_길이가_부족하여_실패한다(
 		final RequestSpecification spec,
 		final Set<RestDocumentationFilter> documentations,
 		final String accessToken
@@ -66,7 +66,7 @@ public abstract class ReviewAcceptanceFixture {
 		);
 	}
 
-	public static ValidatableResponse failWhenPresentInvalidAdditionalInfoFormat(
+	public static ValidatableResponse 잘못된_추가정보의_형식으로_실패한다(
 		final RequestSpecification spec,
 		final Set<RestDocumentationFilter> documentations,
 		final String accessToken
@@ -79,7 +79,7 @@ public abstract class ReviewAcceptanceFixture {
 		);
 	}
 
-	public static ValidatableResponse failWhenPresentNonexistenceInfoName(
+	public static ValidatableResponse 존재하지_않는_추가정보로_실패한다(
 		final RequestSpecification spec,
 		final Set<RestDocumentationFilter> documentations,
 		final String accessToken
@@ -92,7 +92,7 @@ public abstract class ReviewAcceptanceFixture {
 		);
 	}
 
-	public static ValidatableResponse failWhenPresentInvalidIntegerInfoValue(
+	public static ValidatableResponse 숫자형_추가정보에_문자를_실패한다(
 		final RequestSpecification spec,
 		final Set<RestDocumentationFilter> documentations,
 		final String accessToken
