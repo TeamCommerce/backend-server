@@ -13,22 +13,22 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("[ReviewImage Test] - Domain layer")
 class ReviewImageTest {
 
-	@Test
-	@DisplayName("[Construct method]")
-	void ofTest() {
-		//given
-		Product product = ProductFixture.VALID_PRODUCT.toEntity(null);
-		Review review = ReviewFixture.A.toEntity(product, 1L, 1L);
+    @Test
+    @DisplayName("[Construct method]")
+    void ofTest() {
+        //given
+        Product product = ProductFixture.VALID_PRODUCT.toEntity(null);
+        Review review = ReviewFixture.A.toEntity(product, 1L, 1L);
 
-		final String url = "testUrl.jpg";
+        final String url = "testUrl.jpg";
 
-		//when
-		ReviewImage result = ReviewImage.of(url, review);
+        //when
+        ReviewImage result = ReviewImage.of(url, review);
 
-		//then
-		assertAll(
-			() -> assertThat(result.getReview()).isEqualTo(review),
-			() -> assertThat(result.getUrl()).isEqualTo(url)
-		);
-	}
+        //then
+        assertAll(
+                () -> assertThat(result.getReview()).isEqualTo(review),
+                () -> assertThat(result.getUrl()).isEqualTo(url)
+        );
+    }
 }

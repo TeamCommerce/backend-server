@@ -1,12 +1,12 @@
 package com.commerce.backendserver.global.exception.error;
 
-import static com.commerce.backendserver.global.exception.error.GlobalError.*;
-
 import lombok.Getter;
 import org.springframework.validation.FieldError;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import static com.commerce.backendserver.global.exception.error.GlobalError.INVALID_REQUEST_PARAM;
 
 @Getter
 public class ErrorResponse {
@@ -29,6 +29,6 @@ public class ErrorResponse {
 
     public static ErrorResponse of(Optional<FieldError> fieldError) {
         return fieldError.map(error -> new ErrorResponse(error.getCode(), error.getDefaultMessage()))
-            .orElseGet(() -> ErrorResponse.of(INVALID_REQUEST_PARAM));
+                .orElseGet(() -> ErrorResponse.of(INVALID_REQUEST_PARAM));
     }
 }

@@ -9,7 +9,6 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.OnDelete;
 
@@ -29,46 +28,39 @@ import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 @NoArgsConstructor(access = PROTECTED)
 public class Review extends BaseEntity {
 
-    @Id
-    @Column(name = "review_id")
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
-    private String contents;
-
-    @Column(nullable = false)
-    @Check(constraints = "score >= 1 AND score <= 5")
-    private Integer score;
-
-    @Embedded
-    private AdditionalInfoList additionalInfoList;
-
-    @JoinColumn(name = "product_id", nullable = false)
-    @ManyToOne(fetch = LAZY)
-    private Product product;
-
-    private Long productOptionId;
-
-    private Long writerId;
-
     @OneToMany(
             mappedBy = "review",
             cascade = PERSIST,
             orphanRemoval = true)
     @OnDelete(action = CASCADE)
     private final List<ReviewImage> images = new ArrayList<>();
+    @Id
+    @Column(name = "review_id")
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
+    @Column(nullable = false)
+    private String contents;
+    @Column(nullable = false)
+    @Check(constraints = "score >= 1 AND score <= 5")
+    private Integer score;
+    @Embedded
+    private AdditionalInfoList additionalInfoList;
+    @JoinColumn(name = "product_id", nullable = false)
+    @ManyToOne(fetch = LAZY)
+    private Product product;
+    private Long productOptionId;
+    private Long writerId;
 
     //== Constructor Method ==//
     @Builder
     private Review(
-        final String contents,
-        final Integer score,
-        final Set<String> stringInfoSet,
-        final Product product,
-        final Long productOptionId,
-        final Long writerId,
-        final List<String> imageUrls
+            final String contents,
+            final Integer score,
+            final Set<String> stringInfoSet,
+            final Product product,
+            final Long productOptionId,
+            final Long writerId,
+            final List<String> imageUrls
     ) {
         this.contents = contents;
         this.score = score;
@@ -79,35 +71,35 @@ public class Review extends BaseEntity {
         applyImages(imageUrls);
     }
 
+    //== Static Factory Method ==//
+    public static Review createReview(
+            final String contents,
+            final Integer score,
+            final Set<String> stringInfoSet,
+            final Product product,
+            final Long productOptionId,
+            final Long writerId,
+            final List<String> imageUrls
+    ) {
+        return Review.builder()
+                .contents(contents)
+                .score(score)
+                .stringInfoSet(stringInfoSet)
+                .product(product)
+                .productOptionId(productOptionId)
+                .writerId(writerId)
+                .imageUrls(imageUrls)
+                .build();
+    }
+
     private void applyImages(List<String> imageUrls) {
         if (imageUrls == null) return;
 
         this.images.addAll(
-            imageUrls.stream()
-            .map(imageUrl -> ReviewImage.of(imageUrl, this))
-            .toList()
+                imageUrls.stream()
+                        .map(imageUrl -> ReviewImage.of(imageUrl, this))
+                        .toList()
         );
-    }
-
-    //== Static Factory Method ==//
-    public static Review createReview(
-        final String contents,
-        final Integer score,
-        final Set<String> stringInfoSet,
-        final Product product,
-        final Long productOptionId,
-        final Long writerId,
-        final List<String> imageUrls
-    ) {
-        return Review.builder()
-            .contents(contents)
-            .score(score)
-            .stringInfoSet(stringInfoSet)
-            .product(product)
-            .productOptionId(productOptionId)
-            .writerId(writerId)
-            .imageUrls(imageUrls)
-            .build();
     }
 
     //== Utility Method ==//

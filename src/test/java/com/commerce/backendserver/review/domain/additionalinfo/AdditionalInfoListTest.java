@@ -19,73 +19,73 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("[AdditionalInfoList Test] (Domain layer)")
 class AdditionalInfoListTest {
 
-	@Nested
-	@DisplayName("[of]")
-	class ofTest {
+    private List<AdditionalInfo> generateExpectedAdditionalInfo(Set<String> stringInfoSet) {
+        List<AdditionalInfo> expected = new ArrayList<>(
+                stringInfoSet.stream()
+                        .map(info -> {
+                            String[] split = info.split("/");
+                            return AdditionalInfo.of(InfoName.valueOf(split[0]), split[1]);
+                        }).toList()
+        );
 
-		private final Review review = Review.createReview(
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null);
+        expected.sort(comparingInt(info -> info.getInfoName().getOrder()));
 
-		@Test
-		@DisplayName("[Success] StringInfoSet이 Null이 아닐 때 성공")
-		void SuccessWhenPresentNotNullStringInfoSet() {
-			//given
-			Set<String> stringInfoSet = A.getStringInfoSet();
+        return expected;
+    }
 
-			//when
-			AdditionalInfoList result = AdditionalInfoList.of(stringInfoSet, review);
+    private void assertAdditionalInfoMatching(
+            List<AdditionalInfo> actual,
+            List<AdditionalInfo> expected
+    ) {
+        assertThat(actual).hasSameSizeAs(expected);
 
-			//then
-			List<AdditionalInfo> expected = generateExpectedAdditionalInfo(stringInfoSet);
+        IntStream.range(0, actual.size())
+                .forEach(i -> {
+                    AdditionalInfo actualInfo = actual.get(i);
+                    AdditionalInfo expectedInfo = expected.get(i);
+                    assertAll(
+                            () -> assertThat(actualInfo.getInfoName()).isEqualTo(expectedInfo.getInfoName()),
+                            () -> assertThat(actualInfo.getInfoValue()).isEqualTo(expectedInfo.getInfoValue())
+                    );
+                });
+    }
 
-			assertAdditionalInfoMatching(result.getList(), expected);
-		}
+    @Nested
+    @DisplayName("[of]")
+    class ofTest {
 
-		@Test
-		@DisplayName("[Success] StringInfoSet이 Null일 때 성공")
-		void SuccessWhenPresentNullStringInfoSet() {
-			//when
-			AdditionalInfoList result = AdditionalInfoList.of(null, review);
+        private final Review review = Review.createReview(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
 
-			//then
-			assertThat(result.getList()).isEmpty();
-		}
-	}
+        @Test
+        @DisplayName("[Success] StringInfoSet이 Null이 아닐 때 성공")
+        void SuccessWhenPresentNotNullStringInfoSet() {
+            //given
+            Set<String> stringInfoSet = A.getStringInfoSet();
 
-	private List<AdditionalInfo> generateExpectedAdditionalInfo(Set<String> stringInfoSet) {
-		List<AdditionalInfo> expected = new ArrayList<>(
-			stringInfoSet.stream()
-				.map(info -> {
-					String[] split = info.split("/");
-					return AdditionalInfo.of(InfoName.valueOf(split[0]), split[1]);
-				}).toList()
-		);
+            //when
+            AdditionalInfoList result = AdditionalInfoList.of(stringInfoSet, review);
 
-		expected.sort(comparingInt(info -> info.getInfoName().getOrder()));
+            //then
+            List<AdditionalInfo> expected = generateExpectedAdditionalInfo(stringInfoSet);
 
-		return expected;
-	}
+            assertAdditionalInfoMatching(result.getList(), expected);
+        }
 
-	private void assertAdditionalInfoMatching(
-		List<AdditionalInfo> actual,
-		List<AdditionalInfo> expected
-	) {
-		assertThat(actual).hasSameSizeAs(expected);
+        @Test
+        @DisplayName("[Success] StringInfoSet이 Null일 때 성공")
+        void SuccessWhenPresentNullStringInfoSet() {
+            //when
+            AdditionalInfoList result = AdditionalInfoList.of(null, review);
 
-		IntStream.range(0, actual.size())
-			.forEach(i -> {
-				AdditionalInfo actualInfo = actual.get(i);
-				AdditionalInfo expectedInfo = expected.get(i);
-				assertAll(
-					() -> assertThat(actualInfo.getInfoName()).isEqualTo(expectedInfo.getInfoName()),
-					() -> assertThat(actualInfo.getInfoValue()).isEqualTo(expectedInfo.getInfoValue())
-				);
-			});
-	}
+            //then
+            assertThat(result.getList()).isEmpty();
+        }
+    }
 }

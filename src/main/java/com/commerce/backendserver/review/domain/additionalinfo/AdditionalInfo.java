@@ -43,9 +43,9 @@ public class AdditionalInfo {
 
     public static AdditionalInfo of(InfoName infoName, String infoValue) {
         return AdditionalInfo.builder()
-            .infoName(infoName)
-            .infoValue(infoValue)
-            .build();
+                .infoName(infoName)
+                .infoValue(infoValue)
+                .build();
     }
 
     public void registerReview(Review review) {

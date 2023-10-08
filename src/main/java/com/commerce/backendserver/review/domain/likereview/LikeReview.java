@@ -1,12 +1,12 @@
 package com.commerce.backendserver.review.domain.likereview;
 
-import static lombok.AccessLevel.*;
-
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @Entity
 @Getter
@@ -33,8 +33,8 @@ public class LikeReview {
 
     public static LikeReview of(Long memberId, Long reviewId) {
         return LikeReview.builder()
-            .memberId(memberId)
-            .reviewId(reviewId)
-            .build();
+                .memberId(memberId)
+                .reviewId(reviewId)
+                .build();
     }
 }

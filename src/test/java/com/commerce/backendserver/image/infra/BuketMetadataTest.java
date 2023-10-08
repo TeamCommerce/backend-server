@@ -16,38 +16,38 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("[BuketMetadata Test] - Infra layer")
 class BuketMetadataTest {
 
-	@Nested
-	@DisplayName("[generateFilename]")
-	class generateFilenameTest {
+    @Nested
+    @DisplayName("[generateFilename]")
+    class generateFilenameTest {
 
-		private final static String FILENAME = "filename";
+        private final static String FILENAME = "filename";
 
-		@DisplayName("[success]")
-		@ParameterizedTest(name = "{0}")
-		@ValueSource(strings = {"review", "product"})
-		void success(String type) {
-			//when
-			String result = BucketMetadata.generateFilename(FILENAME, type);
+        @DisplayName("[success]")
+        @ParameterizedTest(name = "{0}")
+        @ValueSource(strings = {"review", "product"})
+        void success(String type) {
+            //when
+            String result = BucketMetadata.generateFilename(FILENAME, type);
 
-			//then
-			String[] splitResult = result.split("/");
-			assertAll(
-				() -> assertThat(splitResult).hasSize(2),
-				() -> assertThat(splitResult[0]).isEqualTo(type),
-				() -> assertThat(splitResult[1]).isEqualTo(FILENAME)
-			);
-		}
+            //then
+            String[] splitResult = result.split("/");
+            assertAll(
+                    () -> assertThat(splitResult).hasSize(2),
+                    () -> assertThat(splitResult[0]).isEqualTo(type),
+                    () -> assertThat(splitResult[1]).isEqualTo(FILENAME)
+            );
+        }
 
-		@Test
-		@DisplayName("[Fail] 존재하지 않는 타입으로 인해 실패")
-		void failWhenPresentNotExistType() {
-			//when
-			ThrowingCallable throwingCallable = () -> BucketMetadata.generateFilename(FILENAME, "hello");
+        @Test
+        @DisplayName("[Fail] 존재하지 않는 타입으로 인해 실패")
+        void failWhenPresentNotExistType() {
+            //when
+            ThrowingCallable throwingCallable = () -> BucketMetadata.generateFilename(FILENAME, "hello");
 
-			//then
-			assertThatThrownBy(throwingCallable)
-					.isInstanceOf(CommerceException.class)
-					.hasMessageContaining(INVALID_IMAGE_TYPE.getMessage());
-		}
-	}
+            //then
+            assertThatThrownBy(throwingCallable)
+                    .isInstanceOf(CommerceException.class)
+                    .hasMessageContaining(INVALID_IMAGE_TYPE.getMessage());
+        }
+    }
 }

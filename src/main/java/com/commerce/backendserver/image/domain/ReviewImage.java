@@ -24,21 +24,21 @@ public class ReviewImage extends Image {
 
     @Builder
     private ReviewImage(
-        String url,
-        Review review
+            String url,
+            Review review
     ) {
         super(url);
         this.review = review;
     }
 
     public static ReviewImage of(
-        String url,
-        Review review
+            String url,
+            Review review
     ) {
         return ReviewImage.builder()
-            .url(url)
-            .review(review)
-            .build();
+                .url(url)
+                .review(review)
+                .build();
     }
 }
 

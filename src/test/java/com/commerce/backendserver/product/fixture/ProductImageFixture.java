@@ -1,12 +1,11 @@
 package com.commerce.backendserver.product.fixture;
 
-import static com.commerce.backendserver.image.domain.constants.ProductImageCategory.*;
-
 import com.commerce.backendserver.image.domain.ProductImage;
 import com.commerce.backendserver.image.domain.constants.ProductImageCategory;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import static com.commerce.backendserver.image.domain.constants.ProductImageCategory.MAIN;
 
 @Getter
 @RequiredArgsConstructor

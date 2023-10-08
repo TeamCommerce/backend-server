@@ -8,12 +8,12 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.Set;
 
-import static com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName.*;
-import static com.commerce.backendserver.review.exception.ReviewError.*;
+import static com.commerce.backendserver.review.domain.additionalinfo.constants.InfoName.matchInfoName;
+import static com.commerce.backendserver.review.exception.ReviewError.INVALID_ADDITIONAL_INFO;
+import static com.commerce.backendserver.review.exception.ReviewError.INVALID_INTEGER_INFO_VALUE;
 
 public class AdditionalInfoValidator implements
-        ConstraintValidator<ValidAdditionalInfo, Set<String>>
-{
+        ConstraintValidator<ValidAdditionalInfo, Set<String>> {
 
     @Override
     public boolean isValid(Set<String> value, ConstraintValidatorContext context) {

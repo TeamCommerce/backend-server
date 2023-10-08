@@ -13,46 +13,45 @@ import static org.mockito.BDDMockito.given;
 @DisplayName("[ContentsLengthValidator Test] - Application layer")
 class ContentsLengthValidatorTest extends MockTestBase {
 
-	@Mock
-	private ValidContentsLength validContentsLength;
+    private final ContentsLengthValidator validator = new ContentsLengthValidator();
+    @Mock
+    private ValidContentsLength validContentsLength;
 
-	private final ContentsLengthValidator validator = new ContentsLengthValidator();
+    @BeforeEach
+    void setUp() {
+        given(validContentsLength.min()).willReturn(5);
 
-	@BeforeEach
-	void setUp() {
-		given(validContentsLength.min()).willReturn(5);
+        validator.initialize(validContentsLength);
+    }
 
-		validator.initialize(validContentsLength);
-	}
+    @Nested
+    @DisplayName("[isValid]")
+    class isValidTest {
 
-	@Nested
-	@DisplayName("[isValid]")
-	class isValidTest {
+        @Test
+        @DisplayName("[success]")
+        void success() {
+            //given
+            final String contents = "hello";
 
-		@Test
-		@DisplayName("[success]")
-		void success() {
-			//given
-			final String contents = "hello";
+            //when
+            boolean result = validator.isValid(contents, null);
 
-			//when
-			boolean result = validator.isValid(contents, null);
+            //then
+            assertThat(result).isTrue();
+        }
 
-			//then
-			assertThat(result).isTrue();
-		}
+        @Test
+        @DisplayName("[Fail] 유효하지 않은 길이로 실패")
+        void failWhenPresentInvalidLength() {
+            //given
+            final String invalidContents = "t e s t";
 
-		@Test
-		@DisplayName("[Fail] 유효하지 않은 길이로 실패")
-		void failWhenPresentInvalidLength() {
-			//given
-			final String invalidContents = "t e s t";
+            //when
+            boolean result = validator.isValid(invalidContents, null);
 
-			//when
-			boolean result = validator.isValid(invalidContents, null);
-
-			//then
-			assertThat(result).isFalse();
-		}
-	}
+            //then
+            assertThat(result).isFalse();
+        }
+    }
 }
