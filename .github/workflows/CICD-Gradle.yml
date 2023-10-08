@@ -100,7 +100,6 @@ jobs:
                     echo "#### KILL $PID ####"
                     sudo kill $PID
             fi
-            ㅁ
             echo "#### RUN $SOURCE_DIR/$FILE_NAME ####"
             sudo java -jar -Dspring.profiles.active=db $SOURCE_DIR/$FILE_NAME > /dev/null 2>&1 &
 
