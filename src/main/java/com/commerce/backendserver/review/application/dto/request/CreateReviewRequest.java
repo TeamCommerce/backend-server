@@ -5,11 +5,13 @@ import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.constraints.NotNull;
+
 public record CreateReviewRequest(
-	Integer score,
+	@NotNull Integer score,
 	String contents,
-	Long productId,
-	Long productOptionId,
+	@NotNull Long productId,
+	@NotNull Long productOptionId,
 	Set<String> additionalInfo,
 	List<MultipartFile> files
 ) {
