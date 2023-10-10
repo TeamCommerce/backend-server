@@ -18,7 +18,7 @@ import com.commerce.backendserver.review.application.dto.response.ReviewStatisti
 import com.commerce.backendserver.review.application.utils.RatioAnalyzer;
 import com.commerce.backendserver.review.application.utils.ReviewAnalyzer;
 import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.infra.persistence.ReviewQueryRepository;
+import com.commerce.backendserver.review.domain.ReviewRepository;
 
 @DisplayName("[ReviewAnalyticsService Test] - Application layer")
 class ReviewAnalyticsServiceTest extends MockTestBase {
@@ -26,12 +26,12 @@ class ReviewAnalyticsServiceTest extends MockTestBase {
 	private ReviewAnalyticsService reviewAnalyticsService;
 
 	@Mock
-	private ReviewQueryRepository reviewQueryRepository;
+	private ReviewRepository reviewRepository;
 
 	@BeforeEach
 	void setUp() {
 		reviewAnalyticsService = new ReviewAnalyticsService(
-			reviewQueryRepository,
+			reviewRepository,
 			new ReviewAnalyzer(new RatioAnalyzer())
 		);
 	}
@@ -44,7 +44,7 @@ class ReviewAnalyticsServiceTest extends MockTestBase {
 			.map(fixture -> fixture.toEntity(null, null, null))
 			.toList();
 
-		given(reviewQueryRepository.findReviewByStatisticCondition(
+		given(reviewRepository.findReviewByStatisticCondition(
 			null, null, null, null, null
 		)).willReturn(reviews);
 
