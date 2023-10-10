@@ -1,7 +1,6 @@
 package com.commerce.backendserver.review.application.utils;
 
 import static com.commerce.backendserver.review.fixture.ReviewStatisticFixture.*;
-import static com.commerce.backendserver.review.utils.ReviewAsserter.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -32,20 +31,13 @@ class RatioAnalyzerTest {
 		List<List<AdditionalInfo>> additionalInfoData = generateAdditionalInfoData();
 
 		//when
-		Map<String, Map<String, RatioStatistic>> result = ratioAnalyzer.analyzeAdditionalInfo(additionalInfoData);
+		Map<String, Map<String, RatioStatistic>> actual = ratioAnalyzer.analyzeAdditionalInfo(additionalInfoData);
 
 		//then
-		assertThat(result).hasSize(3);
+		Map<String, Map<String, RatioStatistic>> expected = getExpectedAdditionalInfoStatistic();
 
-		assertAdditionalInfoStatistic(
-			result,
-			ADDITIONAL_INFO_KEY_DATA,
-			List.of(
-				HEIGHT_DATA,
-				WEIGHT_DATA,
-				SIZE_DATA
-			)
-		);
+		assertThat(actual.keySet()).hasSameSizeAs(expected.keySet());
+		actual.forEach((key, value) -> assertThat(expected).containsEntry(key, value));
 	}
 
 	@Test
@@ -57,15 +49,13 @@ class RatioAnalyzerTest {
 			.boxed().toList();
 
 		//when
-		Map<String, RatioStatistic> result = ratioAnalyzer.analyzeScore(scores);
+		Map<String, RatioStatistic> actual = ratioAnalyzer.analyzeScore(scores);
 
 		//then
-		assertThat(result).hasSize(3);
+		Map<String, RatioStatistic> expected = getExpectedScoreStatistic();
 
-		assertScoreStatistic(
-			result,
-			SCORE_DATA
-		);
+		assertThat(actual.keySet()).hasSameSizeAs(expected.keySet());
+		actual.forEach((key, value) -> assertThat(expected).containsEntry(key, value));
 	}
 
 	private List<List<AdditionalInfo>> generateAdditionalInfoData() {
