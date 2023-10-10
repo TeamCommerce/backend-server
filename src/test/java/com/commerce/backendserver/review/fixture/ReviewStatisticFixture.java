@@ -1,9 +1,13 @@
 package com.commerce.backendserver.review.fixture;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import com.commerce.backendserver.review.utils.ReviewAsserter.RatioTestDto;
+import com.commerce.backendserver.review.application.dto.response.RatioStatistic;
+import com.commerce.backendserver.review.application.dto.response.ReviewStatistics;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -15,29 +19,43 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ReviewStatisticFixture {
 
-	public static final List<String> ADDITIONAL_INFO_KEY_DATA =
-		List.of("키", "몸무게", "사이즈");
+	public static Map<String, Map<String, RatioStatistic>> getExpectedAdditionalInfoStatistic() {
+		Map<String, Map<String, RatioStatistic>> statistic = new HashMap<>();
+		statistic.put("키", Map.of(
+			"156", new RatioStatistic(1, 33.33333333333333),
+			"172", new RatioStatistic(2, 66.66666666666666)
+		));
+		statistic.put("몸무게", Map.of(
+			"60", new RatioStatistic(1, 50.0),
+			"40", new RatioStatistic(1, 50.0)
+		));
+		statistic.put("사이즈", Map.of(
+			"Small", new RatioStatistic(1, 33.33333333333333),
+			"Medium", new RatioStatistic(1, 33.33333333333333),
+			"Large", new RatioStatistic(1, 33.33333333333333)
+		));
 
-	public static final List<String> EXIST_SIZE_DATA =
-		List.of("Small", "Large", "Medium");
+		return statistic;
+	}
 
-	public static final Set<RatioTestDto> HEIGHT_DATA =
-		Set.of(new RatioTestDto("156", 1), new RatioTestDto("172", 2));
+	public static Map<String, RatioStatistic> getExpectedScoreStatistic() {
+		Map<String, RatioStatistic> statistic = new HashMap<>();
+		statistic.put("2", new RatioStatistic(1, 33.33333333333333));
+		statistic.put("3", new RatioStatistic(1, 33.33333333333333));
+		statistic.put("4", new RatioStatistic(1, 33.33333333333333));
 
-	public static final Set<RatioTestDto> WEIGHT_DATA =
-		Set.of(new RatioTestDto("60", 1), new RatioTestDto("40", 1));
+		return statistic;
+	}
 
-	public static final Set<RatioTestDto> SIZE_DATA =
-		Set.of(
-			new RatioTestDto("Small", 1),
-			new RatioTestDto("Medium", 1),
-			new RatioTestDto("Large", 1)
+	public static ReviewStatistics getExpectedReviewStatistics() {
+		Set<String> existSizes = new HashSet<>(List.of("Small", "Medium", "Large"));
+
+		return new ReviewStatistics(
+			3,
+			3.0,
+			existSizes,
+			getExpectedScoreStatistic(),
+			getExpectedAdditionalInfoStatistic()
 		);
-
-	public static final Set<RatioTestDto> SCORE_DATA =
-		Set.of(
-			new RatioTestDto("2", 1),
-			new RatioTestDto("3", 1),
-			new RatioTestDto("4", 1)
-		);
+	}
 }
