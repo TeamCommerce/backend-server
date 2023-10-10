@@ -3,8 +3,10 @@ package com.commerce.backendserver.auth.application;
 import java.net.URI;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.commerce.backendserver.auth.application.dto.AuthTokenResponse;
 import com.commerce.backendserver.auth.domain.AuthTokenManager;
@@ -16,16 +18,28 @@ import com.commerce.backendserver.member.domain.Member;
 import com.commerce.backendserver.member.infra.persistence.MemberQueryRepository;
 import com.commerce.backendserver.member.infra.persistence.MemberRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class OAuthService {
 
 	private final OAuthFactory oauthFactory;
 	private final AuthTokenManager tokenManager;
 	private final MemberQueryRepository memberQueryRepository;
 	private final MemberRepository memberRepository;
+	private final String loginSuccessRedirectUri;
+
+	public OAuthService(
+		@Value("${front-end.login-success.redirect-uri}") final String loginSuccessRedirectUri,
+		final OAuthFactory oauthFactory,
+		final AuthTokenManager tokenManager,
+		final MemberQueryRepository memberQueryRepository,
+		final MemberRepository memberRepository
+	) {
+		this.oauthFactory = oauthFactory;
+		this.tokenManager = tokenManager;
+		this.memberQueryRepository = memberQueryRepository;
+		this.memberRepository = memberRepository;
+		this.loginSuccessRedirectUri = loginSuccessRedirectUri;
+	}
 
 	public URI getAuthorizationUri(final String provider) {
 		return oauthFactory
@@ -34,7 +48,7 @@ public class OAuthService {
 	}
 
 	@Transactional
-	public AuthTokenResponse login(
+	public URI login(
 		final String provider,
 		final String code,
 		final String state
@@ -45,7 +59,9 @@ public class OAuthService {
 		Member member = saveOrUpdateMember(memberInfo);
 
 		AuthToken authToken = tokenManager.generate(member.getId());
-		return new AuthTokenResponse(authToken.accessToken(), authToken.refreshToken());
+		AuthTokenResponse authTokenResponse = new AuthTokenResponse(authToken.accessToken(), authToken.refreshToken());
+
+		return generateLoginSuccessRedirectUri(authTokenResponse);
 	}
 
 	private OAuthMemberInfo fetchMemberInfo(
@@ -75,5 +91,14 @@ public class OAuthService {
 			null
 		);
 		return memberRepository.save(newMember);
+	}
+
+	private URI generateLoginSuccessRedirectUri(final AuthTokenResponse authTokenResponse) {
+		return UriComponentsBuilder
+			.fromUriString(loginSuccessRedirectUri)
+			.queryParam("access_token", authTokenResponse.accessToken())
+			.queryParam("refresh_token", authTokenResponse.refreshToken())
+			.build()
+			.toUri();
 	}
 }

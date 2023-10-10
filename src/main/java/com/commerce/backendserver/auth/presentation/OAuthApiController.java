@@ -29,8 +29,7 @@ public class OAuthApiController {
 	) {
 		URI authorizationUri = oauthService.getAuthorizationUri(provider);
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(authorizationUri);
+		HttpHeaders headers = createRedirectHeaders(authorizationUri);
 
 		return new ResponseEntity<>(headers, FOUND);
 	}
@@ -40,8 +39,16 @@ public class OAuthApiController {
 		@PathVariable final String provider,
 		@ModelAttribute final OAuthLoginRequest request
 	) {
-		AuthTokenResponse response = oauthService.login(provider, request.code(), request.state());
+		URI redirectUri = oauthService.login(provider, request.code(), request.state());
 
-		return ResponseEntity.ok(response);
+		HttpHeaders headers = createRedirectHeaders(redirectUri);
+
+		return new ResponseEntity<>(headers, FOUND);
+	}
+
+	private HttpHeaders createRedirectHeaders(URI redirectUri) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(redirectUri);
+		return headers;
 	}
 }
