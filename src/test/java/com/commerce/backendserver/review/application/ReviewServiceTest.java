@@ -18,58 +18,29 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import com.commerce.backendserver.common.base.MockTestBase;
 import com.commerce.backendserver.global.exception.CommerceException;
-import com.commerce.backendserver.image.application.ImageService;
+import com.commerce.backendserver.image.stub.ImageServiceStub;
 import com.commerce.backendserver.product.domain.Product;
 import com.commerce.backendserver.product.domain.ProductRepository;
 import com.commerce.backendserver.product.domain.option.ProductOption;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
-import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.domain.ReviewRepository;
+import com.commerce.backendserver.review.stub.ReviewRepositoryStub;
 
 @DisplayName("[ReviewService Test] - Application layer")
 class ReviewServiceTest extends MockTestBase {
 
-	@InjectMocks
-	private ReviewService reviewService;
+	private final ReviewService reviewService;
 
-	@Mock
-	private ProductRepository productRepository;
-	@Mock
-	private ReviewRepository reviewRepository;
-	@Mock
-	private ImageService imageService;
+	private final ProductRepository productRepository;
 
-	private Review generateReviewHasId() {
-		Review review = A.toEntity(null, null, null);
-		setField(review, "id", 1L);
-
-		return review;
-	}
-
-	private Optional<Product> generateProductOf(final Consumer<Product> productOptionManager) {
-		Product product = VALID_PRODUCT.toEntity(null);
-		productOptionManager.accept(product);
-
-		return Optional.of(product);
-	}
-
-	private Optional<Product> generateProductEmpty() {
-		return Optional.empty();
-	}
-
-	private List<String> generateImageUrls() {
-		return List.of("hello1.jpg", "hello2.jpg");
-	}
-
-	private void setProductOptionsId(final List<ProductOption> options, final Long id) {
-		for (int i = 0; i < options.size(); i++) {
-			setField(options.get(i), "id", i + id);
-		}
+	public ReviewServiceTest(
+		@Mock final ProductRepository productRepository
+	) {
+		this.productRepository = productRepository;
+		reviewService = new ReviewService(new ReviewRepositoryStub(), new ImageServiceStub(), productRepository);
 	}
 
 	@Nested
@@ -82,9 +53,6 @@ class ReviewServiceTest extends MockTestBase {
 		void setUp() throws IOException {
 			//given
 			request = A.toCreateRequest();
-
-			given(imageService.uploadImages(anyList(), anyString()))
-				.willReturn(generateImageUrls());
 		}
 
 		@Test
@@ -95,9 +63,6 @@ class ReviewServiceTest extends MockTestBase {
 				.willReturn(generateProductOf(
 					product -> setProductOptionsId(product.getOptions(), request.productOptionId()))
 				);
-
-			given(reviewRepository.save(any(Review.class)))
-				.willReturn(generateReviewHasId());
 
 			//when
 			Long result = reviewService.createReview(request, 1L);
@@ -136,6 +101,23 @@ class ReviewServiceTest extends MockTestBase {
 			assertThatThrownBy(throwingCallable)
 				.isInstanceOf(CommerceException.class)
 				.hasMessageContaining(NOT_MATCH_PRODUCT_OPTION_ID.getMessage());
+		}
+	}
+
+	private Optional<Product> generateProductOf(final Consumer<Product> productOptionManager) {
+		Product product = VALID_PRODUCT.toEntity(null);
+		productOptionManager.accept(product);
+
+		return Optional.of(product);
+	}
+
+	private Optional<Product> generateProductEmpty() {
+		return Optional.empty();
+	}
+
+	private void setProductOptionsId(final List<ProductOption> options, final Long id) {
+		for (int i = 0; i < options.size(); i++) {
+			setField(options.get(i), "id", i + id);
 		}
 	}
 }
