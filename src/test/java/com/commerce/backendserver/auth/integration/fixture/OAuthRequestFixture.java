@@ -3,7 +3,6 @@ package com.commerce.backendserver.auth.integration.fixture;
 import static com.commerce.backendserver.common.fixture.CommonRequestFixture.*;
 import static lombok.AccessLevel.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
@@ -35,18 +34,24 @@ public final class OAuthRequestFixture {
 	}
 
 	public static ValidatableResponse 구글_정보를_통해_로그인한다(
-		final RequestSpecification spec
+		final RequestSpecification spec,
+		final Set<RestDocumentationFilter> documentations
 	) {
-		return getOAuthLoginRequest(spec, "google");
+		return getOAuthLoginRequest(spec, "google", documentations);
 	}
 
 	public static ValidatableResponse 카카오_정보를_통해_로그인한다(
-		final RequestSpecification spec
+		final RequestSpecification spec,
+		final Set<RestDocumentationFilter> documentations
 	) {
-		return getOAuthLoginRequest(spec, "kakao");
+		return getOAuthLoginRequest(spec, "kakao", documentations);
 	}
 
-	private static ValidatableResponse getOAuthLoginRequest(RequestSpecification spec, String provider) {
+	private static ValidatableResponse getOAuthLoginRequest(
+		final RequestSpecification spec,
+		final String provider,
+		final Set<RestDocumentationFilter> documentations
+	) {
 		String path = UriComponentsBuilder
 			.fromUriString(LOGIN_PATH)
 			.queryParam("code", "code")
@@ -55,7 +60,7 @@ public final class OAuthRequestFixture {
 
 		return getRequest(
 			RestAssured.given(spec).log().all(),
-			new HashSet<>(),
+			documentations,
 			path,
 			provider
 		);
