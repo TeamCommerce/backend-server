@@ -9,7 +9,7 @@ import com.commerce.backendserver.review.application.dto.request.ReviewAnalytics
 import com.commerce.backendserver.review.application.dto.response.ReviewStatistics;
 import com.commerce.backendserver.review.application.utils.ReviewAnalyzer;
 import com.commerce.backendserver.review.domain.Review;
-import com.commerce.backendserver.review.infra.persistence.ReviewQueryRepository;
+import com.commerce.backendserver.review.domain.ReviewRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,11 +18,11 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class ReviewAnalyticsService {
 
-	private final ReviewQueryRepository reviewQueryRepository;
+	private final ReviewRepository reviewRepository;
 	private final ReviewAnalyzer reviewAnalyzer;
 
 	public ReviewStatistics getReviewStatistics(ReviewAnalyticsCondition condition) {
-		List<Review> reviews = reviewQueryRepository.findReviewByStatisticCondition(
+		List<Review> reviews = reviewRepository.findReviewByStatisticCondition(
 			condition.engColorNames(),
 			condition.sizes(),
 			condition.additionalOptions(),
