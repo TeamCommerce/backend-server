@@ -1,11 +1,13 @@
 package com.commerce.backendserver.review.fixture;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.commerce.backendserver.review.application.dto.response.RatioStatistic;
+import com.commerce.backendserver.review.application.dto.response.ReviewStatistics;
 import com.commerce.backendserver.review.utils.ReviewAsserter.RatioTestDto;
 
 import lombok.AccessLevel;
@@ -70,5 +72,17 @@ public final class ReviewStatisticFixture {
 		statistic.put("4", new RatioStatistic(1, 33.33333333333333));
 
 		return statistic;
+	}
+
+	public static ReviewStatistics getExpectedReviewStatistics() {
+		Set<String> existSizes = new HashSet<>(List.of("Small", "Medium", "Large"));
+
+		return new ReviewStatistics(
+			3,
+			3.0,
+			existSizes,
+			getExpectedScoreStatistic(),
+			getExpectedAdditionalInfoStatistic()
+		);
 	}
 }
