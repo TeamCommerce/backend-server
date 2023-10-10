@@ -8,7 +8,6 @@ import java.util.Set;
 
 import com.commerce.backendserver.review.application.dto.response.RatioStatistic;
 import com.commerce.backendserver.review.application.dto.response.ReviewStatistics;
-import com.commerce.backendserver.review.utils.ReviewAsserter.RatioTestDto;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -19,32 +18,6 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ReviewStatisticFixture {
-
-	public static final List<String> ADDITIONAL_INFO_KEY_DATA =
-		List.of("키", "몸무게", "사이즈");
-
-	public static final List<String> EXIST_SIZE_DATA =
-		List.of("Small", "Large", "Medium");
-
-	public static final Set<RatioTestDto> HEIGHT_DATA =
-		Set.of(new RatioTestDto("156", 1), new RatioTestDto("172", 2));
-
-	public static final Set<RatioTestDto> WEIGHT_DATA =
-		Set.of(new RatioTestDto("60", 1), new RatioTestDto("40", 1));
-
-	public static final Set<RatioTestDto> SIZE_DATA =
-		Set.of(
-			new RatioTestDto("Small", 1),
-			new RatioTestDto("Medium", 1),
-			new RatioTestDto("Large", 1)
-		);
-
-	public static final Set<RatioTestDto> SCORE_DATA =
-		Set.of(
-			new RatioTestDto("2", 1),
-			new RatioTestDto("3", 1),
-			new RatioTestDto("4", 1)
-		);
 
 	public static Map<String, Map<String, RatioStatistic>> getExpectedAdditionalInfoStatistic() {
 		Map<String, Map<String, RatioStatistic>> statistic = new HashMap<>();
