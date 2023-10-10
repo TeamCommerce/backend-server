@@ -5,24 +5,14 @@ import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.commerce.backendserver.review.application.utils.validator.ValidAdditionalInfo;
-import com.commerce.backendserver.review.application.utils.validator.ValidContentsLength;
-import com.commerce.backendserver.review.application.utils.validator.ValidScore;
+import jakarta.validation.constraints.NotNull;
 
 public record CreateReviewRequest(
-	@ValidScore
-	Integer score,
-
-	@ValidContentsLength
+	@NotNull Integer score,
 	String contents,
-
-	Long productId,
-
-	Long productOptionId,
-
-	@ValidAdditionalInfo
+	@NotNull Long productId,
+	@NotNull Long productOptionId,
 	Set<String> additionalInfo,
-
 	List<MultipartFile> files
 ) {
 }

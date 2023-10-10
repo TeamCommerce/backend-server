@@ -70,6 +70,7 @@ public class ReviewControllerTest extends WebMvcTestBase {
 		params.add("contents", fixture.getContents());
 		params.add("score", String.valueOf(fixture.getScore()));
 		params.add("productId", String.valueOf(1L));
+		params.add("productOptionId", String.valueOf(1L));
 		fixture.getStringInfoSet().forEach(info -> params.add("additionalInfo", info));
 
 		return params;
