@@ -77,7 +77,7 @@ class RatioAnalyzerTest {
 				List<AdditionalInfo> additionalInfoList = infoSet.stream()
 					.map(stringInfo -> {
 						String[] splitInfo = stringInfo.split("/");
-						return AdditionalInfo.of(InfoName.matchInfoName(splitInfo[0]), splitInfo[1]);
+						return AdditionalInfo.of(InfoName.getInfoName(splitInfo[0]), splitInfo[1]);
 					}).toList();
 
 				additionalInfoData.add(additionalInfoList);

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
  * ReviewFixture 가 변경되면 해당 클래스의 데이터도 변경되야함
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public abstract class ReviewStatisticFixture {
+public final class ReviewStatisticFixture {
 
 	public static final List<String> ADDITIONAL_INFO_KEY_DATA =
 		List.of("키", "몸무게", "사이즈");

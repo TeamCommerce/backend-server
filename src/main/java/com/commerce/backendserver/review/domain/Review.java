@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.annotations.Check;
 import org.hibernate.annotations.OnDelete;
 
 import com.commerce.backendserver.global.auditing.BaseEntity;
@@ -50,12 +49,10 @@ public class Review extends BaseEntity {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String contents;
+	private Contents contents;
 
-	@Column(nullable = false)
-	@Check(constraints = "score >= 1 AND score <= 5")
-	private Integer score;
+	@Embedded
+	private Score score;
 
 	@Embedded
 	private AdditionalInfoList additionalInfoList;
@@ -78,8 +75,8 @@ public class Review extends BaseEntity {
 		final Long writerId,
 		final List<String> imageUrls
 	) {
-		this.contents = contents;
-		this.score = score;
+		this.contents = new Contents(contents);
+		this.score = new Score(score);
 		this.additionalInfoList = AdditionalInfoList.of(stringInfoSet, this);
 		this.product = product;
 		this.productOptionId = productOptionId;
@@ -123,5 +120,13 @@ public class Review extends BaseEntity {
 	//== Utility Method ==//
 	public List<AdditionalInfo> getAdditionalInfoList() {
 		return additionalInfoList.getList();
+	}
+
+	public int getScore() {
+		return score.getValue();
+	}
+
+	public String getContents() {
+		return contents.getValue();
 	}
 }

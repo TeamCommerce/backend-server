@@ -12,15 +12,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import org.springframework.restdocs.snippet.Attributes;
-import org.springframework.test.context.jdbc.Sql;
 
 import com.commerce.backendserver.auth.infra.jwt.JwtTokenProvider;
 import com.commerce.backendserver.common.fixture.MemberFixture;
+import com.commerce.backendserver.common.utils.DatabaseCleaner;
 import com.commerce.backendserver.member.domain.Member;
 import com.commerce.backendserver.member.infra.persistence.MemberRepository;
 
@@ -32,7 +33,8 @@ import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(RestDocumentationExtension.class)
-@Sql("/sql/clean.sql")
+@ExtendWith(DatabaseCleanerExtension.class)
+@Import(DatabaseCleaner.class)
 public abstract class IntegrationTestBase {
 
 	protected static final String DEFAULT_PATH = "{class_name}/{method_name}/";
