@@ -35,7 +35,7 @@ import com.commerce.backendserver.review.fixture.ReviewStatisticFixture;
 	value = {ReviewController.class},
 	excludeAutoConfiguration = {WebConfig.class})
 @DisplayName("[ReviewController Test] - Presentation layer")
-public class ReviewControllerTest extends WebMvcTestBase {
+class ReviewControllerTest extends WebMvcTestBase {
 
 	private static final String BASE_URL = "/api/reviews";
 
