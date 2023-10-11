@@ -32,8 +32,6 @@ public class ReviewQueryDslRepository {
 		return this.query
 			.select(review)
 			.from(review)
-			.leftJoin(review.product)
-			.fetchJoin()
 			.leftJoin(productOption).on(review.productOptionId.eq(productOption.id))
 			.leftJoin(additionalInfo).on(additionalInfo.review.id.eq(review.id))
 			.where(
