@@ -1,7 +1,9 @@
 package com.commerce.backendserver.review.application.utils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -21,21 +23,22 @@ public class ReviewAnalyzer {
 
 	private final RatioAnalyzer ratioAnalyzer;
 
-	public ReviewStatistics analyzeReview(List<Review> reviews) {
+	public ReviewStatistics analyzeReview(final List<Review> reviews) {
 		List<Integer> scoreData = toScoreData(reviews);
-		List<List<AdditionalInfo>> additionalInfoData = toAdditionalInfoData(reviews);
 
 		Map<String, RatioStatistic> scoreStatistic = ratioAnalyzer.analyzeScore(scoreData);
 
-		Map<String, Map<String, RatioStatistic>> additionalInfoStatistic =
-			ratioAnalyzer.analyzeAdditionalInfo(additionalInfoData);
+		Map<String, Map<String, RatioStatistic>> additionalInfoStatistic = ratioAnalyzer
+			.analyzeAdditionalInfo(toAdditionalInfoData(reviews));
 
 		int totalReviewCount = reviews.size();
+
+		Set<String> existSizes = additionalInfoStatistic.getOrDefault(SIZE, new HashMap<>()).keySet();
 
 		return new ReviewStatistics(
 			totalReviewCount,
 			calculateAverage(totalReviewCount, calculateTotalScore(scoreData)),
-			additionalInfoStatistic.get(SIZE).keySet(),
+			existSizes,
 			scoreStatistic,
 			additionalInfoStatistic
 		);
@@ -45,19 +48,22 @@ public class ReviewAnalyzer {
 		return scoreData.stream().mapToInt(i -> i).sum();
 	}
 
-	private List<List<AdditionalInfo>> toAdditionalInfoData(List<Review> reviews) {
+	private List<List<AdditionalInfo>> toAdditionalInfoData(final List<Review> reviews) {
 		return reviews.stream()
 			.map(Review::getAdditionalInfoList)
 			.toList();
 	}
 
-	private List<Integer> toScoreData(List<Review> reviews) {
+	private List<Integer> toScoreData(final List<Review> reviews) {
 		return reviews.stream()
 			.map(Review::getScore)
 			.toList();
 	}
 
-	private double calculateAverage(double size, double sum) {
+	private double calculateAverage(final double size, final double sum) {
+		if (sum == 0) {
+			return 0;
+		}
 		return sum / size;
 	}
 }
