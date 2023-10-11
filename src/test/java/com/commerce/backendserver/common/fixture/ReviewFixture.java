@@ -21,21 +21,21 @@ public enum ReviewFixture {
 	A(
 		"contentsA",
 		3,
-		Set.of("HEIGHT/172", "SIZE/Large"),
+		Set.of("HEIGHT/172", "SIZE/생각보다_큼"),
 		List.of("helloA.jpg", "helloB.png")
 	),
 
 	B(
 		"contentsB",
 		4,
-		Set.of("HEIGHT/172", "SIZE/Medium", "WEIGHT/60"),
+		Set.of("HEIGHT/172", "SIZE/딱_맞음", "WEIGHT/60"),
 		List.of("helloA.jpg", "helloB.png")
 	),
 
 	C(
 		"contentsC",
 		2,
-		Set.of("HEIGHT/156", "SIZE/Small", "WEIGHT/40"),
+		Set.of("HEIGHT/156", "SIZE/작음", "WEIGHT/40"),
 		List.of("helloA.jpg", "helloB.png")
 	);
 
@@ -69,7 +69,7 @@ public enum ReviewFixture {
 
 	public static ReviewAnalyticsCondition getReviewAnalyticsCondition() {
 		return new ReviewAnalyticsCondition(
-			Set.of("blue"),
+			Set.of("Iup_Matt_Black"),
 			Set.of(ProductSize.TWO_XL),
 			Set.of("O"),
 			Set.of(3),
