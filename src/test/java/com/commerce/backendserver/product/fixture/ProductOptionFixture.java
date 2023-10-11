@@ -18,8 +18,8 @@ public enum ProductOptionFixture {
 
 	VALID_OPTION(
 		"#FFFFFF",
-		"Iup 매트 블랙",
-		"Iup Matt Black",
+		"Iup_매트_블랙",
+		"Iup_Matt_Black",
 		TWO_XL,
 		"쭈리",
 		"O",

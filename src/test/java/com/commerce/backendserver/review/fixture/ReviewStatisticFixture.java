@@ -30,9 +30,9 @@ public final class ReviewStatisticFixture {
 			"40", new RatioStatistic(1, 50.0)
 		));
 		statistic.put("사이즈", Map.of(
-			"Small", new RatioStatistic(1, 33.33333333333333),
-			"Medium", new RatioStatistic(1, 33.33333333333333),
-			"Large", new RatioStatistic(1, 33.33333333333333)
+			"작음", new RatioStatistic(1, 33.33333333333333),
+			"딱_맞음", new RatioStatistic(1, 33.33333333333333),
+			"생각보다_큼", new RatioStatistic(1, 33.33333333333333)
 		));
 
 		return statistic;
@@ -48,7 +48,7 @@ public final class ReviewStatisticFixture {
 	}
 
 	public static ReviewStatistics getExpectedReviewStatistics() {
-		Set<String> existSizes = new HashSet<>(List.of("Small", "Medium", "Large"));
+		Set<String> existSizes = new HashSet<>(List.of("작음", "딱_맞음", "생각보다_큼"));
 
 		return new ReviewStatistics(
 			3,
