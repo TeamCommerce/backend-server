@@ -6,7 +6,9 @@ import java.util.Set;
 
 import com.commerce.backendserver.common.utils.FileMockingUtils;
 import com.commerce.backendserver.product.domain.Product;
+import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
+import com.commerce.backendserver.review.application.dto.request.ReviewAnalyticsCondition;
 import com.commerce.backendserver.review.domain.Review;
 
 import lombok.Getter;
@@ -62,6 +64,16 @@ public enum ReviewFixture {
 			1L,
 			stringInfoSet,
 			FileMockingUtils.createMockMultipartFiles()
+		);
+	}
+
+	public static ReviewAnalyticsCondition getReviewAnalyticsCondition() {
+		return new ReviewAnalyticsCondition(
+			Set.of("blue"),
+			Set.of(ProductSize.TWO_XL),
+			Set.of("O"),
+			Set.of(3),
+			Set.of("172")
 		);
 	}
 }

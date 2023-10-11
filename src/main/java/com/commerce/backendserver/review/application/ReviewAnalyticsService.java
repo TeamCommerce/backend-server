@@ -25,9 +25,9 @@ public class ReviewAnalyticsService {
 		List<Review> reviews = reviewRepository.findReviewByStatisticCondition(
 			condition.engColorNames(),
 			condition.sizes(),
-			condition.additionalOptions(),
+			condition.additionalOptionValues(),
 			condition.scores(),
-			condition.additionalInfoList()
+			condition.additionalInfoValues()
 		);
 
 		return reviewAnalyzer.analyzeReview(reviews);
