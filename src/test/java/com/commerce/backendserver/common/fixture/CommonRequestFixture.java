@@ -57,6 +57,18 @@ public final class CommonRequestFixture {
 		);
 	}
 
+	public static ValidatableResponse getRequest(
+		final RequestSpecification spec,
+		final Set<RestDocumentationFilter> documentations,
+		final String path
+	) {
+		return request(
+			spec,
+			documentations,
+			given -> given.when().get(path)
+		);
+	}
+
 	private static ValidatableResponse request(
 		final RequestSpecification given,
 		final Set<RestDocumentationFilter> documentations,
