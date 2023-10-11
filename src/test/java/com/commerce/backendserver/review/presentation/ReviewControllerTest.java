@@ -5,6 +5,8 @@ import static com.commerce.backendserver.common.utils.TokenUtils.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.commerce.backendserver.common.base.WebMvcTestBase;
 import com.commerce.backendserver.common.fixture.ReviewFixture;
 import com.commerce.backendserver.global.config.WebConfig;
+import com.commerce.backendserver.product.domain.option.constants.ProductSize;
+import com.commerce.backendserver.review.application.ReviewAnalyticsService;
 import com.commerce.backendserver.review.application.ReviewService;
 import com.commerce.backendserver.review.application.dto.request.CreateReviewRequest;
+import com.commerce.backendserver.review.application.dto.request.ReviewAnalyticsCondition;
+import com.commerce.backendserver.review.fixture.ReviewStatisticFixture;
 
 @WebMvcTest(
 	value = {ReviewController.class},
@@ -38,6 +44,9 @@ public class ReviewControllerTest extends WebMvcTestBase {
 
 	@MockBean
 	private ReviewService reviewService;
+
+	@MockBean
+	private ReviewAnalyticsService reviewAnalyticsService;
 
 	@Test
 	@DisplayName("[registerReview API]")
@@ -61,6 +70,47 @@ public class ReviewControllerTest extends WebMvcTestBase {
 
 		//then
 		actions.andExpect(status().isCreated());
+	}
+
+	@Test
+	@DisplayName("[getReviewStatistics API]")
+	void getReviewStatisticsTest() throws Exception {
+		//given
+		ReviewAnalyticsCondition condition = ReviewFixture.getReviewAnalyticsCondition();
+
+		given(reviewAnalyticsService.getReviewStatistics(condition))
+			.willReturn(ReviewStatisticFixture.getExpectedReviewStatistics());
+
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+			.get(BASE_URL + "/statistics")
+			.queryParams(
+				new LinkedMultiValueMap<>(
+					Map.of("engColorNames", condition.engColorNames().stream().toList())))
+			.queryParams(
+				new LinkedMultiValueMap<>(
+					Map.of("sizes", condition.sizes().stream().map(ProductSize::name).toList())))
+			.queryParams(
+				new LinkedMultiValueMap<>(
+					Map.of("scores", condition.scores().stream().map(String::valueOf).toList())))
+			.queryParams(
+				new LinkedMultiValueMap<>(
+					Map.of("additionalOptionValues", condition.additionalOptionValues().stream().toList())))
+			.queryParams(
+				new LinkedMultiValueMap<>(
+					Map.of("additionalInfoValues", condition.additionalInfoValues().stream().toList())));
+
+		//when
+		ResultActions actions = mockMvc.perform(requestBuilder);
+
+		//then
+		actions.andExpectAll(
+			status().isOk(),
+			jsonPath("$.totalReviewCount").value(3),
+			jsonPath("$.averageScore").value(3.0),
+			jsonPath("$.existSizes").exists(),
+			jsonPath("$.scoreStatistics").exists(),
+			jsonPath("$.additionalInfoStatistics").exists()
+		);
 	}
 
 	private MultiValueMap<String, String> generateParams() {
