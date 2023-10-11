@@ -7,8 +7,8 @@ import com.commerce.backendserver.product.domain.option.constants.ProductSize;
 public record ReviewAnalyticsCondition(
 	Set<String> engColorNames,
 	Set<ProductSize> sizes,
-	Set<String> additionalOptions,
+	Set<String> additionalOptionValues,
 	Set<Integer> scores,
-	Set<String> additionalInfoList
+	Set<String> additionalInfoValues
 ) {
 }
